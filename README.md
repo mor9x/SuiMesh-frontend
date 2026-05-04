@@ -2,11 +2,11 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/▶%20LIVE%20DEMO-Play%20Now-e87b00?style=for-the-badge&labelColor=04070c)](https://arisliwind.github.io/World-online-function-building.-Basics/)
+[![Live Demo](https://img.shields.io/badge/▶%20LIVE%20DEMO-Play%20Now-e87b00?style=for-the-badge&labelColor=04070c)](https://htmlpreview.github.io/?https://github.com/ArisLiWind/World-online-function-building.-Basics/blob/main/index.html)
 ![Version](https://img.shields.io/badge/version-3.0.0-0099d4?style=for-the-badge&labelColor=04070c)
 ![Screens](https://img.shields.io/badge/screens-7-1fca5c?style=for-the-badge&labelColor=04070c)
 
-**[🎮 Click here to play the demo →](https://arisliwind.github.io/World-online-function-building.-Basics/)**
+**[🎮 Click here to play the demo →](https://htmlpreview.github.io/?https://github.com/ArisLiWind/World-online-function-building.-Basics/blob/main/index.html)**
 
 *A high-fidelity interactive prototype of the Battlefield 4 main menu UI*  
 *Built from the [Figma community design](https://www.figma.com/design/medx8flUlSXlySMFy3Z25n/Battlefield-4---Main-Menu-UI-Design--Community-) · Zero dependencies · Open in any browser*
