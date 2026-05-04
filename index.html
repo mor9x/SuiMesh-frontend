@@ -7,59 +7,50 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-/* ─────────────────────────────────────
-   RESET & TOKENS
-───────────────────────────────────── */
+/* ─── RESET & TOKENS ─── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:       #04070c;
-  --bg2:      #080e17;
-  --bg3:      #0c1520;
-  --orange:   #e87b00;
-  --orange2:  #ff9c20;
-  --odim:     rgba(232,123,0,.15);
-  --text:     #cce0ed;
-  --muted:    #607a8a;
-  --dim:      #2a3d4d;
-  --line:     rgba(140,190,220,.09);
-  --lineh:    rgba(232,123,0,.55);
-  --white:    #ffffff;
-  --green:    #1fca5c;
-  --red:      #e03a3a;
-  --blue:     #0099d4;
+  --bg:#04070c; --bg2:#080e17; --bg3:#0c1520;
+  --orange:#e87b00; --orange2:#ff9c20; --odim:rgba(232,123,0,.15);
+  --text:#cce0ed; --muted:#607a8a; --dim:#2a3d4d; --line:rgba(140,190,220,.09);
+  --lineh:rgba(232,123,0,.55); --white:#ffffff;
+  --green:#1fca5c; --red:#e03a3a; --blue:#0099d4;
 }
-html,body{width:100%;height:100%;background:var(--bg);
-  font-family:'Rajdhani',sans-serif;overflow:hidden;
-  user-select:none;color:var(--text);}
+html,body{width:100%;height:100%;background:var(--bg);font-family:'Rajdhani',sans-serif;overflow:hidden;user-select:none;color:var(--text);}
 
-/* ─────────────────────────────────────
-   BACKGROUND
-───────────────────────────────────── */
+/* ─── BACKGROUND LAYERS ─── */
 #bg-canvas{position:fixed;inset:0;z-index:0;}
 .layer{position:fixed;inset:0;pointer-events:none;}
-.scanlines{z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.05) 2px,rgba(0,0,0,.05) 4px);}
+.scanlines{z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.045) 2px,rgba(0,0,0,.045) 4px);}
 .vignette{z-index:2;background:radial-gradient(ellipse 140% 120% at 50% 50%,transparent 20%,rgba(0,0,0,.48) 70%,rgba(0,0,0,.9) 100%);}
 .grid{z-index:3;background-image:linear-gradient(rgba(0,120,170,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,120,170,.022) 1px,transparent 1px);background-size:80px 80px;}
-.corner{position:fixed;z-index:5;pointer-events:none;width:52px;height:52px;}
-.c-tl{top:0;left:0;  border-top:2px solid rgba(232,123,0,.5);border-left:2px solid rgba(232,123,0,.5);}
-.c-tr{top:0;right:0; border-top:2px solid rgba(232,123,0,.5);border-right:2px solid rgba(232,123,0,.5);}
-.c-bl{bottom:0;left:0;  border-bottom:2px solid rgba(232,123,0,.2);border-left:2px solid rgba(232,123,0,.2);}
-.c-br{bottom:0;right:0; border-bottom:2px solid rgba(232,123,0,.2);border-right:2px solid rgba(232,123,0,.2);}
-#loadbar{position:fixed;top:0;left:0;height:2px;background:var(--orange);z-index:999;animation:ldIn 1.6s ease-out forwards;}
-@keyframes ldIn{0%{width:0;opacity:1}80%{width:100%;opacity:1}100%{width:100%;opacity:0}}
+.corner{position:fixed;z-index:5;pointer-events:none;width:52px;height:52px;transition:opacity .5s;}
+.c-tl{top:0;left:0;border-top:2px solid rgba(232,123,0,.5);border-left:2px solid rgba(232,123,0,.5);}
+.c-tr{top:0;right:0;border-top:2px solid rgba(232,123,0,.5);border-right:2px solid rgba(232,123,0,.5);}
+.c-bl{bottom:0;left:0;border-bottom:2px solid rgba(232,123,0,.2);border-left:2px solid rgba(232,123,0,.2);}
+.c-br{bottom:0;right:0;border-bottom:2px solid rgba(232,123,0,.2);border-right:2px solid rgba(232,123,0,.2);}
 
-/* ─────────────────────────────────────
-   SCREENS
-───────────────────────────────────── */
+/* ─── BOOT SCREEN ─── */
+#boot{position:fixed;inset:0;z-index:200;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s;}
+#boot.hide{opacity:0;pointer-events:none;}
+.boot-logo{font-family:'Orbitron',sans-serif;font-size:52px;font-weight:900;color:#fff;letter-spacing:-2px;margin-bottom:6px;}
+.boot-sub{font-size:9px;letter-spacing:6px;color:var(--orange);text-transform:uppercase;margin-bottom:48px;}
+.boot-lines{width:480px;max-width:90vw;font-size:11px;letter-spacing:.5px;color:rgba(100,170,200,.7);line-height:2;font-family:monospace;min-height:180px;}
+.boot-lines .bl{opacity:0;animation:blIn .15s forwards;}
+@keyframes blIn{to{opacity:1}}
+.boot-bar-wrap{width:480px;max-width:90vw;margin-top:24px;}
+.boot-bar-label{display:flex;justify-content:space-between;font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:6px;}
+.boot-bar-track{height:2px;background:rgba(255,255,255,.07);}
+.boot-bar-fill{height:100%;width:0;background:var(--orange);transition:width .05s linear;}
+.boot-skip{margin-top:20px;font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;}
+
+/* ─── SCREENS ─── */
 .screen{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;}
-.screen.active{display:flex;animation:sIn .4s ease both;}
-@keyframes sIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.screen.active{display:flex;animation:sIn .35s ease both;}
+@keyframes sIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
 
-/* ─────────────────────────────────────
-   SHARED HEADER
-───────────────────────────────────── */
-.hdr{display:flex;align-items:center;justify-content:space-between;
-  padding:14px 36px 0;border-bottom:1px solid var(--line);flex-shrink:0;}
+/* ─── HEADER ─── */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 36px 0;border-bottom:1px solid var(--line);flex-shrink:0;}
 .logo{display:flex;flex-direction:column;line-height:1;cursor:pointer;}
 .l1{font-family:'Orbitron',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:6px;color:var(--muted);text-transform:uppercase;}
 .l2{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;color:var(--white);letter-spacing:-2px;line-height:.85;}
@@ -71,20 +62,14 @@ html,body{width:100%;height:100%;background:var(--bg);
 @keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
 .badge{background:var(--orange);color:#fff;font-size:8px;font-weight:700;padding:1px 5px;}
 .tabs{display:flex;padding-top:10px;}
-.tab{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);
-  padding:7px 18px;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;}
+.tab{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);padding:7px 18px;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;}
 .tab:hover{color:var(--muted);}
 .tab.on{color:var(--white);border-bottom-color:var(--orange);}
 
-/* ─────────────────────────────────────
-   SHARED FOOTER
-───────────────────────────────────── */
-.ftr{flex-shrink:0;border-top:1px solid var(--line);padding:11px 36px;
-  display:flex;align-items:center;justify-content:space-between;
-  background:rgba(4,7,12,.7);}
+/* ─── FOOTER ─── */
+.ftr{flex-shrink:0;border-top:1px solid var(--line);padding:11px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(4,7,12,.7);}
 .player{display:flex;align-items:center;gap:12px;}
-.emblem{width:40px;height:40px;border:1px solid var(--line);position:relative;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.emblem{width:40px;height:40px;border:1px solid var(--line);position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .emblem::after{content:'';position:absolute;inset:-3px;border:1px solid rgba(232,123,0,.18);}
 .emblem svg{width:22px;height:22px;fill:var(--orange);}
 .pn{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--white);text-transform:uppercase;}
@@ -97,8 +82,7 @@ html,body{width:100%;height:100%;background:var(--bg);
 .xpf::after{content:'';position:absolute;right:0;top:-2px;width:1px;height:7px;background:var(--orange2);}
 .ticker{flex:1;text-align:center;overflow:hidden;margin:0 32px;}
 .tl{font-size:7.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:2px;}
-.tt{font-size:10.5px;letter-spacing:.8px;color:var(--muted);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .4s;}
+.tt{font-size:10.5px;letter-spacing:.8px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .4s;}
 .ftr-right{display:flex;align-items:center;gap:18px;}
 .fqb{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.55;transition:opacity .18s;}
 .fqb:hover{opacity:1;}
@@ -106,33 +90,23 @@ html,body{width:100%;height:100%;background:var(--bg);
 .fqb-icon svg{width:14px;height:14px;fill:var(--muted);}
 .fqb-lbl{font-size:7px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;}
 
-/* ─────────────────────────────────────
-   MAIN MENU NAV
-───────────────────────────────────── */
+/* ─── MAIN MENU NAV ─── */
 .main-body{flex:1;display:grid;grid-template-columns:400px 1fr;min-height:0;}
 .nav-col{display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--line);position:relative;}
-.nav-col::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:linear-gradient(to bottom,transparent 0%,var(--orange) 30%,var(--orange) 70%,transparent 100%);
-  opacity:.55;}
+.nav-col::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent 0%,var(--orange) 30%,var(--orange) 70%,transparent 100%);opacity:.55;}
 .nav-eyebrow{font-size:8px;letter-spacing:4px;color:var(--dim);text-transform:uppercase;padding:0 36px 14px;}
 .nav-list{list-style:none;}
 .ni{border-top:1px solid var(--line);}
 .ni:last-child{border-bottom:1px solid var(--line);}
-.ni a{display:flex;align-items:center;padding:16px 36px;text-decoration:none;cursor:pointer;
-  position:relative;overflow:hidden;transition:all .18s;}
-.ni a::before{content:'';position:absolute;left:-100%;top:0;bottom:0;width:100%;
-  background:linear-gradient(90deg,transparent,rgba(232,123,0,.06),rgba(232,123,0,.13));transition:left .28s;}
+.ni a{display:flex;align-items:center;padding:16px 36px;text-decoration:none;cursor:pointer;position:relative;overflow:hidden;transition:all .18s;}
+.ni a::before{content:'';position:absolute;left:-100%;top:0;bottom:0;width:100%;background:linear-gradient(90deg,transparent,rgba(232,123,0,.06),rgba(232,123,0,.13));transition:left .28s;}
 .ni a::after{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--orange);transition:width .18s;}
 .ni a:hover::before,.ni.on a::before{left:0;}
 .ni a:hover::after,.ni.on a::after{width:3px;}
-.ni-num{font-size:9px;letter-spacing:1px;color:var(--dim);margin-right:14px;min-width:14px;
-  font-family:'Orbitron',sans-serif;transition:color .18s;}
+.ni-num{font-size:9px;letter-spacing:1px;color:var(--dim);margin-right:14px;min-width:14px;font-family:'Orbitron',sans-serif;transition:color .18s;}
 .ni-ico{width:16px;height:16px;margin-right:12px;opacity:.35;fill:var(--text);transition:opacity .18s;flex-shrink:0;}
-.ni-txt{font-size:20px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
-  color:var(--muted);flex:1;transition:color .18s,letter-spacing .18s;}
-.ni-tag{font-size:7.5px;letter-spacing:2px;padding:2px 7px;
-  border:1px solid rgba(232,123,0,.3);color:var(--orange);background:var(--odim);
-  opacity:0;transition:opacity .18s;}
+.ni-txt{font-size:20px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);flex:1;transition:color .18s,letter-spacing .18s;}
+.ni-tag{font-size:7.5px;letter-spacing:2px;padding:2px 7px;border:1px solid rgba(232,123,0,.3);color:var(--orange);background:var(--odim);opacity:0;transition:opacity .18s;}
 .ni a:hover .ni-txt,.ni.on a .ni-txt{color:var(--white);letter-spacing:3.5px;}
 .ni a:hover .ni-num,.ni.on a .ni-num{color:var(--orange);}
 .ni a:hover .ni-ico,.ni.on a .ni-ico{opacity:1;}
@@ -141,11 +115,9 @@ html,body{width:100%;height:100%;background:var(--bg);
 
 /* detail panel */
 .detail-col{display:flex;flex-direction:column;justify-content:center;padding:32px 44px;position:relative;overflow:hidden;}
-.det-bg{position:absolute;right:-10px;bottom:24px;font-family:'Orbitron',sans-serif;
-  font-size:140px;font-weight:900;color:rgba(255,255,255,.018);letter-spacing:-6px;pointer-events:none;line-height:1;}
+.det-bg{position:absolute;right:-10px;bottom:24px;font-family:'Orbitron',sans-serif;font-size:140px;font-weight:900;color:rgba(255,255,255,.018);letter-spacing:-6px;pointer-events:none;line-height:1;}
 .det-eye{font-size:8.5px;letter-spacing:4px;color:var(--orange);text-transform:uppercase;margin-bottom:7px;}
-.det-ttl{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:700;
-  color:var(--white);letter-spacing:2px;text-transform:uppercase;}
+.det-ttl{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:700;color:var(--white);letter-spacing:2px;text-transform:uppercase;}
 .det-line{width:50px;height:2px;background:var(--orange);margin:14px 0 18px;}
 .det-desc{font-size:13px;line-height:1.85;color:var(--muted);max-width:430px;letter-spacing:.4px;}
 .det-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:26px;max-width:440px;}
@@ -155,43 +127,37 @@ html,body{width:100%;height:100%;background:var(--bg);
 .dopt-txt{font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--text);text-transform:uppercase;transition:color .2s;}
 .dopt:hover .dopt-txt{color:var(--white);}
 .det-cta{margin-top:26px;display:flex;gap:10px;}
-.btn-p{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;
-  background:var(--orange);color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;
-  font-weight:700;letter-spacing:3.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all .18s;}
+.btn-p{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--orange);color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all .18s;}
 .btn-p:hover{background:var(--orange2);transform:translateY(-1px);}
-.btn-s{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;
-  background:transparent;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;
-  font-weight:600;letter-spacing:3px;text-transform:uppercase;border:1px solid var(--line);
-  cursor:pointer;transition:all .18s;}
+.btn-s{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:transparent;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;border:1px solid var(--line);cursor:pointer;transition:all .18s;}
 .btn-s:hover{border-color:rgba(140,190,220,.28);color:var(--text);}
 .det-stats{display:flex;gap:28px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line);}
 .ds{display:flex;flex-direction:column;gap:3px;}
 .ds-v{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:700;color:var(--white);}
 .ds-l{font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;}
 
-/* ─────────────────────────────────────
-   REGISTRATION SCREEN
-───────────────────────────────────── */
-.reg-body{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;}
-.reg-card{width:520px;border:1px solid var(--line);padding:42px 48px;position:relative;
-  background:rgba(8,14,23,.6);}
+/* ─── REGISTRATION ─── */
+.reg-body{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;overflow-y:auto;}
+.reg-card{width:520px;border:1px solid var(--line);padding:42px 48px;position:relative;background:rgba(8,14,23,.6);}
 .reg-card::before{content:'';position:absolute;top:-1px;left:0;width:60px;height:2px;background:var(--orange);}
 .sec-eye{font-size:8px;letter-spacing:4px;color:var(--orange);text-transform:uppercase;margin-bottom:7px;}
-.sec-ttl{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;
-  color:var(--white);letter-spacing:2px;text-transform:uppercase;}
+.sec-ttl{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:var(--white);letter-spacing:2px;text-transform:uppercase;}
 .sec-bar{width:42px;height:2px;background:var(--orange);margin:14px 0 28px;}
-.field{margin-bottom:18px;}
-.field label{display:block;font-size:8.5px;letter-spacing:3px;color:var(--dim);
-  text-transform:uppercase;margin-bottom:7px;}
-.field input,.field select{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--line);
-  color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:500;
-  letter-spacing:1px;padding:11px 14px;outline:none;transition:border-color .18s;}
+.field{margin-bottom:18px;position:relative;}
+.field label{display:block;font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:7px;}
+.field input,.field select{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:500;letter-spacing:1px;padding:11px 14px;outline:none;transition:border-color .18s;}
 .field input:focus,.field select:focus{border-color:rgba(232,123,0,.5);}
 .field input::placeholder{color:var(--dim);}
 .field select option{background:#0c1520;}
+.field.ok input{border-color:rgba(31,202,92,.4);}
+.field.err input{border-color:rgba(224,58,58,.5);}
+.field .err-msg{position:absolute;bottom:-14px;left:0;font-size:9px;letter-spacing:1.5px;color:var(--red);text-transform:uppercase;opacity:0;transition:opacity .2s;}
+.field.err .err-msg{opacity:1;}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.pwd-strength{height:2px;background:rgba(255,255,255,.07);margin-top:6px;overflow:hidden;}
+.pwd-fill{height:100%;width:0;transition:width .3s,background .3s;}
 .check-row{display:flex;align-items:center;gap:10px;margin:20px 0 28px;cursor:pointer;}
-.check-box{width:16px;height:16px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.check-box{width:16px;height:16px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;}
 .check-box.on{background:var(--orange);border-color:var(--orange);}
 .check-box.on::after{content:'✓';font-size:10px;color:#fff;}
 .check-lbl{font-size:11px;letter-spacing:1px;color:var(--muted);}
@@ -199,9 +165,7 @@ html,body{width:100%;height:100%;background:var(--bg);
 .alt-link a{color:var(--orange);cursor:pointer;text-decoration:none;}
 .alt-link a:hover{color:var(--orange2);}
 
-/* ─────────────────────────────────────
-   WORLD & IDENTITY SCREEN
-───────────────────────────────────── */
+/* ─── WORLD & IDENTITY ─── */
 .world-body{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0;gap:0;}
 .world-half{padding:28px 36px;border-right:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto;}
 .world-half:last-child{border-right:none;}
@@ -219,7 +183,6 @@ html,body{width:100%;height:100%;background:var(--bg);
 .wc-sub{font-size:9px;letter-spacing:1.5px;color:var(--muted);margin-top:2px;}
 .wc-status{font-size:8px;letter-spacing:2px;margin-top:6px;display:flex;align-items:center;gap:5px;}
 .ws-dot{width:5px;height:5px;border-radius:50%;}
-/* identity */
 .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
 .role-card{border:1px solid var(--line);padding:14px 16px;cursor:pointer;transition:all .22s;position:relative;}
 .role-card.sel{border-color:var(--orange);}
@@ -230,38 +193,26 @@ html,body{width:100%;height:100%;background:var(--bg);
 .rc-desc{font-size:10px;letter-spacing:.5px;color:var(--muted);margin-top:4px;line-height:1.6;}
 .callsign-wrap{margin-top:18px;}
 .callsign-wrap label{font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:7px;}
-.callsign-wrap input{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--line);
-  color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;
-  letter-spacing:2px;padding:10px 14px;outline:none;transition:border-color .18s;}
+.callsign-wrap input{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;letter-spacing:2px;padding:10px 14px;outline:none;transition:border-color .18s;}
 .callsign-wrap input:focus{border-color:rgba(232,123,0,.5);}
-.world-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;
-  border-top:1px solid var(--line);flex-shrink:0;}
+.world-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;border-top:1px solid var(--line);flex-shrink:0;}
 
-/* ─────────────────────────────────────
-   INVITE FRIENDS
-───────────────────────────────────── */
+/* ─── INVITE FRIENDS ─── */
 .invite-body{flex:1;display:grid;grid-template-columns:1fr 320px;min-height:0;}
 .invite-left{padding:28px 36px;border-right:1px solid var(--line);display:flex;flex-direction:column;}
 .friend-search{display:flex;gap:10px;margin-bottom:20px;}
-.fsearch-input{flex:1;background:rgba(0,0,0,.4);border:1px solid var(--line);
-  color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:1px;
-  padding:10px 14px;outline:none;transition:border-color .18s;}
+.fsearch-input{flex:1;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:1px;padding:10px 14px;outline:none;transition:border-color .18s;}
 .fsearch-input:focus{border-color:rgba(232,123,0,.5);}
 .fsearch-input::placeholder{color:var(--dim);}
 .friend-list{flex:1;overflow-y:auto;}
-.friend-item{display:flex;align-items:center;gap:12px;padding:12px 0;
-  border-bottom:1px solid var(--line);cursor:pointer;transition:all .15s;position:relative;}
+.friend-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:all .15s;position:relative;}
 .friend-item:hover{padding-left:6px;}
-.fi-avatar{width:38px;height:38px;border:1px solid var(--line);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;
-  color:var(--orange);font-family:'Orbitron',sans-serif;background:rgba(0,0,0,.4);}
+.fi-avatar{width:38px;height:38px;border:1px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--orange);font-family:'Orbitron',sans-serif;background:rgba(0,0,0,.4);}
 .fi-info{flex:1;}
 .fi-name{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--text);text-transform:uppercase;}
 .fi-status{font-size:9px;letter-spacing:1.5px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px;}
 .fi-rank{font-size:9px;letter-spacing:1px;color:var(--dim);text-align:right;}
-.fi-invite-btn{font-size:9px;letter-spacing:2px;color:var(--orange);text-transform:uppercase;
-  padding:5px 12px;border:1px solid rgba(232,123,0,.35);cursor:pointer;
-  background:var(--odim);transition:all .15s;flex-shrink:0;}
+.fi-invite-btn{font-size:9px;letter-spacing:2px;color:var(--orange);text-transform:uppercase;padding:5px 12px;border:1px solid rgba(232,123,0,.35);cursor:pointer;background:var(--odim);transition:all .15s;flex-shrink:0;}
 .fi-invite-btn:hover{background:rgba(232,123,0,.25);border-color:var(--orange);}
 .fi-invite-btn.sent{color:var(--muted);border-color:var(--line);background:transparent;pointer-events:none;}
 .invite-right{padding:28px 24px;display:flex;flex-direction:column;}
@@ -269,92 +220,101 @@ html,body{width:100%;height:100%;background:var(--bg);
 .slot{border:1px solid var(--line);padding:12px 14px;display:flex;align-items:center;gap:12px;position:relative;}
 .slot.filled{border-color:rgba(232,123,0,.3);}
 .slot-num{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--dim);min-width:18px;}
-.slot-avatar{width:32px;height:32px;border:1px solid var(--line);display:flex;
-  align-items:center;justify-content:center;font-size:11px;font-weight:700;
-  color:var(--orange);font-family:'Orbitron',sans-serif;}
+.slot-avatar{width:32px;height:32px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--orange);font-family:'Orbitron',sans-serif;}
 .slot-avatar.empty{opacity:.3;}
 .slot-name{font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--text);text-transform:uppercase;}
 .slot-role{font-size:8px;letter-spacing:1.5px;color:var(--muted);margin-top:1px;}
-.slot-remove{position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  font-size:10px;color:var(--dim);cursor:pointer;opacity:0;transition:opacity .15s;}
+.slot-remove{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--dim);cursor:pointer;opacity:0;transition:opacity .15s;}
 .slot:hover .slot-remove{opacity:1;}
 .slot-empty-txt{font-size:11px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;}
-.invite-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;
-  border-top:1px solid var(--line);flex-shrink:0;}
+.copy-link-btn{margin-top:16px;padding:10px 0;border:1px solid var(--line);text-align:center;font-size:10px;letter-spacing:2px;color:var(--muted);cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.copy-link-btn:hover{border-color:rgba(232,123,0,.4);color:var(--orange);}
+.copy-link-btn.copied{border-color:var(--green);color:var(--green);}
+.invite-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;border-top:1px solid var(--line);flex-shrink:0;}
 
-/* ─────────────────────────────────────
-   OPEN ROOM
-───────────────────────────────────── */
+/* ─── OPEN ROOM ─── */
 .room-body{flex:1;display:grid;grid-template-columns:1fr 340px;min-height:0;}
 .room-left{padding:28px 36px;border-right:1px solid var(--line);overflow-y:auto;}
 .room-right{padding:28px 24px;display:flex;flex-direction:column;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
 .form-grid .field{margin-bottom:0;}
 .toggle-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
-.tgl{font-size:10px;letter-spacing:2px;color:var(--muted);padding:7px 14px;
-  border:1px solid var(--line);cursor:pointer;transition:all .18s;text-transform:uppercase;}
+.tgl{font-size:10px;letter-spacing:2px;color:var(--muted);padding:7px 14px;border:1px solid var(--line);cursor:pointer;transition:all .18s;text-transform:uppercase;}
 .tgl.on{color:var(--white);border-color:var(--orange);background:var(--odim);}
 .tgl:hover:not(.on){border-color:rgba(140,190,220,.25);color:var(--text);}
 .slider-field{margin-bottom:18px;}
-.slider-field label{display:block;font-size:8.5px;letter-spacing:3px;color:var(--dim);
-  text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;}
+.slider-field label{display:block;font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;}
 .slider-field label span{color:var(--orange);font-weight:700;}
-.slider-field input[type=range]{-webkit-appearance:none;width:100%;height:3px;
-  background:rgba(255,255,255,.08);outline:none;cursor:pointer;}
-.slider-field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
-  width:14px;height:14px;background:var(--orange);cursor:pointer;border:none;}
-.room-map-thumb{height:130px;background:linear-gradient(135deg,#0a1520,#051020);
-  border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;margin-bottom:14px;cursor:pointer;transition:border-color .2s;}
+.slider-field input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:rgba(255,255,255,.08);outline:none;cursor:pointer;}
+.slider-field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--orange);cursor:pointer;border:none;}
+.room-map-thumb{height:130px;background:linear-gradient(135deg,#0a1520,#051020);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:14px;cursor:pointer;transition:border-color .2s;}
 .room-map-thumb:hover{border-color:rgba(232,123,0,.35);}
 .map-label-overlay{position:absolute;bottom:10px;left:12px;}
 .map-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--white);}
 .map-mode{font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:2px;}
 .map-arrows{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;}
-.map-arrow{width:26px;height:26px;border:1px solid var(--line);display:flex;align-items:center;
-  justify-content:center;cursor:pointer;font-size:10px;color:var(--muted);transition:all .15s;}
+.map-arrow{width:26px;height:26px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:var(--muted);transition:all .15s;}
 .map-arrow:hover{border-color:rgba(232,123,0,.4);color:var(--orange);}
 .room-players{flex:1;overflow-y:auto;}
 .rp-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
-.rp-avatar{width:32px;height:32px;border:1px solid var(--line);background:rgba(0,0,0,.4);
-  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
-  color:var(--orange);font-family:'Orbitron',sans-serif;flex-shrink:0;}
+.rp-avatar{width:32px;height:32px;border:1px solid var(--line);background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--orange);font-family:'Orbitron',sans-serif;flex-shrink:0;}
 .rp-name{font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--text);text-transform:uppercase;flex:1;}
-.rp-ping{font-size:9px;letter-spacing:1px;color:var(--green);}
-.rp-kick{font-size:9px;letter-spacing:1px;color:var(--dim);cursor:pointer;padding:3px 8px;
-  border:1px solid transparent;transition:all .15s;}
+.rp-ping{font-size:9px;letter-spacing:1px;}
+.rp-kick{font-size:9px;letter-spacing:1px;color:var(--dim);cursor:pointer;padding:3px 8px;border:1px solid transparent;transition:all .15s;}
 .rp-kick:hover{color:var(--red);border-color:rgba(224,58,58,.3);}
-.room-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;
-  border-top:1px solid var(--line);flex-shrink:0;}
+.room-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;border-top:1px solid var(--line);flex-shrink:0;}
 
-/* ─────────────────────────────────────
-   SCROLLBAR
-───────────────────────────────────── */
+/* ─── SHARED SECTION HEADERS ─── */
+.section-head{margin-bottom:16px;}
+.section-head .sec-eye{font-size:8px;letter-spacing:4px;color:var(--orange);text-transform:uppercase;margin-bottom:5px;}
+.section-head .sec-ttl{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--white);letter-spacing:2px;text-transform:uppercase;}
+.section-head .sec-bar{width:36px;height:2px;background:var(--orange);margin-top:10px;}
+
+/* ─── NOTIFICATION TOAST ─── */
+.toast{position:fixed;bottom:90px;right:32px;z-index:100;background:rgba(8,14,23,.95);border:1px solid rgba(232,123,0,.5);border-left:3px solid var(--orange);padding:12px 18px;min-width:260px;transform:translateX(120%);transition:transform .3s ease;pointer-events:none;}
+.toast.show{transform:translateX(0);}
+.toast-title{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--white);text-transform:uppercase;}
+.toast-msg{font-size:10px;letter-spacing:.5px;color:var(--muted);margin-top:3px;}
+
+/* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(232,123,0,.28);}
 </style>
 </head>
 <body>
-<!-- bg -->
+
+<!-- ═══ BACKGROUND ═══ -->
 <canvas id="bg-canvas"></canvas>
 <div class="layer scanlines"></div>
 <div class="layer vignette"></div>
 <div class="layer grid"></div>
 <div class="corner c-tl"></div><div class="corner c-tr"></div>
 <div class="corner c-bl"></div><div class="corner c-br"></div>
-<div id="loadbar"></div>
 
-<!-- ═══════════════════════════════════
-     SCREEN 1 — MAIN MENU
-════════════════════════════════════ -->
-<div id="s-main" class="screen active">
-  <!-- header -->
+<!-- ═══ BOOT SCREEN ═══ -->
+<div id="boot">
+  <div class="boot-logo">4</div>
+  <div class="boot-sub">Battlefield · World Online</div>
+  <div class="boot-lines" id="boot-lines"></div>
+  <div class="boot-bar-wrap">
+    <div class="boot-bar-label"><span>System Initializing</span><span id="boot-pct">0%</span></div>
+    <div class="boot-bar-track"><div class="boot-bar-fill" id="boot-fill"></div></div>
+  </div>
+  <div class="boot-skip">Press any key to skip</div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast">
+  <div class="toast-title" id="toast-title"></div>
+  <div class="toast-msg" id="toast-msg"></div>
+</div>
+
+<!-- ═══════════════ SCREEN 1 — MAIN MENU ═══════════════ -->
+<div id="s-main" class="screen">
   <header class="hdr">
     <div class="logo" onclick="goScreen('s-main')">
-      <span class="l1">Battlefield</span>
-      <span class="l2">4</span>
-      <span class="l3">World Online</span>
+      <span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span>
     </div>
     <div class="hdr-r">
       <div class="hdr-meta">
@@ -372,94 +332,52 @@ html,body{width:100%;height:100%;background:var(--bg);
     </div>
   </header>
 
-  <!-- nav + detail -->
   <div class="main-body">
     <nav class="nav-col">
       <div class="nav-eyebrow">Select Mode</div>
       <ul class="nav-list">
-        <li class="ni on" id="ni-mp">
-          <a href="#" onclick="navSelect('ni-mp','MULTIPLAYER','GAME MODE','MP',
-            'Engage in 64-player battles across land, sea, and air. Nine game modes with dynamic Levolution events that reshape the battlefield.',
-            'CONQUEST,RUSH,OBLITERATION,DEATHMATCH,DEFUSE,DOMINATION',
-            ['24,812','1,340','18ms','47'],['Players Online','Active Servers','Avg Ping','Friends Online'],
-            '▶ PLAY NOW');return false">
-            <span class="ni-num">01</span>
-            <svg class="ni-ico" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            <span class="ni-txt">Multiplayer</span>
-            <span class="ni-tag">NEW MAPS</span>
-          </a>
-        </li>
-        <li class="ni" id="ni-camp">
-          <a href="#" onclick="navSelect('ni-camp','CAMPAIGN','STORY MODE','CAMP',
-            'Play as Tombstone squad through Shanghai, Azerbaijan, Singapore, Kunlun and the South China Sea. Your choices shape the outcome.',
-            'ACT I,ACT II,ACT III,ACT IV,ACT V,ACT VI',
-            ['Chapter 3','Checkpoint 7','62%','12h 40m'],['Current Chapter','Checkpoint','Completion','Playtime'],
-            '▶ CONTINUE');return false">
-            <span class="ni-num">02</span>
-            <svg class="ni-ico" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-            <span class="ni-txt">Campaign</span>
-            <span class="ni-tag"></span>
-          </a>
-        </li>
-        <li class="ni" id="ni-co">
-          <a href="#" onclick="navSelect('ni-co','CO-OP','CO-OPERATIVE','CO',
-            'Team up with a friend in cooperative missions. Coordinate tactics and complete challenging objectives that require precise communication.',
-            'MISSION 1,MISSION 2,MISSION 3,MISSION 4,MISSION 5,MISSION 6',
-            ['4 Missions','2 Unlocked','Normal','1 Ready'],['Total Missions','Unlocked','Difficulty','Friends Ready'],
-            '▶ FIND PARTNER');return false">
-            <span class="ni-num">03</span>
-            <svg class="ni-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-            <span class="ni-txt">Co-Op</span>
-            <span class="ni-tag"></span>
-          </a>
-        </li>
-        <li class="ni" id="ni-sol">
-          <a href="#" onclick="navSelect('ni-sol','SOLDIER','PROFILE','SOL',
-            'Manage your loadouts, weapons, gadgets, and assignments. Customize your kit with hundreds of attachments and vehicle configurations.',
-            'WEAPONS,GADGETS,VEHICLES,DOG TAGS,ASSIGNMENTS,STATS',
-            ['Rank 100','8,240 S/M','1,240 Kills','64% W/R'],['Rank','Score/Min','Total Kills','Win Rate'],
-            '▶ MANAGE KIT');return false">
-            <span class="ni-num">04</span>
-            <svg class="ni-ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span class="ni-txt">Soldier</span>
-            <span class="ni-tag"></span>
-          </a>
-        </li>
-        <li class="ni" id="ni-world">
-          <a href="#" onclick="goScreen('s-world');return false">
-            <span class="ni-num">05</span>
-            <svg class="ni-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-            <span class="ni-txt">Choose World</span>
-            <span class="ni-tag">SET UP</span>
-          </a>
-        </li>
-        <li class="ni" id="ni-invite">
-          <a href="#" onclick="goScreen('s-invite');return false">
-            <span class="ni-num">06</span>
-            <svg class="ni-ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
-            <span class="ni-txt">Invite Friends</span>
-            <span class="ni-tag"></span>
-          </a>
-        </li>
-        <li class="ni" id="ni-room">
-          <a href="#" onclick="goScreen('s-room');return false">
-            <span class="ni-num">07</span>
-            <svg class="ni-ico" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-            <span class="ni-txt">Open Room</span>
-            <span class="ni-tag"></span>
-          </a>
-        </li>
-        <li class="ni" id="ni-reg">
-          <a href="#" onclick="goScreen('s-reg');return false">
-            <span class="ni-num">08</span>
-            <svg class="ni-ico" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="16" y1="11" x2="22" y2="11"/><line x1="19" y1="8" x2="19" y2="14"/></svg>
-            <span class="ni-txt">Register</span>
-            <span class="ni-tag"></span>
-          </a>
-        </li>
+        <li class="ni on" id="ni-mp"><a href="#" onclick="navSelect('ni-mp','MULTIPLAYER','GAME MODE','MP','Engage in 64-player battles across land, sea, and air. Nine game modes with dynamic Levolution events that reshape the battlefield.','CONQUEST,RUSH,OBLITERATION,DEATHMATCH,DEFUSE,DOMINATION',['24,812','1,340','18ms','47'],['Players Online','Active Servers','Avg Ping','Friends Online'],'▶ PLAY NOW');return false">
+          <span class="ni-num">01</span>
+          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span class="ni-txt">Multiplayer</span><span class="ni-tag">NEW MAPS</span>
+        </a></li>
+        <li class="ni" id="ni-camp"><a href="#" onclick="navSelect('ni-camp','CAMPAIGN','STORY MODE','CAMP','Play as Tombstone squad through Shanghai, Azerbaijan, Singapore, Kunlun and the South China Sea. Your choices shape the outcome.','ACT I,ACT II,ACT III,ACT IV,ACT V,ACT VI',['Chapter 3','Checkpoint 7','62%','12h 40m'],['Current Chapter','Checkpoint','Completion','Playtime'],'▶ CONTINUE');return false">
+          <span class="ni-num">02</span>
+          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          <span class="ni-txt">Campaign</span><span class="ni-tag"></span>
+        </a></li>
+        <li class="ni" id="ni-co"><a href="#" onclick="navSelect('ni-co','CO-OP','CO-OPERATIVE','CO','Team up with a friend in cooperative missions. Coordinate tactics and complete challenging objectives that require precise communication.','MISSION 1,MISSION 2,MISSION 3,MISSION 4,MISSION 5,MISSION 6',['4 Missions','2 Unlocked','Normal','1 Ready'],['Total Missions','Unlocked','Difficulty','Friends Ready'],'▶ FIND PARTNER');return false">
+          <span class="ni-num">03</span>
+          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span class="ni-txt">Co-Op</span><span class="ni-tag"></span>
+        </a></li>
+        <li class="ni" id="ni-sol"><a href="#" onclick="navSelect('ni-sol','SOLDIER','PROFILE','SOL','Manage your loadouts, weapons, gadgets, and assignments. Customize your kit with hundreds of attachments and vehicle configurations.','WEAPONS,GADGETS,VEHICLES,DOG TAGS,ASSIGNMENTS,STATS',['Rank 100','8,240 S/M','1,240 Kills','64% W/R'],['Rank','Score/Min','Total Kills','Win Rate'],'▶ MANAGE KIT');return false">
+          <span class="ni-num">04</span>
+          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="ni-txt">Soldier</span><span class="ni-tag"></span>
+        </a></li>
+        <li class="ni" id="ni-world"><a href="#" onclick="goScreen('s-world');return false">
+          <span class="ni-num">05</span>
+          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span class="ni-txt">Choose World</span><span class="ni-tag">SET UP</span>
+        </a></li>
+        <li class="ni" id="ni-invite"><a href="#" onclick="goScreen('s-invite');return false">
+          <span class="ni-num">06</span>
+          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
+          <span class="ni-txt">Invite Friends</span><span class="ni-tag"></span>
+        </a></li>
+        <li class="ni" id="ni-room"><a href="#" onclick="goScreen('s-room');return false">
+          <span class="ni-num">07</span>
+          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+          <span class="ni-txt">Open Room</span><span class="ni-tag"></span>
+        </a></li>
+        <li class="ni" id="ni-reg"><a href="#" onclick="goScreen('s-reg');return false">
+          <span class="ni-num">08</span>
+          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="16" y1="11" x2="22" y2="11"/><line x1="19" y1="8" x2="19" y2="14"/></svg>
+          <span class="ni-txt">Register</span><span class="ni-tag"></span>
+        </a></li>
       </ul>
     </nav>
-
     <div class="detail-col">
       <div class="det-bg" id="det-bg">MP</div>
       <div class="det-eye" id="det-eye">GAME MODE</div>
@@ -480,7 +398,6 @@ html,body{width:100%;height:100%;background:var(--bg);
     </div>
   </div>
 
-  <!-- footer -->
   <footer class="ftr">
     <div class="player">
       <div class="emblem"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
@@ -490,38 +407,30 @@ html,body{width:100%;height:100%;background:var(--bg);
         <div class="xpt"><div class="xpf"></div></div>
       </div>
     </div>
-    <div class="ticker">
-      <div class="tl">Latest Update</div>
-      <div class="tt" id="ticker">Dragon's Teeth DLC — Pearl Market, Lumphini Garden, Propaganda, Sunken Dragon now available · Double XP Weekend Active</div>
-    </div>
+    <div class="ticker"><div class="tl">Latest Update</div><div class="tt" id="ticker">Dragon's Teeth DLC — Pearl Market, Lumphini Garden now available · Double XP Weekend Active</div></div>
     <div class="ftr-right">
       <div class="fqb" onclick="goScreen('s-invite')">
-        <div class="fqb-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg></div>
+        <div class="fqb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg></div>
         <span class="fqb-lbl">Friends</span>
       </div>
-      <div class="fqb">
-        <div class="fqb-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+      <div class="fqb" onclick="showToast('Chat','Group chat is not available in this prototype.')">
+        <div class="fqb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
         <span class="fqb-lbl">Chat</span>
       </div>
-      <div class="fqb">
-        <div class="fqb-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+      <div class="fqb" onclick="showToast('Alerts','3 new alerts — Double XP active, new DLC available, friend request from DELTA_KILO.')">
+        <div class="fqb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
         <span class="fqb-lbl">Alerts</span>
       </div>
     </div>
   </footer>
 </div>
 
-<!-- ═══════════════════════════════════
-     SCREEN 2 — REGISTRATION
-════════════════════════════════════ -->
+<!-- ═══════════════ SCREEN 2 — REGISTRATION ═══════════════ -->
 <div id="s-reg" class="screen">
   <header class="hdr">
     <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
     <div class="hdr-r">
-      <div class="hdr-meta">
-        <span class="hmeta"><span class="dot"></span>ONLINE</span>
-        <span class="hmeta" id="clk2"></span>
-      </div>
+      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk2"></span></div>
       <div class="tabs">
         <div class="tab" onclick="goScreen('s-main')">Home</div>
         <div class="tab on">Register</div>
@@ -531,44 +440,26 @@ html,body{width:100%;height:100%;background:var(--bg);
       </div>
     </div>
   </header>
-
   <div class="reg-body">
     <div class="reg-card">
       <div class="sec-eye">New Soldier</div>
       <div class="sec-ttl">Create Account</div>
       <div class="sec-bar"></div>
-
       <div class="field-row">
-        <div class="field">
-          <label>First Name</label>
-          <input type="text" placeholder="John">
-        </div>
-        <div class="field">
-          <label>Last Name</label>
-          <input type="text" placeholder="Doe">
-        </div>
+        <div class="field" id="f-fname"><label>First Name</label><input type="text" id="inp-fname" placeholder="John" oninput="validateField('f-fname','inp-fname','name')"><span class="err-msg">Required</span></div>
+        <div class="field" id="f-lname"><label>Last Name</label><input type="text" id="inp-lname" placeholder="Doe" oninput="validateField('f-lname','inp-lname','name')"><span class="err-msg">Required</span></div>
       </div>
-      <div class="field">
-        <label>Soldier Tag (Username)</label>
-        <input type="text" placeholder="TOMBSTONE_01" style="text-transform:uppercase;letter-spacing:2px;">
-      </div>
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" placeholder="soldier@battlefield.com">
-      </div>
+      <div class="field" id="f-tag"><label>Soldier Tag (Username)</label><input type="text" id="inp-tag" placeholder="TOMBSTONE_01" style="text-transform:uppercase;letter-spacing:2px;" oninput="validateField('f-tag','inp-tag','tag')"><span class="err-msg">Min 3 chars, letters & numbers only</span></div>
+      <div class="field" id="f-email"><label>Email Address</label><input type="email" id="inp-email" placeholder="soldier@battlefield.com" oninput="validateField('f-email','inp-email','email')"><span class="err-msg">Invalid email address</span></div>
       <div class="field-row">
-        <div class="field">
-          <label>Password</label>
-          <input type="password" placeholder="••••••••">
+        <div class="field" id="f-pwd"><label>Password</label>
+          <input type="password" id="inp-pwd" placeholder="••••••••" oninput="checkPwd()">
+          <div class="pwd-strength"><div class="pwd-fill" id="pwd-fill"></div></div>
         </div>
-        <div class="field">
-          <label>Confirm Password</label>
-          <input type="password" placeholder="••••••••">
-        </div>
+        <div class="field" id="f-cpwd"><label>Confirm Password</label><input type="password" id="inp-cpwd" placeholder="••••••••" oninput="validateField('f-cpwd','inp-cpwd','confirm')"><span class="err-msg">Passwords do not match</span></div>
       </div>
-      <div class="field">
-        <label>Region</label>
-        <select>
+      <div class="field"><label>Region</label>
+        <select id="inp-region">
           <option>Asia Pacific — Shanghai</option>
           <option>North America — New York</option>
           <option>Europe — Frankfurt</option>
@@ -576,40 +467,30 @@ html,body{width:100%;height:100%;background:var(--bg);
           <option>Middle East — Dubai</option>
         </select>
       </div>
-
       <div class="check-row" onclick="toggleCheck('ck1')">
         <div class="check-box" id="ck1"></div>
         <span class="check-lbl">I agree to the Terms of Service and Privacy Policy</span>
       </div>
-
-      <button class="btn-p" style="width:100%;justify-content:center;" onclick="goScreen('s-world')">CREATE SOLDIER PROFILE</button>
+      <button class="btn-p" style="width:100%;justify-content:center;" id="reg-btn" onclick="submitReg()">CREATE SOLDIER PROFILE</button>
       <div class="alt-link">Already have an account? <a onclick="goScreen('s-main')">Sign In →</a></div>
     </div>
   </div>
-
   <footer class="ftr">
     <div class="player">
       <div class="emblem"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
       <div><div class="pn">New Recruit</div><div class="pr">Unregistered · Create your profile to begin</div></div>
     </div>
     <div class="ticker"><div class="tl">System</div><div class="tt">Registration is free. Your Soldier Tag must be unique across all regions.</div></div>
-    <div class="ftr-right">
-      <button class="btn-s" onclick="goScreen('s-main')">← BACK TO MENU</button>
-    </div>
+    <div class="ftr-right"><button class="btn-s" onclick="goScreen('s-main')">← BACK TO MENU</button></div>
   </footer>
 </div>
 
-<!-- ═══════════════════════════════════
-     SCREEN 3 — WORLD & IDENTITY
-════════════════════════════════════ -->
+<!-- ═══════════════ SCREEN 3 — WORLD & IDENTITY ═══════════════ -->
 <div id="s-world" class="screen">
   <header class="hdr">
     <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
     <div class="hdr-r">
-      <div class="hdr-meta">
-        <span class="hmeta"><span class="dot"></span>ONLINE</span>
-        <span class="hmeta" id="clk3"></span>
-      </div>
+      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk3"></span></div>
       <div class="tabs">
         <div class="tab" onclick="goScreen('s-main')">Home</div>
         <div class="tab" onclick="goScreen('s-reg')">Register</div>
@@ -619,125 +500,48 @@ html,body{width:100%;height:100%;background:var(--bg);
       </div>
     </div>
   </header>
-
   <div class="world-body">
-    <!-- left: world -->
     <div class="world-half">
       <div class="sec-eye">Choose Your Theatre</div>
       <div class="sec-ttl">World Selection</div>
       <div class="sec-bar"></div>
-      <div class="world-grid" id="world-grid">
-        <div class="world-card sel" onclick="selWorld(this,'Shanghai')">
-          <div class="wc-img"><span class="wc-flag">🇨🇳</span><div class="wc-overlay"></div></div>
-          <div class="wc-info">
-            <div class="wc-name">Shanghai</div>
-            <div class="wc-sub">Urban Combat · High Density</div>
-            <div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div>
-          </div>
-        </div>
-        <div class="world-card" onclick="selWorld(this,'Kunlun Mountains')">
-          <div class="wc-img"><span class="wc-flag">🏔️</span><div class="wc-overlay"></div></div>
-          <div class="wc-info">
-            <div class="wc-name">Kunlun Mts</div>
-            <div class="wc-sub">Mountain Warfare · Stealth</div>
-            <div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div>
-          </div>
-        </div>
-        <div class="world-card" onclick="selWorld(this,'Singapore')">
-          <div class="wc-img"><span class="wc-flag">🇸🇬</span><div class="wc-overlay"></div></div>
-          <div class="wc-info">
-            <div class="wc-name">Singapore</div>
-            <div class="wc-sub">Naval Ops · Mixed Terrain</div>
-            <div class="wc-status"><span class="ws-dot" style="background:var(--orange)"></span><span style="color:var(--orange);font-size:8px;letter-spacing:2px;">CONTESTED</span></div>
-          </div>
-        </div>
-        <div class="world-card" onclick="selWorld(this,'South China Sea')">
-          <div class="wc-img"><span class="wc-flag">🌊</span><div class="wc-overlay"></div></div>
-          <div class="wc-info">
-            <div class="wc-name">South China Sea</div>
-            <div class="wc-sub">Naval Combat · Open Water</div>
-            <div class="wc-status"><span class="ws-dot" style="background:var(--red)"></span><span style="color:var(--red);font-size:8px;letter-spacing:2px;">HOSTILE</span></div>
-          </div>
-        </div>
-        <div class="world-card" onclick="selWorld(this,'Azerbaijan')">
-          <div class="wc-img"><span class="wc-flag">🇦🇿</span><div class="wc-overlay"></div></div>
-          <div class="wc-info">
-            <div class="wc-name">Azerbaijan</div>
-            <div class="wc-sub">Desert Ops · Vehicle Heavy</div>
-            <div class="wc-status"><span class="ws-dot" style="background:var(--orange)"></span><span style="color:var(--orange);font-size:8px;letter-spacing:2px;">CONTESTED</span></div>
-          </div>
-        </div>
-        <div class="world-card" onclick="selWorld(this,'Hainan Resort')">
-          <div class="wc-img"><span class="wc-flag">🏖️</span><div class="wc-overlay"></div></div>
-          <div class="wc-info">
-            <div class="wc-name">Hainan Resort</div>
-            <div class="wc-sub">Tropical · Air & Sea</div>
-            <div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div>
-          </div>
-        </div>
+      <div class="world-grid">
+        <div class="world-card sel" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag">🇨🇳</span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Shanghai</div><div class="wc-sub">Urban Combat · High Density</div><div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div></div></div>
+        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag">🏔️</span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Kunlun Mts</div><div class="wc-sub">Mountain Warfare · Stealth</div><div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div></div></div>
+        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag">🇸🇬</span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Singapore</div><div class="wc-sub">Naval Ops · Mixed Terrain</div><div class="wc-status"><span class="ws-dot" style="background:var(--orange)"></span><span style="color:var(--orange);font-size:8px;letter-spacing:2px;">CONTESTED</span></div></div></div>
+        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag">🌊</span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">South China Sea</div><div class="wc-sub">Naval Combat · Open Water</div><div class="wc-status"><span class="ws-dot" style="background:var(--red)"></span><span style="color:var(--red);font-size:8px;letter-spacing:2px;">HOSTILE</span></div></div></div>
+        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag">🇦🇿</span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Azerbaijan</div><div class="wc-sub">Desert Ops · Vehicle Heavy</div><div class="wc-status"><span class="ws-dot" style="background:var(--orange)"></span><span style="color:var(--orange);font-size:8px;letter-spacing:2px;">CONTESTED</span></div></div></div>
+        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag">🏖️</span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Hainan Resort</div><div class="wc-sub">Tropical · Air &amp; Sea</div><div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div></div></div>
       </div>
     </div>
-
-    <!-- right: identity -->
     <div class="world-half">
       <div class="sec-eye">Define Your Role</div>
       <div class="sec-ttl">Soldier Identity</div>
       <div class="sec-bar"></div>
       <div class="role-grid">
-        <div class="role-card sel" onclick="selRole(this)">
-          <div class="rc-ico">⚔️</div>
-          <div class="rc-name">Assault</div>
-          <div class="rc-desc">Front-line fighter. High health, assault rifles, defibrillator.</div>
-        </div>
-        <div class="role-card" onclick="selRole(this)">
-          <div class="rc-ico">🔧</div>
-          <div class="rc-name">Engineer</div>
-          <div class="rc-desc">Vehicle specialist. Rocket launchers, repair tools, mines.</div>
-        </div>
-        <div class="role-card" onclick="selRole(this)">
-          <div class="rc-ico">💊</div>
-          <div class="rc-name">Support</div>
-          <div class="rc-desc">Team sustain. Ammo crates, LMGs, C4 explosives.</div>
-        </div>
-        <div class="role-card" onclick="selRole(this)">
-          <div class="rc-ico">🎯</div>
-          <div class="rc-name">Recon</div>
-          <div class="rc-desc">Sniper &amp; intel. Sniper rifles, MAV drone, spawn beacon.</div>
-        </div>
+        <div class="role-card sel" onclick="selRole(this)"><div class="rc-ico">⚔️</div><div class="rc-name">Assault</div><div class="rc-desc">Front-line fighter. High health, assault rifles, defibrillator.</div></div>
+        <div class="role-card" onclick="selRole(this)"><div class="rc-ico">🔧</div><div class="rc-name">Engineer</div><div class="rc-desc">Vehicle specialist. Rocket launchers, repair tools, mines.</div></div>
+        <div class="role-card" onclick="selRole(this)"><div class="rc-ico">💊</div><div class="rc-name">Support</div><div class="rc-desc">Team sustain. Ammo crates, LMGs, C4 explosives.</div></div>
+        <div class="role-card" onclick="selRole(this)"><div class="rc-ico">🎯</div><div class="rc-name">Recon</div><div class="rc-desc">Intelligence. Sniper rifles, MAV, motion sensors, C4.</div></div>
       </div>
       <div class="callsign-wrap">
-        <label>Callsign / Soldier Tag</label>
-        <input type="text" placeholder="TOMBSTONE_01" value="TOMBSTONE_01">
-      </div>
-      <div style="margin-top:16px;">
-        <div style="font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Appearance</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <div class="tgl on" onclick="toggleTgl(this)">US ARMY</div>
-          <div class="tgl" onclick="toggleTgl(this)">PLA</div>
-          <div class="tgl" onclick="toggleTgl(this)">RU SPEC OPS</div>
-          <div class="tgl" onclick="toggleTgl(this)">USMC</div>
-        </div>
+        <label>Callsign / Nickname</label>
+        <input type="text" id="callsign-input" placeholder="e.g. TOMBSTONE_01" style="text-transform:uppercase;" value="COMMANDER">
       </div>
     </div>
   </div>
-
   <div class="world-footer">
     <button class="btn-s" onclick="goScreen('s-main')">← BACK</button>
-    <button class="btn-p" onclick="goScreen('s-invite')">CONFIRM &amp; INVITE SQUAD →</button>
+    <button class="btn-p" onclick="goScreen('s-invite')">CONFIRM & FIND SQUAD →</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
-     SCREEN 4 — INVITE FRIENDS
-════════════════════════════════════ -->
+<!-- ═══════════════ SCREEN 4 — INVITE FRIENDS ═══════════════ -->
 <div id="s-invite" class="screen">
   <header class="hdr">
     <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
     <div class="hdr-r">
-      <div class="hdr-meta">
-        <span class="hmeta"><span class="dot"></span>ONLINE · 47 FRIENDS</span>
-        <span class="hmeta" id="clk4"></span>
-      </div>
+      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk4"></span></div>
       <div class="tabs">
         <div class="tab" onclick="goScreen('s-main')">Home</div>
         <div class="tab" onclick="goScreen('s-reg')">Register</div>
@@ -747,75 +551,42 @@ html,body{width:100%;height:100%;background:var(--bg);
       </div>
     </div>
   </header>
-
   <div class="invite-body">
-    <!-- friend list -->
     <div class="invite-left">
-      <div class="sec-eye">Squad Assembly</div>
+      <div class="sec-eye">Assemble Your Team</div>
       <div class="sec-ttl">Invite Friends</div>
       <div class="sec-bar" style="margin-bottom:20px;"></div>
       <div class="friend-search">
-        <input class="fsearch-input" type="text" placeholder="Search soldiers by name or tag…" oninput="filterFriends(this.value)">
-        <button class="btn-s" style="white-space:nowrap;">Filter Online</button>
+        <input class="fsearch-input" placeholder="Search soldiers..." oninput="filterFriends(this.value)">
       </div>
       <div class="friend-list" id="friend-list"></div>
     </div>
-
-    <!-- squad panel -->
     <div class="invite-right">
-      <div class="sec-eye">Current Squad</div>
-      <div class="sec-ttl">Squad · <span id="squad-count" style="color:var(--orange)">1</span>/4</div>
-      <div class="sec-bar"></div>
-      <div class="squad-slots" id="squad-slots">
-        <div class="slot filled">
-          <span class="slot-num">01</span>
-          <div class="slot-avatar">CM</div>
-          <div><div class="slot-name">Commander</div><div class="slot-role">Assault · Rank 100</div></div>
-          <span style="font-size:8px;letter-spacing:2px;color:var(--orange);position:absolute;right:12px;top:50%;transform:translateY(-50%);">HOST</span>
-        </div>
-        <div class="slot" id="slot-2">
-          <span class="slot-num">02</span>
-          <div class="slot-avatar empty">?</div>
-          <div><span class="slot-empty-txt">Awaiting Soldier</span></div>
-        </div>
-        <div class="slot" id="slot-3">
-          <span class="slot-num">03</span>
-          <div class="slot-avatar empty">?</div>
-          <div><span class="slot-empty-txt">Awaiting Soldier</span></div>
-        </div>
-        <div class="slot" id="slot-4">
-          <span class="slot-num">04</span>
-          <div class="slot-avatar empty">?</div>
-          <div><span class="slot-empty-txt">Awaiting Soldier</span></div>
-        </div>
+      <div class="sec-eye">Squad Roster</div>
+      <div class="sec-ttl" style="font-size:16px;">Squad Slots</div>
+      <div class="sec-bar" style="width:28px;margin-bottom:0;"></div>
+      <div style="font-size:9px;letter-spacing:2px;color:var(--dim);margin:10px 0 8px;">MEMBERS <span id="squad-count" style="color:var(--orange)">1</span> / 4</div>
+      <div class="squad-slots">
+        <div class="slot filled" id="slot-0"><span class="slot-num">01</span><div class="slot-avatar">CM</div><div><div class="slot-name">Commander</div><div class="slot-role">Assault · Host</div></div></div>
+        <div class="slot" id="slot-1"><span class="slot-num">02</span><div class="slot-avatar empty">?</div><div><span class="slot-empty-txt">Awaiting Soldier</span></div></div>
+        <div class="slot" id="slot-2"><span class="slot-num">03</span><div class="slot-avatar empty">?</div><div><span class="slot-empty-txt">Awaiting Soldier</span></div></div>
+        <div class="slot" id="slot-3"><span class="slot-num">04</span><div class="slot-avatar empty">?</div><div><span class="slot-empty-txt">Awaiting Soldier</span></div></div>
       </div>
-      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);">
-        <div style="font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;">Squad Link</div>
-        <div style="display:flex;gap:8px;">
-          <div style="flex:1;background:rgba(0,0,0,.4);border:1px solid var(--line);padding:8px 10px;font-size:10px;letter-spacing:1px;color:var(--muted);">BF4://squad/0x4A2F8C</div>
-          <button class="btn-s" style="padding:8px 12px;font-size:9px;">COPY</button>
-        </div>
-      </div>
+      <div class="copy-link-btn" id="copy-btn" onclick="copyInviteLink()">⧉ COPY INVITE LINK</div>
     </div>
   </div>
-
   <div class="invite-footer">
     <button class="btn-s" onclick="goScreen('s-world')">← BACK</button>
     <button class="btn-p" onclick="goScreen('s-room')">OPEN ROOM →</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
-     SCREEN 5 — OPEN ROOM
-════════════════════════════════════ -->
+<!-- ═══════════════ SCREEN 5 — OPEN ROOM ═══════════════ -->
 <div id="s-room" class="screen">
   <header class="hdr">
     <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
     <div class="hdr-r">
-      <div class="hdr-meta">
-        <span class="hmeta"><span class="dot"></span>ONLINE</span>
-        <span class="hmeta" id="clk5"></span>
-      </div>
+      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk5"></span></div>
       <div class="tabs">
         <div class="tab" onclick="goScreen('s-main')">Home</div>
         <div class="tab" onclick="goScreen('s-reg')">Register</div>
@@ -825,274 +596,334 @@ html,body{width:100%;height:100%;background:var(--bg);
       </div>
     </div>
   </header>
-
   <div class="room-body">
-    <!-- left: config -->
     <div class="room-left">
-      <div class="sec-eye">Configure Server</div>
-      <div class="sec-ttl">Open Room</div>
-      <div class="sec-bar"></div>
-
+      <div class="sec-eye">Configure Match</div>
+      <div class="sec-ttl">Room Settings</div>
+      <div class="sec-bar" style="margin-bottom:20px;"></div>
       <div class="form-grid">
-        <div class="field">
-          <label>Room Name</label>
-          <input type="text" placeholder="Tombstone Squad — Shanghai" value="Tombstone Squad — Shanghai">
-        </div>
-        <div class="field">
-          <label>Max Players</label>
+        <div class="field"><label>Room Name</label><input type="text" value="TOMBSTONE_OPS_001" style="letter-spacing:1px;"></div>
+        <div class="field"><label>Max Players</label>
           <select>
-            <option>64 Players</option>
-            <option>32 Players</option>
-            <option>16 Players</option>
-            <option>8 Players</option>
+            <option>16 Players</option><option selected>32 Players</option><option>48 Players</option><option>64 Players</option>
           </select>
         </div>
-        <div class="field">
-          <label>Region / Server</label>
-          <select>
-            <option>Asia Pacific — Shanghai</option>
-            <option>Asia Pacific — Tokyo</option>
-            <option>North America — Dallas</option>
-            <option>Europe — Frankfurt</option>
-          </select>
+        <div class="field"><label>Region</label>
+          <select><option>Asia — Shanghai</option><option>NA — New York</option><option>EU — Frankfurt</option></select>
         </div>
-        <div class="field">
-          <label>Visibility</label>
-          <select>
-            <option>Public — Anyone Can Join</option>
-            <option>Friends Only</option>
-            <option>Invite Only</option>
-            <option>Private — Password</option>
-          </select>
+        <div class="field"><label>Visibility</label>
+          <select><option>Public</option><option>Friends Only</option><option>Private</option></select>
         </div>
       </div>
-
-      <div style="margin-top:20px;margin-bottom:6px;">
-        <div style="font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Game Mode</div>
-        <div class="toggle-row" id="mode-row">
-          <div class="tgl on" onclick="toggleMode(this)">Conquest</div>
-          <div class="tgl" onclick="toggleMode(this)">Rush</div>
-          <div class="tgl" onclick="toggleMode(this)">Obliteration</div>
-          <div class="tgl" onclick="toggleMode(this)">Deathmatch</div>
-          <div class="tgl" onclick="toggleMode(this)">Defuse</div>
-          <div class="tgl" onclick="toggleMode(this)">Domination</div>
-          <div class="tgl" onclick="toggleMode(this)">CTF</div>
-          <div class="tgl" onclick="toggleMode(this)">Air Superiority</div>
+      <div style="margin:18px 0 8px;font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;">Game Mode</div>
+      <div class="toggle-row" id="mode-row">
+        <div class="tgl on" onclick="toggleMode(this)">Conquest</div>
+        <div class="tgl" onclick="toggleMode(this)">Rush</div>
+        <div class="tgl" onclick="toggleMode(this)">Deathmatch</div>
+        <div class="tgl" onclick="toggleMode(this)">Obliteration</div>
+        <div class="tgl" onclick="toggleMode(this)">Defuse</div>
+        <div class="tgl" onclick="toggleMode(this)">Domination</div>
+      </div>
+      <div style="margin-top:22px;">
+        <div class="slider-field">
+          <label>Ticket Count <span id="ticket-val">200</span></label>
+          <input type="range" min="50" max="800" value="200" oninput="document.getElementById('ticket-val').textContent=this.value">
+        </div>
+        <div class="slider-field">
+          <label>Vehicle Spawn Delay (s) <span id="veh-val">30</span></label>
+          <input type="range" min="0" max="120" value="30" oninput="document.getElementById('veh-val').textContent=this.value">
         </div>
       </div>
-
-      <div style="margin-top:20px;">
-        <div style="font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:12px;">Settings</div>
-        <div class="slider-field">
-          <label>Ticket Count <span id="tc-val">150%</span></label>
-          <input type="range" min="50" max="400" value="150" oninput="document.getElementById('tc-val').textContent=this.value+'%'">
-        </div>
-        <div class="slider-field">
-          <label>Vehicle Spawn Delay <span id="vd-val">20s</span></label>
-          <input type="range" min="0" max="120" value="20" oninput="document.getElementById('vd-val').textContent=this.value+'s'">
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
-          <div class="tgl on" onclick="toggleTgl(this)">Friendly Fire</div>
-          <div class="tgl" onclick="toggleTgl(this)">3D Spotting</div>
-          <div class="tgl on" onclick="toggleTgl(this)">Minimap</div>
-          <div class="tgl" onclick="toggleTgl(this)">Kill Cam</div>
-          <div class="tgl on" onclick="toggleTgl(this)">Voip</div>
-        </div>
+      <div style="margin:10px 0 8px;font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;">Gameplay Toggles</div>
+      <div class="toggle-row">
+        <div class="tgl on" onclick="toggleTgl(this)">Friendly Fire</div>
+        <div class="tgl on" onclick="toggleTgl(this)">Vehicles</div>
+        <div class="tgl" onclick="toggleTgl(this)">Only Squad Leader Spawn</div>
+        <div class="tgl on" onclick="toggleTgl(this)">Minimap</div>
+        <div class="tgl" onclick="toggleTgl(this)">3D Spotting</div>
+        <div class="tgl on" onclick="toggleTgl(this)">Kill Cam</div>
       </div>
     </div>
-
-    <!-- right: map + players -->
     <div class="room-right">
-      <div class="sec-eye">Map Rotation</div>
-      <div class="sec-ttl" style="font-size:18px;">Current Map</div>
-      <div class="sec-bar"></div>
-      <div class="room-map-thumb" id="map-thumb">
-        <svg width="100%" height="100%" viewBox="0 0 340 130" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
-          <defs>
-            <radialGradient id="mg" cx="60%" cy="40%" r="70%">
-              <stop offset="0%" stop-color="#1a3050"/>
-              <stop offset="100%" stop-color="#040c18"/>
-            </radialGradient>
-          </defs>
-          <rect width="340" height="130" fill="url(#mg)"/>
-          <rect x="60" y="30" width="80" height="50" rx="2" fill="none" stroke="rgba(232,123,0,0.3)" stroke-width="1"/>
-          <rect x="200" y="20" width="60" height="70" rx="2" fill="none" stroke="rgba(232,123,0,0.2)" stroke-width="1"/>
-          <circle cx="170" cy="65" r="8" fill="none" stroke="rgba(232,123,0,0.5)" stroke-width="1.5"/>
-          <line x1="0" y1="65" x2="340" y2="65" stroke="rgba(0,150,200,0.08)" stroke-width="1"/>
-        </svg>
+      <div class="room-map-thumb">
+        <div style="font-size:48px;opacity:.15">🗺️</div>
         <div class="map-label-overlay">
           <div class="map-name" id="map-name">Shanghai</div>
-          <div class="map-mode" id="map-mode">Conquest · 64 Players</div>
+          <div class="map-mode">Conquest Large · 64p</div>
         </div>
         <div class="map-arrows">
           <div class="map-arrow" onclick="prevMap()">▲</div>
           <div class="map-arrow" onclick="nextMap()">▼</div>
         </div>
       </div>
-
-      <div style="font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Players In Lobby · <span id="lobby-count" style="color:var(--orange)">4</span>/64</div>
+      <div style="font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Players In Lobby</div>
       <div class="room-players" id="room-players"></div>
-
-      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line);">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-          <span style="font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;">Ping</span>
-          <span style="font-size:12px;font-weight:700;color:var(--green);font-family:'Orbitron',sans-serif;">18ms</span>
-        </div>
-        <div style="height:3px;background:rgba(255,255,255,.06);">
-          <div style="width:18%;height:100%;background:var(--green);"></div>
-        </div>
+      <div class="room-footer" style="padding:16px 0 0;border-top:1px solid var(--line);margin-top:12px;">
+        <button class="btn-s" onclick="goScreen('s-invite')">← BACK</button>
+        <button class="btn-p" id="launch-btn" onclick="launchRoom()">▶ LAUNCH ROOM</button>
       </div>
     </div>
   </div>
-
-  <div class="room-footer">
-    <button class="btn-s" onclick="goScreen('s-invite')">← BACK</button>
-    <button class="btn-p" onclick="launchRoom()">🚀 LAUNCH ROOM</button>
-  </div>
 </div>
 
-<!-- ─────────────────────────────────────
-     SCRIPTS
-───────────────────────────────────── -->
 <script>
-/* ── background canvas ── */
-(function(){
-  const cv=document.getElementById('bg-canvas'),ctx=cv.getContext('2d');
-  function rs(){cv.width=innerWidth;cv.height=innerHeight;}
-  rs();window.addEventListener('resize',rs);
-  const pts=[];
-  for(let i=0;i<100;i++) pts.push({
-    x:Math.random()*2000,y:Math.random()*1200,
-    r:Math.random()*1.3+.3,
-    vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.09-.04,
-    a:Math.random()*.32+.08,d:Math.random()*.0018+.0008
-  });
-  let t=0;
-  function frame(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    const g=ctx.createRadialGradient(cv.width*.62,cv.height*.38,0,cv.width*.62,cv.height*.38,cv.width*.72);
-    g.addColorStop(0,'#0e1e2e');g.addColorStop(.45,'#070f1a');g.addColorStop(1,'#02050a');
-    ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
-    // fog layers
-    [.38,.52,.66].forEach((y,i)=>{
-      const fy=cv.height*y+Math.sin(t*.3+i)*(cv.height*.03);
-      const fg=ctx.createLinearGradient(0,fy,0,fy+cv.height*.2);
-      fg.addColorStop(0,'rgba(8,20,35,0)');
-      fg.addColorStop(.5,`rgba(8,20,35,${.06-i*.015})`);
-      fg.addColorStop(1,'rgba(8,20,35,0)');
-      ctx.fillStyle=fg;
-      ctx.fillRect(Math.sin(t*(i+1)*.02)*30,fy,cv.width+60,cv.height*.2);
-    });
-    t+=.004;
-    pts.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;p.a-=p.d;
-      if(p.a<=0||p.y<-10){
-        p.x=Math.random()*cv.width;p.y=cv.height+10;
-        p.a=Math.random()*.28+.08;p.vx=(Math.random()-.5)*.12;p.vy=(Math.random()-.5)*.09-.05;
-      }
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(120,190,235,${p.a})`;ctx.fill();
-    });
-    requestAnimationFrame(frame);
+/* ─── BOOT SEQUENCE ─── */
+const BOOT_LINES = [
+  '> Initializing BF4 World Online v2.4.1...',
+  '> Loading player profile: COMMANDER [Rank 100]',
+  '> Connecting to master server: AS-SHANGHAI-01 ... OK',
+  '> Authentication token: valid [expires in 23h 58m]',
+  '> Syncing soldier stats ... 1,240 kills · 64.2% W/R',
+  '> Loading DLC: Dragon\'s Teeth, Final Stand, Naval Strike',
+  '> Checking for friends online ... 47 found',
+  '> World Online ready. Welcome back, Commander.',
+];
+let bootDone = false;
+function runBoot() {
+  const container = document.getElementById('boot-lines');
+  const fill = document.getElementById('boot-fill');
+  const pct = document.getElementById('boot-pct');
+  let i = 0;
+  function addLine() {
+    if (i >= BOOT_LINES.length) { finishBoot(); return; }
+    const div = document.createElement('div');
+    div.className = 'bl';
+    div.textContent = BOOT_LINES[i];
+    div.style.animationDelay = '0s';
+    container.appendChild(div);
+    const p = Math.round(((i + 1) / BOOT_LINES.length) * 100);
+    fill.style.width = p + '%';
+    pct.textContent = p + '%';
+    i++;
+    setTimeout(addLine, 260);
   }
-  frame();
+  addLine();
+}
+function finishBoot() {
+  if (bootDone) return;
+  bootDone = true;
+  setTimeout(() => {
+    document.getElementById('boot').classList.add('hide');
+    setTimeout(() => { document.getElementById('boot').style.display = 'none'; }, 650);
+  }, 400);
+}
+document.addEventListener('keydown', () => { if (!bootDone) finishBoot(); });
+document.getElementById('boot').addEventListener('click', () => { if (!bootDone) finishBoot(); });
+runBoot();
+
+/* ─── CANVAS BACKGROUND ─── */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  // Particles
+  const PARTICLES = Array.from({length: 80}, () => ({
+    x: Math.random(), y: Math.random(),
+    vx: (Math.random() - .5) * .00015, vy: (Math.random() - .5) * .00015,
+    r: Math.random() * 1.2 + .3, a: Math.random() * .5 + .1
+  }));
+  // Sweep lines
+  let sweep = 0;
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    // Atmospheric glow
+    const g = ctx.createRadialGradient(W * .3, H * .6, 0, W * .3, H * .6, W * .55);
+    g.addColorStop(0, 'rgba(0,60,100,.06)');
+    g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    const g2 = ctx.createRadialGradient(W * .75, H * .3, 0, W * .75, H * .3, W * .4);
+    g2.addColorStop(0, 'rgba(232,123,0,.025)');
+    g2.addColorStop(1, 'transparent');
+    ctx.fillStyle = g2;
+    ctx.fillRect(0, 0, W, H);
+    // Particles
+    PARTICLES.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
+      if (p.y < 0) p.y = 1; if (p.y > 1) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(140,190,220,${p.a * (.6 + .4 * Math.sin(t * .001 + p.x * 10))})`;
+      ctx.fill();
+    });
+    // Sweep line
+    sweep = (sweep + .18) % H;
+    const sg = ctx.createLinearGradient(0, sweep - 60, 0, sweep + 2);
+    sg.addColorStop(0, 'transparent');
+    sg.addColorStop(1, 'rgba(0,153,212,.04)');
+    ctx.fillStyle = sg;
+    ctx.fillRect(0, sweep - 60, W, 62);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
 })();
 
-/* ── clock ── */
-function tick(){
-  const t=new Date().toLocaleTimeString('en-US',{hour12:false});
-  ['clk','clk2','clk3','clk4','clk5'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.textContent=t;
+/* ─── CLOCK ─── */
+function updateClocks() {
+  const now = new Date();
+  const str = now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit', second:'2-digit'}) + ' UTC+8';
+  ['clk','clk2','clk3','clk4','clk5'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = str;
   });
 }
-setInterval(tick,1000);tick();
+setInterval(updateClocks, 1000);
+updateClocks();
 
-/* ── live player count ── */
-setInterval(()=>{
-  const n=(24812+Math.floor((Math.random()-.5)*80)).toLocaleString();
-  const el=document.getElementById('cnt');if(el)el.textContent=n;
-  if(document.getElementById('ds1')) document.getElementById('ds1').textContent=n;
-},4000);
+/* ─── LIVE PLAYER COUNT ─── */
+setInterval(() => {
+  const n = (24812 + Math.floor((Math.random() - .5) * 80)).toLocaleString();
+  const el = document.getElementById('cnt');
+  if (el) el.textContent = n;
+  if (document.getElementById('ds1')) document.getElementById('ds1').textContent = n;
+}, 4000);
 
-/* ── ticker ── */
-const ticks=[
+/* ─── TICKER ─── */
+const TICKS = [
   "Dragon's Teeth DLC — Pearl Market, Lumphini Garden, Propaganda, Sunken Dragon · Double XP Weekend Active",
   "Patch 1.9.2.0 — Netcode improvements, reduced rubber-banding, improved vehicle physics",
   "Community Event: Operation Whiteout — Double XP until Sunday 23:59 UTC",
   "Final Stand DLC — Hangar 21, Giants of Karelia, Hammerhead, Operation Whiteout — OUT NOW",
 ];
-let ti=0;
-setInterval(()=>{
-  ti=(ti+1)%ticks.length;
-  const el=document.getElementById('ticker');if(!el)return;
-  el.style.opacity='0';
-  setTimeout(()=>{el.textContent=ticks[ti];el.style.opacity='1';},380);
-},6000);
+let ti = 0;
+setInterval(() => {
+  ti = (ti + 1) % TICKS.length;
+  const el = document.getElementById('ticker');
+  if (!el) return;
+  el.style.opacity = '0';
+  setTimeout(() => { el.textContent = TICKS[ti]; el.style.opacity = '1'; }, 380);
+}, 6000);
 
-/* ── screen nav ── */
-function goScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+/* ─── TOAST NOTIFICATION ─── */
+let toastTimer;
+function showToast(title, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+/* ─── SCREEN NAV ─── */
+function goScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/* ── main menu nav select ── */
-function navSelect(niId,title,eye,bg,desc,optsStr,stats,labels,btn){
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+/* ─── MAIN MENU DETAIL PANEL ─── */
+function navSelect(niId, title, eye, bg, desc, optsStr, stats, labels, btn) {
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
   document.getElementById(niId).classList.add('on');
-  document.getElementById('det-eye').textContent=eye;
-  document.getElementById('det-ttl').textContent=title;
-  document.getElementById('det-desc').textContent=desc;
-  document.getElementById('det-bg').textContent=bg;
-  document.getElementById('det-btn').textContent=btn;
-  const opts=optsStr.split(',');
-  const c=document.getElementById('det-opts');c.innerHTML='';
-  opts.forEach((o,i)=>{
-    const d=document.createElement('div');d.className='dopt';
-    d.innerHTML=`<div class="dopt-lbl">Mode ${String(i+1).padStart(2,'0')}</div><div class="dopt-txt">${o.trim()}</div>`;
+  document.getElementById('det-eye').textContent = eye;
+  document.getElementById('det-ttl').textContent = title;
+  document.getElementById('det-desc').textContent = desc;
+  document.getElementById('det-bg').textContent = bg;
+  document.getElementById('det-btn').textContent = btn;
+  const opts = optsStr.split(',');
+  const c = document.getElementById('det-opts');
+  c.innerHTML = '';
+  opts.forEach((o, i) => {
+    const d = document.createElement('div');
+    d.className = 'dopt';
+    d.innerHTML = `<div class="dopt-lbl">Mode ${String(i+1).padStart(2,'0')}</div><div class="dopt-txt">${o.trim()}</div>`;
     c.appendChild(d);
   });
-  ['ds1','ds2','ds3','ds4'].forEach((id,i)=>{document.getElementById(id).textContent=stats[i];});
-  ['dl1','dl2','dl3','dl4'].forEach((id,i)=>{document.getElementById(id).textContent=labels[i];});
+  ['ds1','ds2','ds3','ds4'].forEach((id, i) => { document.getElementById(id).textContent = stats[i]; });
+  ['dl1','dl2','dl3','dl4'].forEach((id, i) => { document.getElementById(id).textContent = labels[i]; });
 }
-
-/* init opts */
-(function(){
-  const opts=['CONQUEST','RUSH','OBLITERATION','DEATHMATCH','DEFUSE','DOMINATION'];
-  const c=document.getElementById('det-opts');
-  opts.forEach((o,i)=>{
-    const d=document.createElement('div');d.className='dopt';
-    d.innerHTML=`<div class="dopt-lbl">Mode ${String(i+1).padStart(2,'0')}</div><div class="dopt-txt">${o}</div>`;
+(function() {
+  const opts = ['CONQUEST','RUSH','OBLITERATION','DEATHMATCH','DEFUSE','DOMINATION'];
+  const c = document.getElementById('det-opts');
+  opts.forEach((o, i) => {
+    const d = document.createElement('div');
+    d.className = 'dopt';
+    d.innerHTML = `<div class="dopt-lbl">Mode ${String(i+1).padStart(2,'0')}</div><div class="dopt-txt">${o}</div>`;
     c.appendChild(d);
   });
 })();
 
-/* ── check toggle ── */
-function toggleCheck(id){
-  const el=document.getElementById(id);
-  el.classList.toggle('on');
+/* ─── FORM VALIDATION ─── */
+function validateField(fieldId, inputId, type) {
+  const field = document.getElementById(fieldId);
+  const val = document.getElementById(inputId).value.trim();
+  let ok = false;
+  if (type === 'name') ok = val.length >= 1;
+  else if (type === 'tag') ok = /^[A-Za-z0-9_]{3,}$/.test(val);
+  else if (type === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  else if (type === 'confirm') ok = val === document.getElementById('inp-pwd').value && val.length > 0;
+  field.classList.toggle('ok', ok && val.length > 0);
+  field.classList.toggle('err', !ok && val.length > 0);
+}
+function checkPwd() {
+  const val = document.getElementById('inp-pwd').value;
+  const fill = document.getElementById('pwd-fill');
+  let strength = 0;
+  if (val.length >= 6) strength++;
+  if (val.length >= 10) strength++;
+  if (/[A-Z]/.test(val)) strength++;
+  if (/[0-9]/.test(val)) strength++;
+  if (/[^A-Za-z0-9]/.test(val)) strength++;
+  const pct = strength * 20;
+  const colors = ['','#e03a3a','#e87b00','#e87b00','#1fca5c','#1fca5c'];
+  fill.style.width = pct + '%';
+  fill.style.background = colors[strength] || '#e03a3a';
+}
+function toggleCheck(id) {
+  document.getElementById(id).classList.toggle('on');
+}
+function submitReg() {
+  const fields = [
+    ['f-fname','inp-fname','name'],
+    ['f-lname','inp-lname','name'],
+    ['f-tag','inp-tag','tag'],
+    ['f-email','inp-email','email'],
+    ['f-cpwd','inp-cpwd','confirm'],
+  ];
+  let allOk = true;
+  fields.forEach(([fid, iid, type]) => {
+    validateField(fid, iid, type);
+    if (!document.getElementById(fid).classList.contains('ok')) allOk = false;
+  });
+  const terms = document.getElementById('ck1').classList.contains('on');
+  if (!allOk || !terms) {
+    showToast('Validation Error', 'Please fill all required fields correctly and accept the terms.');
+    return;
+  }
+  const btn = document.getElementById('reg-btn');
+  btn.textContent = 'CREATING PROFILE…';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '✓ PROFILE CREATED';
+    btn.style.background = 'var(--green)';
+    showToast('Welcome, Soldier!', 'Your profile has been created. Choose your world.');
+    setTimeout(() => goScreen('s-world'), 1200);
+  }, 1000);
 }
 
-/* ── world select ── */
-function selWorld(el){
-  document.querySelectorAll('.world-card').forEach(c=>c.classList.remove('sel'));
+/* ─── WORLD & ROLE SELECT ─── */
+function selWorld(el) {
+  document.querySelectorAll('.world-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function selRole(el) {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
 }
 
-/* ── role select ── */
-function selRole(el){
-  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');
-}
-
-/* ── toggle buttons ── */
-function toggleTgl(el){el.classList.toggle('on');}
-function toggleMode(el){
-  document.querySelectorAll('#mode-row .tgl').forEach(t=>t.classList.remove('on'));
+/* ─── TOGGLE BUTTONS ─── */
+function toggleTgl(el) { el.classList.toggle('on'); }
+function toggleMode(el) {
+  document.querySelectorAll('#mode-row .tgl').forEach(t => t.classList.remove('on'));
   el.classList.add('on');
 }
 
-/* ── friends data ── */
-const FRIENDS=[
+/* ─── FRIENDS & SQUAD ─── */
+const FRIENDS = [
   {init:'AX',name:'ALPHA_XRAY',status:'In Game',rank:'Rank 87',role:'Assault',online:true},
   {init:'BZ',name:'BRAVO_ZERO',status:'Online',rank:'Rank 65',role:'Engineer',online:true},
   {init:'CR',name:'CHARLIE_R',status:'Online',rank:'Rank 100',role:'Recon',online:true},
@@ -1106,15 +937,17 @@ const FRIENDS=[
   {init:'KN',name:'KILO_NOVA',status:'Online',rank:'Rank 66',role:'Recon',online:true},
   {init:'LT',name:'LIMA_TWO',status:'In Game',rank:'Rank 49',role:'Support',online:true},
 ];
-let squadSlots=['Commander',null,null,null];
+let squadSlots = ['Commander', null, null, null];
 
-function renderFriends(filter=''){
-  const list=document.getElementById('friend-list');if(!list)return;
-  list.innerHTML='';
-  FRIENDS.filter(f=>f.name.toLowerCase().includes(filter.toLowerCase())).forEach(f=>{
-    const inSquad=squadSlots.includes(f.name);
-    const div=document.createElement('div');div.className='friend-item';
-    div.innerHTML=`
+function renderFriends(filter='') {
+  const list = document.getElementById('friend-list');
+  if (!list) return;
+  list.innerHTML = '';
+  FRIENDS.filter(f => f.name.toLowerCase().includes(filter.toLowerCase())).forEach(f => {
+    const inSquad = squadSlots.includes(f.name);
+    const div = document.createElement('div');
+    div.className = 'friend-item';
+    div.innerHTML = `
       <div class="fi-avatar">${f.init}</div>
       <div class="fi-info">
         <div class="fi-name">${f.name}</div>
@@ -1130,79 +963,98 @@ function renderFriends(filter=''){
     list.appendChild(div);
   });
 }
-function filterFriends(v){renderFriends(v);}
-function inviteFriend(name,init,role,btn){
-  const idx=squadSlots.indexOf(null);
-  if(idx===-1){btn.textContent='FULL';return;}
-  squadSlots[idx]=name;
-  btn.classList.add('sent');btn.textContent='INVITED';
-  const slotId='slot-'+(idx+1);
-  const slot=document.getElementById(slotId);
-  if(slot){
+function filterFriends(v) { renderFriends(v); }
+
+function inviteFriend(name, init, role, btn) {
+  const idx = squadSlots.indexOf(null);
+  if (idx === -1) { showToast('Squad Full','Your squad is already at maximum capacity (4 players).'); return; }
+  squadSlots[idx] = name;
+  btn.classList.add('sent');
+  btn.textContent = 'INVITED';
+  const slot = document.getElementById('slot-' + idx);
+  if (slot) {
     slot.classList.add('filled');
-    slot.innerHTML=`
+    slot.innerHTML = `
       <span class="slot-num">0${idx+1}</span>
       <div class="slot-avatar">${init}</div>
       <div><div class="slot-name">${name}</div><div class="slot-role">${role}</div></div>
       <span class="slot-remove" onclick="removeFromSquad(${idx},'${name}')">✕ REMOVE</span>`;
   }
-  document.getElementById('squad-count').textContent=squadSlots.filter(Boolean).length;
+  document.getElementById('squad-count').textContent = squadSlots.filter(Boolean).length;
+  showToast('Invite Sent', name + ' has been invited to your squad.');
 }
-function removeFromSquad(idx,name){
-  squadSlots[idx]=null;
-  const slot=document.getElementById('slot-'+(idx+1));
-  if(slot){
+function removeFromSquad(idx, name) {
+  squadSlots[idx] = null;
+  const slot = document.getElementById('slot-' + idx);
+  if (slot) {
     slot.classList.remove('filled');
-    slot.innerHTML=`
+    slot.innerHTML = `
       <span class="slot-num">0${idx+1}</span>
       <div class="slot-avatar empty">?</div>
       <div><span class="slot-empty-txt">Awaiting Soldier</span></div>`;
   }
-  document.getElementById('squad-count').textContent=squadSlots.filter(Boolean).length;
+  document.getElementById('squad-count').textContent = squadSlots.filter(Boolean).length;
   renderFriends();
 }
 renderFriends();
 
-/* ── room players ── */
-const ROOM_PLAYERS=[
+function copyInviteLink() {
+  const link = 'https://bf4.world-online.gg/join?squad=TOMBSTONE&token=X9K2M';
+  navigator.clipboard.writeText(link).catch(() => {});
+  const btn = document.getElementById('copy-btn');
+  btn.textContent = '✓ LINK COPIED';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = '⧉ COPY INVITE LINK'; btn.classList.remove('copied'); }, 2000);
+}
+
+/* ─── ROOM PLAYERS ─── */
+const ROOM_PLAYERS = [
   {init:'CM',name:'Commander',ping:18,role:'Host'},
   {init:'AX',name:'Alpha_Xray',ping:24,role:'Assault'},
   {init:'BZ',name:'Bravo_Zero',ping:31,role:'Engineer'},
   {init:'CR',name:'Charlie_R',ping:12,role:'Recon'},
 ];
-function renderRoomPlayers(){
-  const c=document.getElementById('room-players');if(!c)return;
-  c.innerHTML='';
-  ROOM_PLAYERS.forEach(p=>{
-    const d=document.createElement('div');d.className='rp-item';
-    d.innerHTML=`
+function renderRoomPlayers() {
+  const c = document.getElementById('room-players');
+  if (!c) return;
+  c.innerHTML = '';
+  ROOM_PLAYERS.forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'rp-item';
+    const pingColor = p.ping < 30 ? 'var(--green)' : p.ping < 80 ? 'var(--orange)' : 'var(--red)';
+    d.innerHTML = `
       <div class="rp-avatar">${p.init}</div>
       <div class="rp-name">${p.name}</div>
-      <div class="rp-ping" style="color:${p.ping<30?'var(--green)':p.ping<80?'var(--orange)':'var(--red)'}">${p.ping}ms</div>
-      ${p.role!=='Host'?`<div class="rp-kick">KICK</div>`:'<div style="font-size:8px;letter-spacing:2px;color:var(--orange);">HOST</div>'}`;
+      <div class="rp-ping" style="color:${pingColor}">${p.ping}ms</div>
+      ${p.role !== 'Host'
+        ? `<div class="rp-kick" onclick="kickPlayer(this,'${p.name}')">KICK</div>`
+        : `<div style="font-size:8px;letter-spacing:2px;color:var(--orange);">HOST</div>`}`;
     c.appendChild(d);
   });
 }
+function kickPlayer(btn, name) {
+  btn.closest('.rp-item').style.opacity = '0';
+  setTimeout(() => { btn.closest('.rp-item').remove(); }, 300);
+  showToast('Player Kicked', name + ' has been removed from the room.');
+}
 renderRoomPlayers();
 
-/* ── map rotation ── */
-const MAPS=['Shanghai','Siege of Shanghai','Paracel Storm','Hainan Resort','Flood Zone','Zavod 311','Lancang Dam','Rogue Transmission','Operation Locker','Golmud Railway'];
-let mapIdx=0;
-function nextMap(){mapIdx=(mapIdx+1)%MAPS.length;updateMap();}
-function prevMap(){mapIdx=(mapIdx-1+MAPS.length)%MAPS.length;updateMap();}
-function updateMap(){
-  document.getElementById('map-name').textContent=MAPS[mapIdx];
-}
+/* ─── MAP ROTATION ─── */
+const MAPS = ['Shanghai','Siege of Shanghai','Paracel Storm','Hainan Resort','Flood Zone','Zavod 311','Lancang Dam','Rogue Transmission','Operation Locker','Golmud Railway'];
+let mapIdx = 0;
+function nextMap() { mapIdx = (mapIdx + 1) % MAPS.length; document.getElementById('map-name').textContent = MAPS[mapIdx]; }
+function prevMap() { mapIdx = (mapIdx - 1 + MAPS.length) % MAPS.length; document.getElementById('map-name').textContent = MAPS[mapIdx]; }
 
-/* ── launch room ── */
-function launchRoom(){
-  const btn=document.querySelector('#s-room .room-footer .btn-p');
-  btn.textContent='LAUNCHING…';
-  btn.disabled=true;
-  setTimeout(()=>{
-    btn.textContent='✓ ROOM LIVE';
-    btn.style.background='var(--green)';
-  },1200);
+/* ─── LAUNCH ROOM ─── */
+function launchRoom() {
+  const btn = document.getElementById('launch-btn');
+  btn.textContent = 'LAUNCHING…';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '✓ ROOM LIVE';
+    btn.style.background = 'var(--green)';
+    showToast('Room Live!', 'Your room is now active. Share the invite link to fill your squad.');
+  }, 1200);
 }
 </script>
 </body>

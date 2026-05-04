@@ -1,24 +1,27 @@
 # Battlefield 4 — World Online UI Prototype
 
-> A high-fidelity HTML/CSS/JS prototype of the Battlefield 4 main menu UI, rebuilt from the [Figma community design](https://www.figma.com/design/medx8flUlSXlySMFy3Z25n/Battlefield-4---Main-Menu-UI-Design--Community-?node-id=202-3277) for educational purposes.
+<div align="center">
+
+[![Live Demo](https://img.shields.io/badge/▶%20LIVE%20DEMO-Play%20Now-e87b00?style=for-the-badge&labelColor=04070c)](https://arisliwind.github.io/World-online-function-building.-Basics/)
+
+**[🎮 Click here to play the demo →](https://arisliwind.github.io/World-online-function-building.-Basics/)**
+
+*A high-fidelity interactive prototype of the Battlefield 4 main menu UI*  
+*Built from the [Figma community design](https://www.figma.com/design/medx8flUlSXlySMFy3Z25n/Battlefield-4---Main-Menu-UI-Design--Community-) · Zero dependencies · Open in any browser*
+
+</div>
 
 ---
 
-## 🎮 Live Preview
+## 📐 Screens
 
-Open `index.html` directly in any modern browser — no build step, no dependencies, no server required.
-
----
-
-## 📐 Screens Included
-
-| # | Screen | Description |
-|---|--------|-------------|
-| 1 | **Main Menu** | Full BF4-style nav with Multiplayer, Campaign, Co-Op, Soldier, World, Invite, Room, Register. Interactive detail panel with mode sub-options and live stats. |
-| 2 | **Registration** | Create a new soldier profile — name, soldier tag, email, password, region. |
-| 3 | **World & Identity** | Select your theatre of war (Shanghai, Kunlun, Singapore, South China Sea, Azerbaijan, Hainan) and define your soldier class (Assault, Engineer, Support, Recon) with callsign. |
-| 4 | **Invite Friends** | Browse online friends list, invite up to 3 squadmates, view live squad slots, copy squad join link. |
-| 5 | **Open Room** | Configure room name, player cap, region, visibility, game mode, ticket count, vehicle delays and gameplay toggles. Live player lobby with ping indicators, map rotation navigator. |
+| # | Screen | What You Can Do |
+|---|--------|-----------------|
+| 1 | **Main Menu** | Navigate 8 modes, view live stats, interact with detail panel |
+| 2 | **Registration** | Fill the form — live validation, password strength, submit flow |
+| 3 | **World & Identity** | Pick your theatre of war + soldier class |
+| 4 | **Invite Friends** | Search & invite up to 3 squadmates, copy invite link |
+| 5 | **Open Room** | Configure match settings, manage map rotation, launch room |
 
 ---
 
@@ -30,68 +33,54 @@ Open `index.html` directly in any modern browser — no build step, no dependenc
 | Accent Orange | `#e87b00` — BF4 signature colour |
 | Text Primary | `#cce0ed` |
 | Text Muted | `#607a8a` |
-| Line / Border | `rgba(140,190,220,0.09)` |
 | Font Headings | Orbitron (Google Fonts) |
 | Font Body | Rajdhani (Google Fonts) |
 
 **Visual effects:**
-- Animated canvas background — atmospheric fog layers + floating particle dust
-- CRT scanline overlay
-- Radial vignette
-- Subtle HUD grid
-- Corner bracket chrome decorations
-- Loading bar on mount
+- Military boot sequence on startup (skip with any key)
+- Animated canvas background — atmospheric fog + floating dust particles
+- CRT scanline overlay + radial vignette
+- HUD grid + corner bracket chrome decorations
+- Sweep line animation
 - Screen slide-in transitions
+- Toast notification system
 
 ---
 
 ## 🗂 File Structure
 
 ```
-index.html          — All 5 screens, CSS, JS in one self-contained file
-README.md           — This file
+index.html     — Complete single-file SPA (HTML + CSS + JS, zero build step)
+PRD.md         — Product requirements document
+README.md      — This file
+.github/
+  workflows/
+    deploy.yml — Auto-deploy to GitHub Pages on push to main
 ```
 
 ---
 
-## ✨ Interactive Features
-
-- **Main Menu nav** — click each item to update the detail panel (title, description, sub-mode cards, stats)
-- **Tab bar** — navigates between all 5 screens
-- **Footer CTA buttons** — chain screens in logical order (Register → World → Squad → Room)
-- **Registration form** — full input fields, region select, terms checkbox toggle
-- **World cards** — single-select highlight with status indicators (Active / Contested / Hostile)
-- **Role cards** — single-select class picker (Assault, Engineer, Support, Recon)
-- **Friend list** — searchable, invite to squad, slot fills dynamically, remove from squad
-- **Squad link** — copy-to-clipboard style display
-- **Game mode toggles** — exclusive select
-- **Ticket / delay sliders** — real-time value display
-- **Map rotation** — prev / next arrows cycle through 10 BF4 maps
-- **Launch Room button** — animated state feedback
-- **Live player count** — fluctuates every 4 seconds
-- **News ticker** — cycles through 4 update messages
-- **Real-time clock** — updates every second across all screens
-
----
-
-## 🔗 References
-
-- Figma Source: [Battlefield 4 — Main Menu UI Design (Community)](https://www.figma.com/design/medx8flUlSXlySMFy3Z25n/Battlefield-4---Main-Menu-UI-Design--Community-?node-id=202-3277)
-- Original game: Battlefield 4 © EA DICE — this is a fan recreation for educational / portfolio use only.
-
----
-
-## 🚀 Getting Started
+## 🚀 Run Locally
 
 ```bash
-# Clone
 git clone https://github.com/ArisLiWind/World-online-function-building.-Basics.git
 cd World-online-function-building.-Basics
-
-# Open
-open index.html        # macOS
-start index.html       # Windows
-xdg-open index.html    # Linux
+open index.html   # macOS
+# or just double-click index.html in any OS
 ```
 
-No npm, no bundler, no framework. Pure HTML + CSS + Canvas JS.
+No npm install. No build step. No server required.
+
+---
+
+## 📋 Product Requirements
+
+See [PRD.md](./PRD.md) for the full product requirements document (feature specs, design tokens, acceptance criteria).
+
+---
+
+<div align="center">
+
+Made with 🪼 by ArisLiWind
+
+</div>
