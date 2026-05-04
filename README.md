@@ -9,7 +9,6 @@
 **[🎮 Click here to play the demo →](https://htmlpreview.github.io/?https://github.com/ArisLiWind/World-online-function-building.-Basics/blob/main/index.html)**
 
 *A high-fidelity interactive prototype of the Battlefield 4 main menu UI*  
-*Built from the [Figma community design](https://www.figma.com/design/medx8flUlSXlySMFy3Z25n/Battlefield-4---Main-Menu-UI-Design--Community-) · Zero dependencies · Open in any browser*
 
 </div>
 
