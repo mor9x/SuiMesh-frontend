@@ -3,7 +3,7 @@
 <div align="center">
 
 [![Live Demo](https://img.shields.io/badge/▶%20LIVE%20DEMO-Play%20Now-e87b00?style=for-the-badge&labelColor=04070c)](https://htmlpreview.github.io/?https://github.com/ArisLiWind/World-online-function-building.-Basics/blob/main/index.html)
-![Version](https://img.shields.io/badge/version-3.0.0-0099d4?style=for-the-badge&labelColor=04070c)
+![Version](https://img.shields.io/badge/version-3.1.0-0099d4?style=for-the-badge&labelColor=04070c)
 ![Screens](https://img.shields.io/badge/screens-7-1fca5c?style=for-the-badge&labelColor=04070c)
 
 **[🎮 Click here to play the demo →](https://htmlpreview.github.io/?https://github.com/ArisLiWind/World-online-function-building.-Basics/blob/main/index.html)**
@@ -14,7 +14,16 @@
 
 ---
 
-## 🆕 v3.0 — Major Update (May 4–5, 2026)
+## 🆕 v3.1 — Fidelity Pass (May 7, 2026)
+
+| Improvement | Description |
+|---|---|
+| **BF4-inspired backdrop** | Reworked the home screen away from generic sci-fi HUD styling toward a darker Battlelog-style battlefield composition |
+| **Typography pass** | Replaced the overtly futuristic heading font with a tighter condensed military UI stack |
+| **Map card treatment** | Removed emoji-driven world previews and replaced them with atmospheric tactical thumbnails |
+| **Responsive fallback** | Added tablet/mobile breakpoints so panels degrade cleanly instead of clipping off-screen |
+
+## v3.0 — Major Update (May 4–5, 2026)
 
 | New Feature | Description |
 |---|---|
