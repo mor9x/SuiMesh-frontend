@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuiMesh — Own the Context. Verify the Action.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="loader">
+    <svg class="loader-logo" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="10" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+      <circle cx="30" cy="28" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="10" cy="28" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="10" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
+      <circle cx="30" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
+    </svg>
+    <div class="loader-track"><div class="loader-fill"></div></div>
+  </div>
+
+  <nav id="navbar">
+    <a href="#" class="nav-logo" id="nav-logo">
+      <svg viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="10" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+        <circle cx="30" cy="28" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+        <circle cx="10" cy="28" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+        <circle cx="10" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
+        <circle cx="30" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
+      </svg>
+      <span>SuiMesh</span>
+    </a>
+
+    <div class="nav-center">
+      <a href="https://github.com/ArisLiWind/SuiMesh" target="_blank">GitHub</a>
+      <a href="#docs">Docs</a>
+    </div>
+
+    <a href="#protocol" class="nav-cta">Get Started</a>
+  </nav>
+
+  <!-- Fixed canvas -->
+  <canvas id="webgl"></canvas>
+
+  <!-- Fixed UI layer -->
+  <div id="ui-layer">
+
+    <!-- Scene 0: Hero -->
+    <div class="slide" data-scene="0">
+      <div class="slide-inner">
+        <div class="copy-col left">
+          <h1 class="hero-title">
+            <span>Own the Context.</span>
+            <span>Verify the Action.</span>
+          </h1>
+          <p class="hero-body">
+            SuiMesh is the agent-to-agent communication protocol<br>for the Sui ecosystem.
+          </p>
+          <div class="hero-actions">
+            <a href="#protocol" class="pill pill-primary">Explore Protocol</a>
+            <a href="#docs" class="pill pill-glass">Read Docs</a>
+          </div>
+        </div>
+        <div class="visual-col">
+          <!-- three.js drops render here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 1: Convergence -->
+    <div class="slide" data-scene="1">
+      <div class="slide-inner">
+        <div class="copy-col left">
+          <h2 class="scene-title">Context Convergence</h2>
+          <p class="scene-body">
+            Five independent agents discover each other through the Mesh.
+            As trust builds, their contexts begin to merge into a shared understanding.
+          </p>
+          <div class="glass-tags">
+            <span class="glass-tag">Identity</span>
+            <span class="glass-tag">Attestation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 2: Universe -->
+    <div class="slide" data-scene="2">
+      <div class="slide-inner center">
+        <div class="copy-col center">
+          <h2 class="scene-title">Context Universe</h2>
+          <p class="scene-body">
+            What appeared as five drops is revealed as thousands of
+            independent contexts flowing through the SuiMesh protocol.
+          </p>
+          <div class="stat-block">
+            <span class="stat-num" data-target="10000">0+</span>
+            <span class="stat-label">Active Contexts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3: Flow -->
+    <div class="slide" data-scene="3">
+      <div class="slide-inner">
+        <div class="copy-col right">
+          <h2 class="scene-title">Context Flow</h2>
+          <p class="scene-body">
+            Information doesn't sit still. It flows, transforms, and propagates
+            through the mesh — verified at every hop, trusted at every edge.
+          </p>
+          <div class="glass-tags">
+            <span class="glass-tag">Zero-Knowledge</span>
+            <span class="glass-tag">Verifiable</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 4: Ocean -->
+    <div class="slide" data-scene="4">
+      <div class="slide-inner center">
+        <div class="copy-col center">
+          <h2 class="scene-title">Context Ocean</h2>
+          <p class="scene-body">
+            All contexts merge into a single, verifiable ocean of agent-to-agent
+            communication. The SuiMesh protocol governs every ripple.
+          </p>
+          <div class="stat-block">
+            <span class="stat-num" data-target="99.99">0%</span>
+            <span class="stat-label">Verification Rate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 5: Protocol -->
+    <div class="slide" data-scene="5">
+      <div class="slide-inner center">
+        <div class="copy-col center">
+          <h2 class="scene-title">Built on SuiMesh</h2>
+          <p class="scene-body">
+            Every context flows, every identity is verified,
+            every action is attested — all running on the protocol.
+          </p>
+          <div class="hero-actions">
+            <a href="https://github.com/ArisLiWind/SuiMesh" target="_blank" class="pill pill-primary">Explore GitHub</a>
+            <a href="#docs" class="pill pill-glass">Read Docs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="scroll-track"></div>
+
+  <div id="scroll-hint">
+    <span>Scroll</span>
+    <div class="hint-line"></div>
+  </div>
+
+  <div id="progress"><div id="progress-bar"></div></div>
+
+  <script type="importmap">{
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+      "gsap": "https://unpkg.com/gsap@3.12.7/index.js",
+      "gsap/ScrollTrigger": "https://unpkg.com/gsap@3.12.7/ScrollTrigger.js"
+    }
+  }</script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
