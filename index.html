@@ -3,175 +3,475 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SuiMesh — Own the Context. Verify the Action.</title>
+  <title>SuiMesh</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #020202;
+      --panel: rgba(255, 255, 255, 0.024);
+      --line: rgba(110, 184, 255, 0.3);
+      --line-soft: rgba(255, 255, 255, 0.12);
+      --text: #f1f6ff;
+      --muted: rgba(230, 239, 255, 0.78);
+      --subtle: rgba(170, 194, 229, 0.72);
+      --blue: #79c8ff;
+      --blue-strong: #2e78ff;
+      --page-width: 1600px;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      background: #000;
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 73% 34%, rgba(52, 110, 255, 0.1), transparent 20%),
+        radial-gradient(circle at 82% 52%, rgba(44, 98, 255, 0.11), transparent 26%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0) 18%),
+        #020202;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 23% 40%, rgba(255, 255, 255, 0.018), transparent 22%),
+        radial-gradient(circle at 78% 50%, rgba(69, 132, 255, 0.08), transparent 30%);
+      opacity: 0.95;
+    }
+
+    .page {
+      position: relative;
+      width: min(100%, var(--page-width));
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 24px 28px 48px;
+      isolation: isolate;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 220px 1fr 220px;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      z-index: 4;
+    }
+
+    .brand {
+      width: 186px;
+      height: 66px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 18px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.018);
+      border: 1px solid rgba(255, 255, 255, 0.035);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.01);
+    }
+
+    .brand-image {
+      width: 118px;
+      height: auto;
+      display: block;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 44px;
+    }
+
+    .nav a {
+      position: relative;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+
+    .nav a.active {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -14px;
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      background: #33a6ff;
+      box-shadow: 0 0 12px rgba(51, 166, 255, 1);
+    }
+
+    .header-cta {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .button-outline,
+    .button-primary,
+    .button-ghost {
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .button-outline:hover,
+    .button-primary:hover,
+    .button-ghost:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-outline {
+      min-width: 168px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #7ed3ff;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(8, 14, 26, 0.92), rgba(3, 8, 18, 0.6));
+      box-shadow:
+        inset 0 0 18px rgba(87, 169, 255, 0.08),
+        0 0 16px rgba(40, 116, 255, 0.16);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(620px, 0.94fr) minmax(640px, 1.06fr);
+      align-items: center;
+      min-height: calc(100vh - 112px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+      padding-left: 22px;
+      margin-top: -34px;
+    }
+
+    h1 {
+      font-size: clamp(72px, 6vw, 84px);
+      line-height: 0.97;
+      font-weight: 300;
+      letter-spacing: -0.07em;
+      color: #eef5ff;
+      text-wrap: balance;
+    }
+
+    .headline-line {
+      display: block;
+    }
+
+    .headline-line .accent {
+      color: #a8d8ff;
+    }
+
+    .subtitle {
+      margin-top: 32px;
+      max-width: 580px;
+      color: var(--muted);
+      font-size: 19px;
+      line-height: 1.58;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 42px;
+      flex-wrap: wrap;
+    }
+
+    .button-primary {
+      min-width: 292px;
+      height: 68px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 34px;
+      border: 1px solid rgba(154, 219, 255, 0.38);
+      color: #fff;
+      background:
+        radial-gradient(circle at 16% 28%, rgba(255, 255, 255, 0.52), transparent 24%),
+        radial-gradient(circle at 84% 50%, rgba(42, 111, 255, 0.86), rgba(13, 44, 135, 0.98) 48%, rgba(6, 17, 38, 0.98) 100%),
+        linear-gradient(90deg, rgba(121, 196, 255, 0.96), rgba(38, 103, 255, 1));
+      box-shadow:
+        inset 0 0 28px rgba(255, 255, 255, 0.24),
+        inset -22px 0 32px rgba(28, 108, 255, 0.32),
+        0 0 28px rgba(53, 122, 255, 0.34);
+      font-size: 19px;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+
+    .button-ghost {
+      min-width: 184px;
+      height: 68px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 34px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: rgba(255, 255, 255, 0.93);
+      background: rgba(255, 255, 255, 0.012);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+
+    .hero-microcopy {
+      margin-top: 22px;
+      color: var(--subtle);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .hero-art {
+      position: relative;
+      min-height: 760px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      overflow: visible;
+    }
+
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      right: 84px;
+      top: 110px;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(35, 90, 255, 0.12), transparent 58%);
+      filter: blur(16px);
+      pointer-events: none;
+    }
+
+    .hero-image {
+      width: min(58vw, 900px);
+      max-width: 900px;
+      display: block;
+      transform: translate(86px, 14px);
+      mix-blend-mode: screen;
+      filter: saturate(1.04) drop-shadow(0 0 28px rgba(34, 103, 255, 0.18));
+    }
+
+    .arrow {
+      font-size: 1.06em;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 1360px) {
+      .hero {
+        grid-template-columns: minmax(520px, 0.94fr) minmax(560px, 1.06fr);
+      }
+
+      .hero-copy {
+        max-width: 690px;
+      }
+
+      h1 {
+        font-size: clamp(66px, 5.8vw, 80px);
+      }
+
+      .hero-image {
+        width: min(60vw, 820px);
+        transform: translate(52px, 8px);
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 18px;
+      }
+
+      .header-cta {
+        justify-content: center;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding-top: 34px;
+      }
+
+      .hero-copy {
+        margin: 0 auto;
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .actions {
+        justify-content: center;
+      }
+
+      .hero-art {
+        min-height: 560px;
+        justify-content: center;
+      }
+
+      .hero-art::before {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 36px;
+      }
+
+      .hero-image {
+        width: min(84vw, 760px);
+        transform: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 18px 16px 28px;
+      }
+
+      .brand {
+        width: 100%;
+        max-width: 220px;
+        justify-content: center;
+      }
+
+      .nav {
+        gap: 28px;
+      }
+
+      .nav a {
+        font-size: 16px;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      h1 {
+        font-size: clamp(48px, 14vw, 68px);
+      }
+
+      .subtitle {
+        font-size: 17px;
+      }
+
+      .button-primary,
+      .button-ghost,
+      .button-outline {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .actions {
+        gap: 14px;
+      }
+
+      .hero-art {
+        min-height: 360px;
+      }
+
+      .hero-image {
+        width: min(94vw, 520px);
+      }
+
+      .hero-microcopy {
+        font-size: 11px;
+        line-height: 1.6;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div id="loader">
-    <svg class="loader-logo" viewBox="0 0 40 40" fill="none">
-      <circle cx="20" cy="10" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
-      <circle cx="30" cy="28" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-      <circle cx="10" cy="28" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-      <circle cx="10" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
-      <circle cx="30" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
-    </svg>
-    <div class="loader-track"><div class="loader-fill"></div></div>
+  <div class="page">
+    <header class="header">
+      <a class="brand" href="#" aria-label="SuiMesh home">
+        <img class="brand-image" src="./assets/brand-lockup.png" alt="SuiMesh">
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="active" href="#">GitHub</a>
+        <a href="#">Docs</a>
+      </nav>
+
+      <div class="header-cta">
+        <a class="button-outline" href="#">
+          <span>Get Started</span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="hero">
+      <section class="hero-copy">
+        <h1>
+          <span class="headline-line">Own the Context<span class="accent">.</span></span>
+          <span class="headline-line">Verify the Action<span class="accent">.</span></span>
+        </h1>
+
+        <p class="subtitle">
+          SuiMesh is the communication protocol layer for AI Agents on Sui.
+        </p>
+
+        <div class="actions">
+          <a class="button-primary" href="#">
+            <span>Explore Protocol</span>
+            <span class="arrow">↗</span>
+          </a>
+          <a class="button-ghost" href="#">Read Docs</a>
+        </div>
+
+        <p class="hero-microcopy">
+          Building the coordination infrastructure for autonomous agents.
+        </p>
+      </section>
+
+      <section class="hero-art" aria-hidden="true">
+        <img class="hero-image" src="./assets/hero-flower-transparent.png" alt="">
+      </section>
+    </main>
   </div>
-
-  <nav id="navbar">
-    <a href="#" class="nav-logo" id="nav-logo">
-      <svg viewBox="0 0 40 40" fill="none">
-        <circle cx="20" cy="10" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
-        <circle cx="30" cy="28" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-        <circle cx="10" cy="28" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
-        <circle cx="10" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
-        <circle cx="30" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity="0.8"/>
-      </svg>
-      <span>SuiMesh</span>
-    </a>
-
-    <div class="nav-center">
-      <a href="https://github.com/ArisLiWind/SuiMesh" target="_blank">GitHub</a>
-      <a href="#docs">Docs</a>
-    </div>
-
-    <a href="#protocol" class="nav-cta">Get Started</a>
-  </nav>
-
-  <!-- Fixed canvas -->
-  <canvas id="webgl"></canvas>
-
-  <!-- Fixed UI layer -->
-  <div id="ui-layer">
-
-    <!-- Scene 0: Hero -->
-    <div class="slide" data-scene="0">
-      <div class="slide-inner">
-        <div class="copy-col left">
-          <h1 class="hero-title">
-            <span>Own the Context.</span>
-            <span>Verify the Action.</span>
-          </h1>
-          <p class="hero-body">
-            SuiMesh is the agent-to-agent communication protocol<br>for the Sui ecosystem.
-          </p>
-          <div class="hero-actions">
-            <a href="#protocol" class="pill pill-primary">Explore Protocol</a>
-            <a href="#docs" class="pill pill-glass">Read Docs</a>
-          </div>
-        </div>
-        <div class="visual-col">
-          <!-- three.js drops render here -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 1: Convergence -->
-    <div class="slide" data-scene="1">
-      <div class="slide-inner">
-        <div class="copy-col left">
-          <h2 class="scene-title">Context Convergence</h2>
-          <p class="scene-body">
-            Five independent agents discover each other through the Mesh.
-            As trust builds, their contexts begin to merge into a shared understanding.
-          </p>
-          <div class="glass-tags">
-            <span class="glass-tag">Identity</span>
-            <span class="glass-tag">Attestation</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 2: Universe -->
-    <div class="slide" data-scene="2">
-      <div class="slide-inner center">
-        <div class="copy-col center">
-          <h2 class="scene-title">Context Universe</h2>
-          <p class="scene-body">
-            What appeared as five drops is revealed as thousands of
-            independent contexts flowing through the SuiMesh protocol.
-          </p>
-          <div class="stat-block">
-            <span class="stat-num" data-target="10000">0+</span>
-            <span class="stat-label">Active Contexts</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 3: Flow -->
-    <div class="slide" data-scene="3">
-      <div class="slide-inner">
-        <div class="copy-col right">
-          <h2 class="scene-title">Context Flow</h2>
-          <p class="scene-body">
-            Information doesn't sit still. It flows, transforms, and propagates
-            through the mesh — verified at every hop, trusted at every edge.
-          </p>
-          <div class="glass-tags">
-            <span class="glass-tag">Zero-Knowledge</span>
-            <span class="glass-tag">Verifiable</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 4: Ocean -->
-    <div class="slide" data-scene="4">
-      <div class="slide-inner center">
-        <div class="copy-col center">
-          <h2 class="scene-title">Context Ocean</h2>
-          <p class="scene-body">
-            All contexts merge into a single, verifiable ocean of agent-to-agent
-            communication. The SuiMesh protocol governs every ripple.
-          </p>
-          <div class="stat-block">
-            <span class="stat-num" data-target="99.99">0%</span>
-            <span class="stat-label">Verification Rate</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 5: Protocol -->
-    <div class="slide" data-scene="5">
-      <div class="slide-inner center">
-        <div class="copy-col center">
-          <h2 class="scene-title">Built on SuiMesh</h2>
-          <p class="scene-body">
-            Every context flows, every identity is verified,
-            every action is attested — all running on the protocol.
-          </p>
-          <div class="hero-actions">
-            <a href="https://github.com/ArisLiWind/SuiMesh" target="_blank" class="pill pill-primary">Explore GitHub</a>
-            <a href="#docs" class="pill pill-glass">Read Docs</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div id="scroll-track"></div>
-
-  <div id="scroll-hint">
-    <span>Scroll</span>
-    <div class="hint-line"></div>
-  </div>
-
-  <div id="progress"><div id="progress-bar"></div></div>
-
-  <script type="importmap">{
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
-      "gsap": "https://unpkg.com/gsap@3.12.7/index.js",
-      "gsap/ScrollTrigger": "https://unpkg.com/gsap@3.12.7/ScrollTrigger.js"
-    }
-  }</script>
-  <script type="module" src="js/main.js"></script>
 </body>
 </html>
