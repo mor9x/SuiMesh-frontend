@@ -11,8 +11,8 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #020304;
-      --bg-deep: #05070b;
+      --bg: #000000;
+      --bg-deep: #000000;
       --panel: rgba(10, 15, 27, 0.42);
       --panel-strong: rgba(14, 20, 34, 0.56);
       --panel-soft: rgba(255, 255, 255, 0.035);
@@ -50,11 +50,7 @@
     body {
       min-height: 100vh;
       overflow-x: hidden;
-      background:
-        radial-gradient(circle at 76% 24%, rgba(34, 90, 255, 0.15), transparent 18%),
-        radial-gradient(circle at 84% 42%, rgba(77, 144, 255, 0.1), transparent 24%),
-        radial-gradient(circle at 68% 60%, rgba(35, 99, 255, 0.08), transparent 22%),
-        linear-gradient(180deg, #030405 0%, #020305 48%, #020204 100%);
+      background: #000;
       color: var(--text);
       font-family:
         "SF Pro Display",
@@ -79,20 +75,11 @@
     }
 
     body::before {
-      background:
-        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.025), transparent 20%),
-        radial-gradient(circle at 78% 45%, rgba(112, 170, 255, 0.08), transparent 28%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0) 18%);
-      opacity: 0.95;
+      display: none;
     }
 
     body::after {
-      background:
-        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-      background-size: 120px 120px;
-      mask-image: radial-gradient(circle at 50% 40%, rgba(0, 0, 0, 0.5), transparent 75%);
-      opacity: 0.18;
+      display: none;
     }
 
     a {
@@ -264,6 +251,7 @@
       min-width: 286px;
       height: 68px;
       padding: 0 34px;
+      justify-content: center;
       border-radius: 999px;
       border: 1px solid rgba(163, 223, 255, 0.36);
       color: var(--white);
@@ -279,6 +267,16 @@
       font-weight: 560;
       letter-spacing: -0.024em;
       overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-button-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      text-align: center;
+      pointer-events: none;
     }
 
     .ghost-button {
@@ -303,18 +301,6 @@
       padding: 8px 0;
     }
 
-    .eyebrow {
-      width: fit-content;
-      padding: 11px 16px;
-      border-radius: 999px;
-      margin-bottom: 22px;
-      font-size: 11px;
-      font-weight: 650;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(207, 229, 255, 0.92);
-    }
-
     .hero {
       display: grid;
       grid-template-columns: minmax(580px, 0.95fr) minmax(620px, 1.05fr);
@@ -327,42 +313,11 @@
       position: relative;
     }
 
-    .hero-sheet {
-      position: absolute;
-      left: 12%;
-      top: 13%;
-      width: 46%;
-      height: 68%;
-      border-radius: 48px;
-      transform: rotate(1.8deg);
-      z-index: 1;
-      pointer-events: none;
-      opacity: 0.72;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025)),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.045), rgba(9, 12, 20, 0.16) 46%, rgba(9, 12, 20, 0.02));
-      border: 1px solid rgba(198, 226, 255, 0.12);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 -22px 40px rgba(15, 31, 67, 0.1),
-        0 40px 120px rgba(0, 10, 30, 0.22);
-      overflow: hidden;
-    }
-
-    .hero-sheet::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(120deg, rgba(255, 255, 255, 0.14), transparent 30%),
-        radial-gradient(circle at 20% 28%, rgba(255, 255, 255, 0.09), transparent 26%);
-    }
-
     .hero-copy {
       max-width: 660px;
       padding-left: 22px;
       position: relative;
-      z-index: 3;
+      z-index: 2;
     }
 
     .hero-copy h1 {
@@ -405,31 +360,12 @@
       flex-wrap: wrap;
     }
 
-    .hero-meta {
-      display: flex;
-      gap: 16px;
-      margin-top: 34px;
-      flex-wrap: wrap;
-    }
-
-    .hero-pill {
-      padding: 14px 16px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 620;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      color: rgba(210, 228, 251, 0.86);
-    }
-
     .hero-stage {
       position: relative;
       min-height: 760px;
       display: grid;
       place-items: center;
-      transform: translate3d(var(--hero-shift-x), var(--hero-shift-y), 0);
-      transition: transform 220ms ease-out;
-      z-index: 3;
+      z-index: 2;
     }
 
     .hero-stage::before,
@@ -462,7 +398,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: drift 9s ease-in-out infinite;
     }
 
     .hero-art-shell::before {
@@ -486,60 +421,6 @@
         saturate(1.05)
         drop-shadow(0 0 34px rgba(44, 110, 255, 0.12))
         drop-shadow(0 0 120px rgba(44, 110, 255, 0.08));
-    }
-
-    .float-card {
-      position: absolute;
-      z-index: 3;
-      min-width: 188px;
-      padding: 16px 18px;
-      border-radius: 24px;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
-        rgba(9, 14, 26, 0.48);
-      border: 1px solid rgba(165, 214, 255, 0.18);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        0 24px 80px rgba(0, 8, 28, 0.3);
-      animation: floatUp 7s ease-in-out infinite;
-    }
-
-    .float-card:nth-child(2) {
-      animation-delay: -2s;
-    }
-
-    .float-card:nth-child(3) {
-      animation-delay: -4s;
-    }
-
-    .float-card.top {
-      top: 13%;
-      left: 10%;
-    }
-
-    .float-card.right {
-      top: 30%;
-      right: 6%;
-    }
-
-    .float-card.bottom {
-      bottom: 15%;
-      left: 8%;
-    }
-
-    .float-label {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(184, 203, 229, 0.72);
-      margin-bottom: 7px;
-    }
-
-    .float-value {
-      font-size: 17px;
-      font-weight: 600;
-      color: rgba(246, 249, 255, 0.96);
-      letter-spacing: -0.03em;
     }
 
     .metrics {
@@ -976,13 +857,6 @@
         min-height: auto;
       }
 
-      .hero-sheet {
-        left: 10%;
-        top: 12%;
-        width: 80%;
-        height: 34%;
-      }
-
       .hero-copy {
         max-width: 760px;
         padding-left: 0;
@@ -996,13 +870,7 @@
         margin-right: auto;
       }
 
-      .eyebrow {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .hero-actions,
-      .hero-meta {
+      .hero-actions {
         justify-content: center;
       }
 
@@ -1084,10 +952,6 @@
         width: min(95vw, 520px);
       }
 
-      .float-card {
-        display: none;
-      }
-
       .feature-card,
       .metric-card,
       .protocol-card,
@@ -1126,11 +990,7 @@
 
     <main>
       <section class="hero" id="top">
-        <div class="hero-sheet" aria-hidden="true"></div>
-
         <div class="hero-copy" data-reveal>
-          <div class="eyebrow glass">Building the coordination infrastructure for autonomous agents.</div>
-
           <h1>
             Own the Context<span class="accent">.</span><br>
             Verify the Action<span class="accent">.</span>
@@ -1146,40 +1006,14 @@
 
           <div class="hero-actions">
             <a class="hero-button" href="#overview">
-              <span>Explore Protocol</span>
-              <span aria-hidden="true">↗</span>
+              <span class="hero-button-label">Explore Protocol</span>
             </a>
             <a class="ghost-button glass" href="#protocol">Read Docs</a>
-            <a class="text-button" href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">
-              <span>View GitHub</span>
-              <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-
-          <div class="hero-meta">
-            <div class="hero-pill glass">Auditable by default</div>
-            <div class="hero-pill glass">Traceable handoffs</div>
-            <div class="hero-pill glass">Onchain memory</div>
           </div>
         </div>
 
         <div class="hero-stage" id="hero-stage" data-reveal>
           <div class="hero-art-shell">
-            <div class="float-card top">
-              <div class="float-label">Policy Layer</div>
-              <div class="float-value">Human rules are verified before execution.</div>
-            </div>
-
-            <div class="float-card right">
-              <div class="float-label">Shared Memory</div>
-              <div class="float-value">State can be committed, replayed, and inspected.</div>
-            </div>
-
-            <div class="float-card bottom">
-              <div class="float-label">Execution Trace</div>
-              <div class="float-value">Every handoff becomes a signed, queryable receipt.</div>
-            </div>
-
             <img class="hero-flower" src="./assets/hero-flower-transparent.png" alt="">
           </div>
         </div>
@@ -1432,17 +1266,6 @@
   </div>
 
   <script>
-    const heroStage = document.getElementById("hero-stage");
-    if (heroStage) {
-      window.addEventListener("pointermove", (event) => {
-        const { innerWidth, innerHeight } = window;
-        const x = (event.clientX / innerWidth - 0.5) * 18;
-        const y = (event.clientY / innerHeight - 0.5) * 14;
-        document.documentElement.style.setProperty("--hero-shift-x", `${x}px`);
-        document.documentElement.style.setProperty("--hero-shift-y", `${y}px`);
-      });
-    }
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
