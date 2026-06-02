@@ -1,1558 +1,527 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BATTLEFIELD 4 — WORLD ONLINE</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-/* ─── RESET & TOKENS ─── */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#030608; --bg2:#081018; --bg3:#111923;
-  --orange:#f28b00; --orange2:#ffae38; --odim:rgba(242,139,0,.14);
-  --text:#d7e2e9; --muted:#7f919b; --dim:#3f515b; --line:rgba(185,210,220,.12);
-  --lineh:rgba(232,123,0,.55); --white:#ffffff;
-  --green:#1fca5c; --red:#e03a3a; --blue:#0099d4;
-}
-html,body{width:100%;height:100%;background:var(--bg);font-family:'Barlow Condensed','Rajdhani',sans-serif;overflow:hidden;user-select:none;color:var(--text);}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuiMesh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ─── BACKGROUND LAYERS ─── */
-#bg-canvas{position:fixed;inset:0;z-index:0;}
-.bf4-backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;background:
-  linear-gradient(90deg,rgba(3,6,8,.92) 0%,rgba(3,6,8,.72) 27%,rgba(3,6,8,.28) 54%,rgba(3,6,8,.82) 100%),
-  radial-gradient(circle at 70% 34%,rgba(245,150,18,.26),transparent 18%),
-  radial-gradient(circle at 58% 62%,rgba(55,95,120,.24),transparent 23%),
-  linear-gradient(135deg,#111923 0%,#18212a 38%,#0b1118 39%,#05080c 100%);}
-.bf4-backdrop::before{content:'';position:absolute;inset:0;background:
-  linear-gradient(115deg,transparent 0 43%,rgba(255,255,255,.08) 43.4%,transparent 44.1% 100%),
-  linear-gradient(0deg,rgba(0,0,0,.76),transparent 34%),
-  repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 110px);mix-blend-mode:screen;opacity:.65;}
-.bf4-backdrop::after{content:'SIEGE OF SHANGHAI';position:absolute;right:44px;bottom:108px;font-size:112px;font-weight:800;line-height:.85;color:rgba(255,255,255,.045);letter-spacing:2px;text-align:right;text-transform:uppercase;}
-.layer{position:fixed;inset:0;pointer-events:none;}
-.scanlines{z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.035) 3px,rgba(0,0,0,.035) 4px);}
-.vignette{z-index:2;background:radial-gradient(ellipse 130% 112% at 58% 46%,transparent 18%,rgba(0,0,0,.42) 69%,rgba(0,0,0,.92) 100%);}
-.grid{z-index:3;background-image:linear-gradient(rgba(220,235,240,.014) 1px,transparent 1px),linear-gradient(90deg,rgba(220,235,240,.014) 1px,transparent 1px);background-size:96px 96px;}
-.corner{position:fixed;z-index:5;pointer-events:none;width:52px;height:52px;transition:opacity .5s;}
-.c-tl{top:0;left:0;border-top:2px solid rgba(232,123,0,.5);border-left:2px solid rgba(232,123,0,.5);}
-.c-tr{top:0;right:0;border-top:2px solid rgba(232,123,0,.5);border-right:2px solid rgba(232,123,0,.5);}
-.c-bl{bottom:0;left:0;border-bottom:2px solid rgba(232,123,0,.2);border-left:2px solid rgba(232,123,0,.2);}
-.c-br{bottom:0;right:0;border-bottom:2px solid rgba(232,123,0,.2);border-right:2px solid rgba(232,123,0,.2);}
+    :root {
+      --bg: #020202;
+      --panel: rgba(255, 255, 255, 0.04);
+      --line: rgba(147, 202, 255, 0.34);
+      --line-soft: rgba(147, 202, 255, 0.14);
+      --text: #f3f8ff;
+      --muted: rgba(237, 244, 255, 0.84);
+      --blue: #56b7ff;
+      --blue-strong: #2e7cff;
+      --blue-soft: rgba(86, 183, 255, 0.18);
+      --hero-copy-width: 620px;
+    }
 
-/* ─── BOOT SCREEN ─── */
-#boot{position:fixed;inset:0;z-index:200;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s;}
-#boot.hide{opacity:0;pointer-events:none;}
-.boot-logo{font-size:54px;font-weight:800;color:#fff;letter-spacing:1px;margin-bottom:6px;}
-.boot-sub{font-size:9px;letter-spacing:6px;color:var(--orange);text-transform:uppercase;margin-bottom:48px;}
-.boot-lines{width:480px;max-width:90vw;font-size:11px;letter-spacing:.5px;color:rgba(100,170,200,.7);line-height:2;font-family:monospace;min-height:180px;}
-.boot-lines .bl{opacity:0;animation:blIn .15s forwards;}
-@keyframes blIn{to{opacity:1}}
-.boot-bar-wrap{width:480px;max-width:90vw;margin-top:24px;}
-.boot-bar-label{display:flex;justify-content:space-between;font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:6px;}
-.boot-bar-track{height:2px;background:rgba(255,255,255,.07);}
-.boot-bar-fill{height:100%;width:0;background:var(--orange);transition:width .05s linear;}
-.boot-skip{margin-top:20px;font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;}
+    html, body {
+      min-height: 100%;
+      background: #000;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
 
-/* ─── SCREENS ─── */
-.screen{position:fixed;inset:0;z-index:10;display:none;flex-direction:column;}
-.screen.active{display:flex;animation:sIn .35s ease both;}
-@keyframes sIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+    body {
+      position: relative;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 73% 41%, rgba(49, 114, 255, 0.18), transparent 18%),
+        radial-gradient(circle at 77% 55%, rgba(48, 104, 255, 0.14), transparent 25%),
+        radial-gradient(circle at 84% 45%, rgba(15, 45, 112, 0.18), transparent 30%),
+        #010101;
+    }
 
-/* ─── HEADER ─── */
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 36px 0;border-bottom:1px solid var(--line);flex-shrink:0;}
-.logo{display:flex;flex-direction:column;line-height:1;cursor:pointer;}
-.l1{font-size:8.5px;font-weight:700;letter-spacing:6px;color:var(--muted);text-transform:uppercase;}
-.l2{font-size:43px;font-weight:800;color:var(--white);letter-spacing:.5px;line-height:.82;}
-.l3{font-size:8px;letter-spacing:5px;color:var(--orange);text-transform:uppercase;margin-top:5px;}
-.hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
-.hdr-meta{display:flex;align-items:center;gap:26px;}
-.hmeta{font-size:10px;letter-spacing:1.5px;color:var(--muted);display:flex;align-items:center;gap:6px;}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pd 2s ease-in-out infinite;}
-@keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
-.badge{background:var(--orange);color:#fff;font-size:8px;font-weight:700;padding:1px 5px;}
-.tabs{display:flex;padding-top:10px;flex-wrap:wrap;justify-content:flex-end;}
-.tab{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);padding:7px 18px;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;}
-.tab:hover{color:var(--muted);}
-.tab.on{color:var(--white);border-bottom-color:var(--orange);}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0) 20%),
+        radial-gradient(circle at 22% 36%, rgba(255, 255, 255, 0.03), transparent 24%),
+        radial-gradient(circle at 78% 48%, rgba(73, 142, 255, 0.09), transparent 28%);
+      opacity: 0.9;
+    }
 
-/* ─── FOOTER ─── */
-.ftr{flex-shrink:0;border-top:1px solid var(--line);padding:11px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(4,7,12,.7);}
-.player{display:flex;align-items:center;gap:12px;}
-.emblem{width:40px;height:40px;border:1px solid var(--line);position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.emblem::after{content:'';position:absolute;inset:-3px;border:1px solid rgba(232,123,0,.18);}
-.emblem svg{width:22px;height:22px;fill:var(--orange);}
-.pn{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--white);text-transform:uppercase;}
-.pr{font-size:8.5px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
-.xpw{margin-left:10px;width:140px;}
-.xpr{display:flex;justify-content:space-between;margin-bottom:4px;}
-.xpl{font-size:8px;letter-spacing:2px;color:var(--dim);}
-.xpt{height:3px;background:rgba(255,255,255,.07);}
-.xpf{height:100%;width:68%;background:var(--orange);position:relative;}
-.xpf::after{content:'';position:absolute;right:0;top:-2px;width:1px;height:7px;background:var(--orange2);}
-.ticker{flex:1;text-align:center;overflow:hidden;margin:0 32px;}
-.tl{font-size:7.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:2px;}
-.tt{font-size:10.5px;letter-spacing:.8px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .4s;}
-.ftr-right{display:flex;align-items:center;gap:18px;}
-.fqb{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:.55;transition:opacity .18s;}
-.fqb:hover{opacity:1;}
-.fqb-icon{width:30px;height:30px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
-.fqb-icon svg{width:14px;height:14px;fill:var(--muted);}
-.fqb-lbl{font-size:7px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;}
+    .page {
+      min-height: 100vh;
+      position: relative;
+      isolation: isolate;
+      padding: 24px 28px 36px;
+    }
 
-/* ─── MAIN MENU NAV ─── */
-.main-body{flex:1;display:grid;grid-template-columns:360px 1fr;min-height:0;}
-.nav-col{display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--line);position:relative;}
-.nav-col::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent 0%,var(--orange) 30%,var(--orange) 70%,transparent 100%);opacity:.55;}
-.nav-eyebrow{font-size:8px;letter-spacing:4px;color:var(--dim);text-transform:uppercase;padding:0 36px 14px;}
-.nav-list{list-style:none;}
-.ni{border-top:1px solid var(--line);}
-.ni:last-child{border-bottom:1px solid var(--line);}
-.ni a{display:flex;align-items:center;padding:13px 36px;text-decoration:none;cursor:pointer;position:relative;overflow:hidden;transition:all .18s;background:rgba(0,0,0,.08);}
-.ni a::before{content:'';position:absolute;left:-100%;top:0;bottom:0;width:100%;background:linear-gradient(90deg,transparent,rgba(232,123,0,.06),rgba(232,123,0,.13));transition:left .28s;}
-.ni a::after{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--orange);transition:width .18s;}
-.ni a:hover::before,.ni.on a::before{left:0;}
-.ni a:hover::after,.ni.on a::after{width:3px;}
-.ni-num{font-size:9px;letter-spacing:1px;color:var(--dim);margin-right:14px;min-width:14px;font-weight:800;transition:color .18s;}
-.ni-ico{width:16px;height:16px;margin-right:12px;opacity:.35;fill:var(--text);transition:opacity .18s;flex-shrink:0;}
-.ni-txt{font-size:20px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);flex:1;transition:color .18s,letter-spacing .18s;}
-.ni-tag{font-size:7.5px;letter-spacing:2px;padding:2px 7px;border:1px solid rgba(232,123,0,.3);color:var(--orange);background:var(--odim);opacity:0;transition:opacity .18s;}
-.ni a:hover .ni-txt,.ni.on a .ni-txt{color:var(--white);letter-spacing:3.5px;}
-.ni a:hover .ni-num,.ni.on a .ni-num{color:var(--orange);}
-.ni a:hover .ni-ico,.ni.on a .ni-ico{opacity:1;}
-.ni.on a .ni-tag{opacity:1;}
-.ni.on a .ni-txt{color:var(--orange2);}
+    .header {
+      display: grid;
+      grid-template-columns: 220px 1fr 220px;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      z-index: 3;
+    }
 
-/* detail panel */
-.detail-col{display:flex;flex-direction:column;justify-content:center;padding:32px 64px 32px 44px;position:relative;overflow:hidden;}
-.detail-col::before{content:'';position:absolute;right:58px;top:70px;width:280px;height:440px;background:
-  linear-gradient(90deg,transparent 0 32%,rgba(0,0,0,.34) 33% 55%,transparent 56%),
-  radial-gradient(ellipse at 50% 12%,rgba(210,220,220,.18) 0 12%,transparent 13%),
-  linear-gradient(82deg,transparent 0 36%,rgba(210,220,220,.12) 37% 45%,transparent 46% 100%);
-  clip-path:polygon(42% 0,58% 0,63% 16%,72% 25%,68% 58%,82% 100%,18% 100%,32% 58%,28% 25%,37% 16%);opacity:.5;filter:blur(.2px);}
-.det-bg{position:absolute;right:18px;bottom:24px;font-size:150px;font-weight:800;color:rgba(255,255,255,.025);letter-spacing:-1px;pointer-events:none;line-height:1;}
-.det-eye{font-size:8.5px;letter-spacing:4px;color:var(--orange);text-transform:uppercase;margin-bottom:7px;}
-.det-ttl{font-size:40px;font-weight:800;color:var(--white);letter-spacing:1px;text-transform:uppercase;}
-.det-line{width:50px;height:2px;background:var(--orange);margin:14px 0 18px;}
-.det-desc{font-size:13px;line-height:1.85;color:var(--muted);max-width:430px;letter-spacing:.4px;}
-.det-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:26px;max-width:440px;}
-.dopt{border:1px solid var(--line);padding:12px 14px;cursor:pointer;transition:all .2s;}
-.dopt:hover{border-color:rgba(232,123,0,.4);}
-.dopt-lbl{font-size:7px;letter-spacing:2.5px;color:var(--dim);text-transform:uppercase;margin-bottom:4px;}
-.dopt-txt{font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--text);text-transform:uppercase;transition:color .2s;}
-.dopt:hover .dopt-txt{color:var(--white);}
-.det-cta{margin-top:26px;display:flex;gap:10px;}
-.btn-p{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--orange);color:#fff;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all .18s;}
-.btn-p:hover{background:var(--orange2);transform:translateY(-1px);}
-.btn-s{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:transparent;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;border:1px solid var(--line);cursor:pointer;transition:all .18s;}
-.btn-s:hover{border-color:rgba(140,190,220,.28);color:var(--text);}
-.det-stats{display:flex;gap:28px;margin-top:28px;padding-top:20px;border-top:1px solid var(--line);}
-.ds{display:flex;flex-direction:column;gap:3px;}
-.ds-v{font-size:19px;font-weight:800;color:var(--white);}
-.ds-l{font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;}
+    .brand {
+      width: 186px;
+      height: 66px;
+      border: 1px solid rgba(255, 255, 255, 0.025);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 22px;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.01);
+    }
 
-/* ─── REGISTRATION ─── */
-.reg-body{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;overflow-y:auto;}
-.reg-card{width:520px;border:1px solid var(--line);padding:42px 48px;position:relative;background:rgba(8,14,23,.6);}
-.reg-card::before{content:'';position:absolute;top:-1px;left:0;width:60px;height:2px;background:var(--orange);}
-.sec-eye{font-size:8px;letter-spacing:4px;color:var(--orange);text-transform:uppercase;margin-bottom:7px;}
-.sec-ttl{font-size:24px;font-weight:800;color:var(--white);letter-spacing:1.5px;text-transform:uppercase;}
-.sec-bar{width:42px;height:2px;background:var(--orange);margin:14px 0 28px;}
-.field{margin-bottom:18px;position:relative;}
-.field label{display:block;font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:7px;}
-.field input,.field select{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:500;letter-spacing:1px;padding:11px 14px;outline:none;transition:border-color .18s;}
-.field input:focus,.field select:focus{border-color:rgba(232,123,0,.5);}
-.field input::placeholder{color:var(--dim);}
-.field select option{background:#0c1520;}
-.field.ok input{border-color:rgba(31,202,92,.4);}
-.field.err input{border-color:rgba(224,58,58,.5);}
-.field .err-msg{position:absolute;bottom:-14px;left:0;font-size:9px;letter-spacing:1.5px;color:var(--red);text-transform:uppercase;opacity:0;transition:opacity .2s;}
-.field.err .err-msg{opacity:1;}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.pwd-strength{height:2px;background:rgba(255,255,255,.07);margin-top:6px;overflow:hidden;}
-.pwd-fill{height:100%;width:0;transition:width .3s,background .3s;}
-.check-row{display:flex;align-items:center;gap:10px;margin:20px 0 28px;cursor:pointer;}
-.check-box{width:16px;height:16px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;}
-.check-box.on{background:var(--orange);border-color:var(--orange);}
-.check-box.on::after{content:'✓';font-size:10px;color:#fff;}
-.check-lbl{font-size:11px;letter-spacing:1px;color:var(--muted);}
-.alt-link{margin-top:18px;font-size:11px;letter-spacing:1px;color:var(--dim);text-align:center;}
-.alt-link a{color:var(--orange);cursor:pointer;text-decoration:none;}
-.alt-link a:hover{color:var(--orange2);}
+    .brand-mark {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      transform: rotate(45deg);
+    }
 
-/* ─── WORLD & IDENTITY ─── */
-.world-body{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0;gap:0;}
-.world-half{padding:28px 36px;border-right:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto;}
-.world-half:last-child{border-right:none;}
-.world-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
-.world-card{border:1px solid var(--line);padding:0;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
-.world-card::before{content:'';position:absolute;inset:0;background:rgba(232,123,0,.04);opacity:0;transition:opacity .22s;}
-.world-card:hover::before,.world-card.sel::before{opacity:1;}
-.world-card.sel{border-color:var(--orange);}
-.world-card.sel::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--orange);}
-.wc-img{height:96px;background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.wc-img::before{content:'';position:absolute;inset:0;background:
-  linear-gradient(180deg,rgba(255,255,255,.08),transparent 35%),
-  linear-gradient(115deg,transparent 0 34%,rgba(242,139,0,.18) 35% 36%,transparent 37% 100%),
-  repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 1px,transparent 1px 38px);opacity:.72;}
-.wc-img::after{content:'';position:absolute;left:0;right:0;bottom:0;height:44%;background:
-  linear-gradient(90deg,rgba(0,0,0,.7) 0 8%,transparent 8% 10%,rgba(0,0,0,.72) 10% 21%,transparent 21% 25%,rgba(0,0,0,.68) 25% 38%,transparent 38% 41%,rgba(0,0,0,.72) 41% 54%,transparent 54% 57%,rgba(0,0,0,.7) 57% 70%,transparent 70% 73%,rgba(0,0,0,.76) 73% 100%);}
-.world-card:nth-child(1) .wc-img{background:linear-gradient(135deg,#26313a,#09131c 62%,#05070a);}
-.world-card:nth-child(2) .wc-img{background:linear-gradient(145deg,#394149,#151b22 54%,#06090e);}
-.world-card:nth-child(3) .wc-img{background:linear-gradient(135deg,#20394a,#0c171f 55%,#061016);}
-.world-card:nth-child(4) .wc-img{background:linear-gradient(135deg,#143446,#06111a 56%,#03070b);}
-.world-card:nth-child(5) .wc-img{background:linear-gradient(135deg,#473821,#15100a 58%,#050403);}
-.world-card:nth-child(6) .wc-img{background:linear-gradient(135deg,#365143,#111d19 56%,#060908);}
-.wc-flag{display:none;}
-.wc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(4,7,12,.86),transparent);}
-.wc-info{padding:10px 12px;}
-.wc-name{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--text);text-transform:uppercase;}
-.wc-sub{font-size:9px;letter-spacing:1.5px;color:var(--muted);margin-top:2px;}
-.wc-status{font-size:8px;letter-spacing:2px;margin-top:6px;display:flex;align-items:center;gap:5px;}
-.ws-dot{width:5px;height:5px;border-radius:50%;}
-.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
-.role-card{border:1px solid var(--line);padding:14px 16px;cursor:pointer;transition:all .22s;position:relative;}
-.role-card.sel{border-color:var(--orange);}
-.role-card.sel::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--orange);}
-.role-card:hover{border-color:rgba(232,123,0,.3);}
-.rc-ico{font-size:22px;margin-bottom:8px;}
-.rc-name{font-size:14px;font-weight:700;letter-spacing:2px;color:var(--text);text-transform:uppercase;}
-.rc-desc{font-size:10px;letter-spacing:.5px;color:var(--muted);margin-top:4px;line-height:1.6;}
-.callsign-wrap{margin-top:18px;}
-.callsign-wrap label{font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:7px;}
-.callsign-wrap input{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;letter-spacing:2px;padding:10px 14px;outline:none;transition:border-color .18s;}
-.callsign-wrap input:focus{border-color:rgba(232,123,0,.5);}
-.world-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;border-top:1px solid var(--line);flex-shrink:0;}
+    .brand-mark span {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border-radius: 999px 999px 0 999px;
+      background: #fff;
+      left: 50%;
+      top: 50%;
+      transform-origin: 0 0;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
+    }
 
-/* ─── INVITE FRIENDS ─── */
-.invite-body{flex:1;display:grid;grid-template-columns:1fr 320px;min-height:0;}
-.invite-left{padding:28px 36px;border-right:1px solid var(--line);display:flex;flex-direction:column;}
-.friend-search{display:flex;gap:10px;margin-bottom:20px;}
-.fsearch-input{flex:1;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:1px;padding:10px 14px;outline:none;transition:border-color .18s;}
-.fsearch-input:focus{border-color:rgba(232,123,0,.5);}
-.fsearch-input::placeholder{color:var(--dim);}
-.friend-list{flex:1;overflow-y:auto;}
-.friend-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:all .15s;position:relative;}
-.friend-item:hover{padding-left:6px;}
-.fi-avatar{width:38px;height:38px;border:1px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--orange);background:rgba(0,0,0,.4);}
-.fi-info{flex:1;}
-.fi-name{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--text);text-transform:uppercase;}
-.fi-status{font-size:9px;letter-spacing:1.5px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px;}
-.fi-rank{font-size:9px;letter-spacing:1px;color:var(--dim);text-align:right;}
-.fi-invite-btn{font-size:9px;letter-spacing:2px;color:var(--orange);text-transform:uppercase;padding:5px 12px;border:1px solid rgba(232,123,0,.35);cursor:pointer;background:var(--odim);transition:all .15s;flex-shrink:0;}
-.fi-invite-btn:hover{background:rgba(232,123,0,.25);border-color:var(--orange);}
-.fi-invite-btn.sent{color:var(--muted);border-color:var(--line);background:transparent;pointer-events:none;}
-.invite-right{padding:28px 24px;display:flex;flex-direction:column;}
-.squad-slots{display:flex;flex-direction:column;gap:10px;margin-top:8px;flex:1;}
-.slot{border:1px solid var(--line);padding:12px 14px;display:flex;align-items:center;gap:12px;position:relative;}
-.slot.filled{border-color:rgba(232,123,0,.3);}
-.slot-num{font-size:10px;color:var(--dim);min-width:18px;font-weight:800;}
-.slot-avatar{width:32px;height:32px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--orange);}
-.slot-avatar.empty{opacity:.3;}
-.slot-name{font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--text);text-transform:uppercase;}
-.slot-role{font-size:8px;letter-spacing:1.5px;color:var(--muted);margin-top:1px;}
-.slot-remove{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--dim);cursor:pointer;opacity:0;transition:opacity .15s;}
-.slot:hover .slot-remove{opacity:1;}
-.slot-empty-txt{font-size:11px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;}
-.copy-link-btn{margin-top:16px;padding:10px 0;border:1px solid var(--line);text-align:center;font-size:10px;letter-spacing:2px;color:var(--muted);cursor:pointer;transition:all .2s;text-transform:uppercase;}
-.copy-link-btn:hover{border-color:rgba(232,123,0,.4);color:var(--orange);}
-.copy-link-btn.copied{border-color:var(--green);color:var(--green);}
-.invite-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;border-top:1px solid var(--line);flex-shrink:0;}
+    .brand-mark span:nth-child(1) { transform: translate(-50%, -50%) rotate(0deg) translateX(8px); }
+    .brand-mark span:nth-child(2) { transform: translate(-50%, -50%) rotate(72deg) translateX(8px); }
+    .brand-mark span:nth-child(3) { transform: translate(-50%, -50%) rotate(144deg) translateX(8px); }
+    .brand-mark span:nth-child(4) { transform: translate(-50%, -50%) rotate(216deg) translateX(8px); }
+    .brand-mark span:nth-child(5) { transform: translate(-50%, -50%) rotate(288deg) translateX(8px); }
 
-/* ─── OPEN ROOM ─── */
-.room-body{flex:1;display:grid;grid-template-columns:1fr 340px;min-height:0;}
-.room-left{padding:28px 36px;border-right:1px solid var(--line);overflow-y:auto;}
-.room-right{padding:28px 24px;display:flex;flex-direction:column;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
-.form-grid .field{margin-bottom:0;}
-.toggle-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
-.tgl{font-size:10px;letter-spacing:2px;color:var(--muted);padding:7px 14px;border:1px solid var(--line);cursor:pointer;transition:all .18s;text-transform:uppercase;}
-.tgl.on{color:var(--white);border-color:var(--orange);background:var(--odim);}
-.tgl:hover:not(.on){border-color:rgba(140,190,220,.25);color:var(--text);}
-.slider-field{margin-bottom:18px;}
-.slider-field label{display:block;font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;}
-.slider-field label span{color:var(--orange);font-weight:700;}
-.slider-field input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:rgba(255,255,255,.08);outline:none;cursor:pointer;}
-.slider-field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--orange);cursor:pointer;border:none;}
-.room-map-thumb{height:150px;background:linear-gradient(135deg,#24333c,#07111a 62%,#030609);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:14px;cursor:pointer;transition:border-color .2s;}
-.room-map-thumb::before{content:'';position:absolute;inset:0;background:
-  radial-gradient(circle at 72% 32%,rgba(242,139,0,.22),transparent 22%),
-  linear-gradient(110deg,transparent 0 44%,rgba(255,255,255,.1) 44.5%,transparent 45.5%),
-  repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 1px,transparent 1px 54px);}
-.room-map-thumb::after{content:'';position:absolute;left:0;right:0;bottom:0;height:52%;background:linear-gradient(90deg,rgba(0,0,0,.75) 0 14%,transparent 14% 17%,rgba(0,0,0,.72) 17% 31%,transparent 31% 35%,rgba(0,0,0,.78) 35% 48%,transparent 48% 52%,rgba(0,0,0,.7) 52% 100%);}
-.room-map-thumb:hover{border-color:rgba(232,123,0,.35);}
-.map-label-overlay{position:absolute;bottom:10px;left:12px;}
-.map-name{font-size:15px;font-weight:800;color:var(--white);}
-.map-mode{font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:2px;}
-.map-arrows{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;}
-.map-arrow{width:26px;height:26px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:var(--muted);transition:all .15s;}
-.map-arrow:hover{border-color:rgba(232,123,0,.4);color:var(--orange);}
-.room-players{flex:1;overflow-y:auto;}
-.rp-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
-.rp-avatar{width:32px;height:32px;border:1px solid var(--line);background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--orange);flex-shrink:0;}
-.rp-name{font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--text);text-transform:uppercase;flex:1;}
-.rp-ping{font-size:9px;letter-spacing:1px;}
-.rp-kick{font-size:9px;letter-spacing:1px;color:var(--dim);cursor:pointer;padding:3px 8px;border:1px solid transparent;transition:all .15s;}
-.rp-kick:hover{color:var(--red);border-color:rgba(224,58,58,.3);}
-.room-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;border-top:1px solid var(--line);flex-shrink:0;}
+    .brand-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
 
-/* ─── SHARED SECTION HEADERS ─── */
-.section-head{margin-bottom:16px;}
-.section-head .sec-eye{font-size:8px;letter-spacing:4px;color:var(--orange);text-transform:uppercase;margin-bottom:5px;}
-.section-head .sec-ttl{font-size:18px;font-weight:800;color:var(--white);letter-spacing:1.5px;text-transform:uppercase;}
-.section-head .sec-bar{width:36px;height:2px;background:var(--orange);margin-top:10px;}
+    .nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 46px;
+    }
 
-/* ─── NOTIFICATION TOAST ─── */
-.toast{position:fixed;bottom:90px;right:32px;z-index:100;background:rgba(8,14,23,.95);border:1px solid rgba(232,123,0,.5);border-left:3px solid var(--orange);padding:12px 18px;min-width:260px;transform:translateX(120%);transition:transform .3s ease;pointer-events:none;}
-.toast.show{transform:translateX(0);}
-.toast-title{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--white);text-transform:uppercase;}
-.toast-msg{font-size:10px;letter-spacing:.5px;color:var(--muted);margin-top:3px;}
+    .nav a {
+      position: relative;
+      color: rgba(255, 255, 255, 0.86);
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
 
-/* ─── SCROLLBAR ─── */
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(232,123,0,.28);}
-/* ─── ARMORY ─── */
-.armory-body{flex:1;display:grid;grid-template-columns:300px 1fr;min-height:0;}
-.armory-left{border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;}
-.class-tabs{display:flex;border-bottom:1px solid var(--line);flex-shrink:0;}
-.ctab{flex:1;text-align:center;font-size:8.5px;letter-spacing:2px;color:var(--dim);padding:12px 4px;cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;text-transform:uppercase;}
-.ctab:hover{color:var(--muted);}.ctab.on{color:var(--orange);border-bottom-color:var(--orange);}
-.weapon-type-label{font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;padding:12px 18px 5px;}
-.weapon-items{flex:1;overflow-y:auto;}
-.wep-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:all .15s;border-bottom:1px solid rgba(255,255,255,.03);position:relative;}
-.wep-item:hover{background:rgba(232,123,0,.04);}.wep-item.sel{background:rgba(232,123,0,.08);}
-.wep-item.sel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--orange);}
-.wep-init{width:32px;height:32px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:800;color:var(--muted);flex-shrink:0;transition:all .15s;}
-.wep-item.sel .wep-init{border-color:rgba(232,123,0,.5);color:var(--orange);}
-.wep-info{flex:1;}.wep-name{font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--text);text-transform:uppercase;}
-.wep-cat{font-size:8px;letter-spacing:1px;color:var(--muted);margin-top:1px;}
-.wep-slot-badge{font-size:7.5px;letter-spacing:1px;color:var(--dim);border:1px solid var(--line);padding:1px 5px;flex-shrink:0;}
-.wep-item.sel .wep-slot-badge{color:var(--orange);border-color:rgba(232,123,0,.3);}
-.armory-right{padding:28px 36px;display:flex;flex-direction:column;overflow-y:auto;}
-.wep-detail-name{font-size:28px;font-weight:800;color:var(--white);text-transform:uppercase;letter-spacing:1.5px;}
-.wep-detail-cat{font-size:8.5px;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:14px;}
-.wep-visual{height:118px;border:1px solid var(--line);margin-bottom:18px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(36,45,52,.9),rgba(4,7,12,1));position:relative;overflow:hidden;}
-.wep-visual-line{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(232,123,0,.2),transparent);width:80%;top:50%;}
-.wep-visual-text{font-size:50px;font-weight:800;color:rgba(255,255,255,.055);letter-spacing:1px;text-transform:uppercase;}
-.wep-visual-label{position:absolute;bottom:6px;right:10px;font-size:7.5px;letter-spacing:2px;color:var(--dim);}
-.stat-section-title{font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;}
-.stat-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.stat-label{font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;min-width:72px;}
-.stat-track{flex:1;height:3px;background:rgba(255,255,255,.07);}
-.stat-fill{height:100%;background:var(--orange);width:0;transition:width .7s cubic-bezier(.22,1,.36,1);}
-.stat-val{font-size:10px;font-weight:800;color:var(--white);min-width:24px;text-align:right;}
-.att-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:16px 0;}
-.att-slot{border:1px solid var(--line);padding:9px 11px;transition:border-color .18s;}
-.att-slot:hover{border-color:rgba(232,123,0,.3);}
-.att-slot-label{font-size:7.5px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:3px;}
-.att-slot-value{font-size:11px;font-weight:600;letter-spacing:1px;color:var(--text);text-transform:uppercase;}
-.att-slot-value.none-val{color:var(--dim);}
-.armory-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 36px;border-top:1px solid var(--line);flex-shrink:0;}
+    .nav a.active {
+      font-weight: 700;
+      color: #fff;
+    }
 
-/* ─── SERVER BROWSER ─── */
-.server-body{flex:1;display:grid;grid-template-columns:1fr 295px;min-height:0;}
-.server-left{display:flex;flex-direction:column;border-right:1px solid var(--line);}
-.server-filter{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid var(--line);flex-shrink:0;flex-wrap:wrap;}
-.sf-select{background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:1px;padding:6px 9px;outline:none;cursor:pointer;transition:border-color .15s;}
-.sf-select:focus,.sf-select:hover{border-color:rgba(232,123,0,.4);}.sf-select option{background:#0c1520;}
-.sf-search{flex:1;min-width:100px;background:rgba(0,0,0,.4);border:1px solid var(--line);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;padding:6px 11px;outline:none;transition:border-color .15s;}
-.sf-search:focus{border-color:rgba(232,123,0,.5);}.sf-search::placeholder{color:var(--dim);}
-.sf-btn{font-size:8.5px;letter-spacing:2px;color:var(--orange);text-transform:uppercase;padding:6px 11px;border:1px solid rgba(232,123,0,.35);cursor:pointer;background:var(--odim);transition:all .15s;white-space:nowrap;}
-.sf-btn:hover{background:rgba(232,123,0,.25);border-color:var(--orange);}
-.server-table-head{display:grid;grid-template-columns:1fr 115px 90px 78px 52px 68px;padding:7px 14px;border-bottom:1px solid var(--line);flex-shrink:0;}
-.sth{font-size:7.5px;letter-spacing:2.5px;color:var(--dim);text-transform:uppercase;}
-.server-list{flex:1;overflow-y:auto;}
-.srv-row{display:grid;grid-template-columns:1fr 115px 90px 78px 52px 68px;padding:9px 14px;border-bottom:1px solid var(--line);cursor:pointer;transition:all .15s;align-items:center;}
-.srv-row:hover{background:rgba(232,123,0,.04);}.srv-row.sel{background:rgba(232,123,0,.08);}
-.srv-name{font-size:11px;font-weight:600;letter-spacing:.7px;color:var(--text);text-transform:uppercase;display:flex;align-items:center;gap:6px;overflow:hidden;min-width:0;}
-.srv-row.sel .srv-name-text{color:var(--orange2);}
-.srv-name-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.srv-badge{font-size:7px;letter-spacing:1px;padding:1px 4px;border:1px solid;flex-shrink:0;}
-.srv-badge.official{color:var(--blue);border-color:rgba(0,153,212,.4);}
-.srv-badge.ranked{color:var(--green);border-color:rgba(31,202,92,.3);}
-.srv-map{font-size:9.5px;letter-spacing:.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.srv-mode{font-size:9.5px;letter-spacing:.4px;color:var(--muted);}
-.srv-players{font-size:11px;font-weight:600;letter-spacing:.5px;color:var(--text);}
-.srv-players.full{color:var(--red);}.srv-players.near{color:var(--orange);}
-.srv-ping{font-size:11px;font-weight:600;letter-spacing:.5px;}
-.srv-region{font-size:8.5px;letter-spacing:1px;color:var(--dim);}
-.server-right{padding:18px 16px;display:flex;flex-direction:column;}
-.srv-detail-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:.22;}
-.srv-detail-empty svg{width:38px;height:38px;}
-.srv-detail-map{height:118px;background:linear-gradient(135deg,#25313a,#07111a 62%,#030609);border:1px solid var(--line);display:flex;align-items:flex-end;padding:10px 12px;margin-bottom:11px;position:relative;overflow:hidden;}
-.srv-detail-map::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(4,7,12,.9) 0%,transparent 60%);}
-.srv-detail-map-text{position:relative;z-index:1;}
-.srv-detail-name{font-size:14px;font-weight:800;color:var(--white);}
-.srv-detail-owner{font-size:8.5px;letter-spacing:1.5px;color:var(--muted);margin-top:2px;}
-.srv-detail-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:11px;}
-.sds{border:1px solid var(--line);padding:8px 10px;}
-.sds-v{font-size:13px;font-weight:800;color:var(--white);}
-.sds-l{font-size:7.5px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-top:2px;}
-.sdr-title{font-size:7.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:7px;}
-.sdr-item{display:flex;align-items:center;gap:7px;font-size:9.5px;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;}
-.sdr-dot{width:4px;height:4px;border-radius:50%;background:var(--orange);flex-shrink:0;}
+    .nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -14px;
+      width: 5px;
+      height: 5px;
+      margin-left: -2.5px;
+      border-radius: 50%;
+      background: #35a8ff;
+      box-shadow: 0 0 12px rgba(53, 168, 255, 0.95);
+    }
 
-/* ─── FACTION TERRITORY ─── */
-.faction-bar{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);}
-.fb-title{font-size:8px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;}
-.fb-track{height:12px;display:flex;border:1px solid var(--line);overflow:hidden;}
-.fb-usmc{background:linear-gradient(90deg,rgba(0,80,160,.7),rgba(0,153,212,.45));transition:width 2s ease;}
-.fb-pla{background:linear-gradient(90deg,rgba(180,30,30,.45),rgba(220,50,50,.7));transition:width 2s ease;}
-.fb-labels{display:flex;justify-content:space-between;margin-top:6px;}
-.fb-lbl{font-size:9px;letter-spacing:2px;display:flex;align-items:center;gap:5px;}
-.fb-lbl-dot{width:6px;height:6px;border-radius:50%;}
+    .header-cta {
+      display: flex;
+      justify-content: flex-end;
+    }
 
-@media (max-width: 980px){
-  .hdr{padding:12px 18px 0;align-items:flex-start;gap:14px;}
-  .hdr-r{gap:6px;}
-  .hdr-meta{gap:12px;flex-wrap:wrap;justify-content:flex-end;}
-  .tab{padding:6px 10px;letter-spacing:2px;}
-  .main-body,.world-body,.invite-body,.room-body,.armory-body,.server-body{grid-template-columns:1fr;}
-  .nav-col,.world-half,.invite-left,.room-left,.armory-left,.server-left{border-right:none;border-bottom:1px solid var(--line);}
-  .nav-col{justify-content:flex-start;overflow-y:auto;}
-  .ni a{padding:10px 20px;}
-  .detail-col{padding:28px 24px;justify-content:flex-start;overflow-y:auto;}
-  .detail-col::before{opacity:.2;right:-20px;}
-  .det-ttl{font-size:34px;}
-  .ftr{padding:10px 18px;gap:14px;flex-wrap:wrap;}
-  .ticker{order:3;flex-basis:100%;margin:0;text-align:left;}
-}
+    .outline-button,
+    .primary-button {
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      will-change: transform;
+    }
 
-@media (max-width: 640px){
-  html,body{overflow:auto;}
-  .screen{position:relative;min-height:100vh;}
-  .hdr{flex-direction:column;}
-  .hdr-r{align-items:flex-start;width:100%;}
-  .tabs{justify-content:flex-start;}
-  .l2{font-size:34px;}
-  .nav-col::before,.detail-col::before,.bf4-backdrop::after{display:none;}
-  .det-opts,.field-row,.world-grid,.role-grid,.form-grid,.att-grid,.srv-detail-stats{grid-template-columns:1fr;}
-  .det-stats{flex-wrap:wrap;gap:16px;}
-  .reg-card{width:calc(100vw - 28px);padding:28px 22px;}
-  .server-table-head,.srv-row{grid-template-columns:1fr 64px 54px;}
-  .sth:nth-child(2),.sth:nth-child(3),.sth:nth-child(6),.srv-map,.srv-mode,.srv-region{display:none;}
-}
+    .outline-button:hover,
+    .primary-button:hover {
+      transform: translateY(-1px);
+    }
 
-</style>
+    .outline-button {
+      min-width: 168px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #7fd5ff;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(10, 17, 31, 0.72), rgba(5, 10, 20, 0.44));
+      box-shadow:
+        inset 0 0 18px rgba(69, 154, 255, 0.08),
+        0 0 18px rgba(57, 132, 255, 0.16);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(420px, 1fr) minmax(520px, 1.18fr);
+      align-items: center;
+      min-height: calc(100vh - 120px);
+      margin-top: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-copy {
+      padding-left: 24px;
+      max-width: var(--hero-copy-width);
+      margin-top: -38px;
+    }
+
+    h1 {
+      font-size: clamp(68px, 6.2vw, 96px);
+      line-height: 0.98;
+      font-weight: 300;
+      letter-spacing: -0.06em;
+      color: #eef5ff;
+      text-wrap: balance;
+    }
+
+    h1 .accent {
+      color: #a9d8ff;
+    }
+
+    .subtitle {
+      margin-top: 34px;
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.58;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+    }
+
+    .actions {
+      display: flex;
+      gap: 20px;
+      margin-top: 46px;
+      flex-wrap: wrap;
+    }
+
+    .primary-button {
+      min-width: 292px;
+      height: 68px;
+      padding: 0 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #fff;
+      font-size: 19px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      border: 1px solid rgba(152, 220, 255, 0.38);
+      background:
+        radial-gradient(circle at 18% 25%, rgba(255, 255, 255, 0.55), transparent 24%),
+        radial-gradient(circle at 84% 50%, rgba(34, 109, 255, 0.78), rgba(12, 44, 131, 0.96) 48%, rgba(7, 18, 40, 0.98) 100%),
+        linear-gradient(90deg, rgba(131, 204, 255, 0.95), rgba(37, 100, 250, 1));
+      box-shadow:
+        inset 0 0 24px rgba(255, 255, 255, 0.28),
+        inset -18px 0 34px rgba(40, 129, 255, 0.36),
+        0 0 26px rgba(54, 123, 255, 0.36);
+    }
+
+    .ghost-button {
+      min-width: 184px;
+      height: 68px;
+      padding: 0 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 19px;
+      font-weight: 400;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.015);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    .hero-art {
+      position: relative;
+      min-height: 760px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(54px);
+    }
+
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(35, 90, 255, 0.17), transparent 58%);
+      filter: blur(20px);
+    }
+
+    .flower {
+      position: relative;
+      width: min(54vw, 820px);
+      aspect-ratio: 1 / 1;
+      filter: drop-shadow(0 0 18px rgba(90, 159, 255, 0.55)) drop-shadow(0 0 48px rgba(25, 88, 255, 0.35));
+    }
+
+    .petal {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 36%;
+      height: 46%;
+      transform-origin: 50% calc(100% + 30px);
+      margin-left: -18%;
+      margin-top: -44%;
+      border-radius: 56% 56% 58% 58% / 74% 74% 32% 32%;
+      background:
+        radial-gradient(circle at 50% 19%, rgba(255, 255, 255, 0.95), rgba(178, 214, 255, 0.55) 12%, rgba(31, 88, 255, 0.22) 19%, rgba(1, 10, 34, 0.95) 43%, rgba(1, 4, 13, 1) 76%),
+        radial-gradient(circle at 50% 58%, rgba(34, 110, 255, 0.18), transparent 62%);
+      border: 3px solid rgba(123, 190, 255, 0.94);
+      box-shadow:
+        0 0 10px rgba(162, 221, 255, 0.96),
+        0 0 24px rgba(80, 141, 255, 0.96),
+        inset 0 0 20px rgba(187, 222, 255, 0.22),
+        inset 0 -12px 26px rgba(18, 65, 194, 0.26);
+    }
+
+    .petal::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: inherit;
+      border: 1px solid rgba(188, 232, 255, 0.32);
+      opacity: 0.72;
+      filter: blur(0.4px);
+    }
+
+    .petal::after {
+      content: "";
+      position: absolute;
+      left: 16%;
+      right: 16%;
+      top: 7%;
+      height: 22%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.06) 72%, transparent 74%);
+      filter: blur(5px);
+      opacity: 0.9;
+    }
+
+    .petal.p1 { transform: rotate(0deg) translateY(-30px); }
+    .petal.p2 { transform: rotate(72deg) translateY(-30px); }
+    .petal.p3 { transform: rotate(144deg) translateY(-30px); }
+    .petal.p4 { transform: rotate(216deg) translateY(-30px); }
+    .petal.p5 { transform: rotate(288deg) translateY(-30px); }
+
+    .core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 11%;
+      aspect-ratio: 1 / 1;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(153, 218, 255, 0.98), rgba(18, 63, 188, 0.58) 28%, rgba(0, 3, 12, 0.98) 70%);
+      box-shadow:
+        0 0 18px rgba(129, 205, 255, 0.92),
+        0 0 42px rgba(35, 105, 255, 0.55);
+    }
+
+    .core::after {
+      content: "";
+      position: absolute;
+      inset: -18%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(57, 135, 255, 0.3), transparent 72%);
+      filter: blur(8px);
+    }
+
+    .arrow {
+      font-size: 1.05em;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 1200px) {
+      .header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+
+      .header-cta {
+        justify-content: center;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 40px;
+      }
+
+      .hero-copy {
+        max-width: 760px;
+        padding-left: 0;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .actions {
+        justify-content: center;
+      }
+
+      .hero-art {
+        min-height: 640px;
+        transform: none;
+      }
+
+      .flower {
+        width: min(72vw, 720px);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 18px 16px 28px;
+      }
+
+      .brand {
+        width: 100%;
+        max-width: 220px;
+        justify-content: center;
+      }
+
+      .nav {
+        gap: 28px;
+      }
+
+      .nav a {
+        font-size: 16px;
+      }
+
+      h1 {
+        font-size: clamp(48px, 14vw, 74px);
+      }
+
+      .subtitle {
+        font-size: 18px;
+      }
+
+      .primary-button,
+      .ghost-button,
+      .outline-button {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .actions {
+        gap: 14px;
+      }
+
+      .hero-art {
+        min-height: 440px;
+      }
+
+      .flower {
+        width: min(92vw, 520px);
+      }
+    }
+  </style>
 </head>
 <body>
-
-<!-- ═══ BACKGROUND ═══ -->
-<div class="bf4-backdrop"></div>
-<canvas id="bg-canvas"></canvas>
-<div class="layer scanlines"></div>
-<div class="layer vignette"></div>
-<div class="layer grid"></div>
-<div class="corner c-tl"></div><div class="corner c-tr"></div>
-<div class="corner c-bl"></div><div class="corner c-br"></div>
-
-<!-- ═══ BOOT SCREEN ═══ -->
-<div id="boot">
-  <div class="boot-logo">4</div>
-  <div class="boot-sub">Battlefield · World Online</div>
-  <div class="boot-lines" id="boot-lines"></div>
-  <div class="boot-bar-wrap">
-    <div class="boot-bar-label"><span>System Initializing</span><span id="boot-pct">0%</span></div>
-    <div class="boot-bar-track"><div class="boot-bar-fill" id="boot-fill"></div></div>
-  </div>
-  <div class="boot-skip">Press any key to skip</div>
-</div>
-
-<!-- ═══ TOAST ═══ -->
-<div class="toast" id="toast">
-  <div class="toast-title" id="toast-title"></div>
-  <div class="toast-msg" id="toast-msg"></div>
-</div>
-
-<!-- ═══════════════ SCREEN 1 — MAIN MENU ═══════════════ -->
-<div id="s-main" class="screen">
-  <header class="hdr">
-    <div class="logo" onclick="goScreen('s-main')">
-      <span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span>
-    </div>
-    <div class="hdr-r">
-      <div class="hdr-meta">
-        <span class="hmeta"><span class="dot"></span>ONLINE · <span id="cnt">24,812</span> PLAYERS</span>
-        <span class="hmeta">ALERTS <span class="badge">3</span></span>
-        <span class="hmeta" id="clk"></span>
-      </div>
-      <div class="tabs">
-        <div class="tab on">Home</div>
-        <div class="tab" onclick="goScreen('s-reg')">Register</div>
-        <div class="tab" onclick="goScreen('s-world')">World</div>
-        <div class="tab" onclick="goScreen('s-invite')">Squad</div>
-        <div class="tab" onclick="goScreen('s-room')">Room</div>
-        <div class="tab" onclick="goScreen('s-armory')">Armory</div>
-        <div class="tab" onclick="goScreen('s-server')">Servers</div>
-      </div>
-    </div>
-  </header>
-
-  <div class="main-body">
-    <nav class="nav-col">
-      <div class="nav-eyebrow">Select Mode</div>
-      <ul class="nav-list">
-        <li class="ni on" id="ni-mp"><a href="#" onclick="navSelect('ni-mp','MULTIPLAYER','GAME MODE','MP','Engage in 64-player battles across land, sea, and air. Nine game modes with dynamic Levolution events that reshape the battlefield.','CONQUEST,RUSH,OBLITERATION,DEATHMATCH,DEFUSE,DOMINATION',['24,812','1,340','18ms','47'],['Players Online','Active Servers','Avg Ping','Friends Online'],'▶ PLAY NOW');return false">
-          <span class="ni-num">01</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          <span class="ni-txt">Multiplayer</span><span class="ni-tag">NEW MAPS</span>
-        </a></li>
-        <li class="ni" id="ni-camp"><a href="#" onclick="navSelect('ni-camp','CAMPAIGN','STORY MODE','CAMP','Play as Tombstone squad through Shanghai, Azerbaijan, Singapore, Kunlun and the South China Sea. Your choices shape the outcome.','ACT I,ACT II,ACT III,ACT IV,ACT V,ACT VI',['Chapter 3','Checkpoint 7','62%','12h 40m'],['Current Chapter','Checkpoint','Completion','Playtime'],'▶ CONTINUE');return false">
-          <span class="ni-num">02</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-          <span class="ni-txt">Campaign</span><span class="ni-tag"></span>
-        </a></li>
-        <li class="ni" id="ni-co"><a href="#" onclick="navSelect('ni-co','CO-OP','CO-OPERATIVE','CO','Team up with a friend in cooperative missions. Coordinate tactics and complete challenging objectives that require precise communication.','MISSION 1,MISSION 2,MISSION 3,MISSION 4,MISSION 5,MISSION 6',['4 Missions','2 Unlocked','Normal','1 Ready'],['Total Missions','Unlocked','Difficulty','Friends Ready'],'▶ FIND PARTNER');return false">
-          <span class="ni-num">03</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          <span class="ni-txt">Co-Op</span><span class="ni-tag"></span>
-        </a></li>
-        <li class="ni" id="ni-sol"><a href="#" onclick="navSelect('ni-sol','SOLDIER','PROFILE','SOL','Manage your loadouts, weapons, gadgets, and assignments. Customize your kit with hundreds of attachments and vehicle configurations.','WEAPONS,GADGETS,VEHICLES,DOG TAGS,ASSIGNMENTS,STATS',['Rank 100','8,240 S/M','1,240 Kills','64% W/R'],['Rank','Score/Min','Total Kills','Win Rate'],'▶ MANAGE KIT');return false">
-          <span class="ni-num">04</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span class="ni-txt">Soldier</span><span class="ni-tag"></span>
-        </a></li>
-        <li class="ni" id="ni-world"><a href="#" onclick="goScreen('s-world');return false">
-          <span class="ni-num">05</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-          <span class="ni-txt">Choose World</span><span class="ni-tag">SET UP</span>
-        </a></li>
-        <li class="ni" id="ni-invite"><a href="#" onclick="goScreen('s-invite');return false">
-          <span class="ni-num">06</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
-          <span class="ni-txt">Invite Friends</span><span class="ni-tag"></span>
-        </a></li>
-        <li class="ni" id="ni-room"><a href="#" onclick="goScreen('s-room');return false">
-          <span class="ni-num">07</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-          <span class="ni-txt">Open Room</span><span class="ni-tag"></span>
-        </a></li>
-        <li class="ni" id="ni-reg"><a href="#" onclick="goScreen('s-reg');return false">
-          <span class="ni-num">08</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="16" y1="11" x2="22" y2="11"/><line x1="19" y1="8" x2="19" y2="14"/></svg>
-          <span class="ni-txt">Register</span><span class="ni-tag"></span>
-        </a></li>
-        <li class="ni" id="ni-armory"><a href="#" onclick="goScreen('s-armory');return false">
-          <span class="ni-num">09</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8V6a2 2 0 012-2h12a2 2 0 012 2v2"/><path d="M2 10h20v10a2 2 0 01-2 2H4a2 2 0 01-2-2V10z"/><line x1="12" y1="10" x2="12" y2="22"/></svg>
-          <span class="ni-txt">Armory</span><span class="ni-tag">LOADOUT</span>
-        </a></li>
-        <li class="ni" id="ni-server"><a href="#" onclick="goScreen('s-server');return false">
-          <span class="ni-num">10</span>
-          <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="9" width="20" height="4" rx="1"/><rect x="2" y="15" width="20" height="4" rx="1"/><circle cx="18" cy="5" r="1" fill="currentColor"/><circle cx="18" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="17" r="1" fill="currentColor"/></svg>
-          <span class="ni-txt">Server Browser</span><span class="ni-tag">LIVE</span>
-        </a></li>
-      </ul>
-    </nav>
-    <div class="detail-col">
-      <div class="det-bg" id="det-bg">MP</div>
-      <div class="det-eye" id="det-eye">GAME MODE</div>
-      <div class="det-ttl" id="det-ttl">MULTIPLAYER</div>
-      <div class="det-line"></div>
-      <p class="det-desc" id="det-desc">Engage in 64-player battles across land, sea, and air. Nine game modes with dynamic Levolution events that reshape the battlefield.</p>
-      <div class="det-opts" id="det-opts"></div>
-      <div class="det-cta">
-        <button class="btn-p" id="det-btn">▶ PLAY NOW</button>
-        <button class="btn-s">FIND SERVER</button>
-      </div>
-      <div class="det-stats">
-        <div class="ds"><div class="ds-v" id="ds1">24,812</div><div class="ds-l" id="dl1">Players Online</div></div>
-        <div class="ds"><div class="ds-v" id="ds2">1,340</div><div class="ds-l" id="dl2">Active Servers</div></div>
-        <div class="ds"><div class="ds-v" id="ds3">18ms</div><div class="ds-l" id="dl3">Avg Ping</div></div>
-        <div class="ds"><div class="ds-v" id="ds4">47</div><div class="ds-l" id="dl4">Friends Online</div></div>
-      </div>
-      <div class="faction-bar" id="faction-bar">
-        <div class="fb-title">Territory Control · Asia Pacific Theatre</div>
-        <div class="fb-track">
-          <div class="fb-usmc" id="fb-usmc" style="width:63%"></div>
-          <div class="fb-pla" id="fb-pla" style="width:37%"></div>
+  <div class="page">
+    <header class="header">
+      <a class="brand" href="#" aria-label="SuiMesh home">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
-        <div class="fb-labels">
-          <span class="fb-lbl"><span class="fb-lbl-dot" style="background:var(--blue)"></span><span id="fb-usmc-pct">USMC 63%</span></span>
-          <span class="fb-lbl"><span id="fb-pla-pct">PLA 37%</span><span class="fb-lbl-dot" style="background:#e03a3a;margin-left:5px;"></span></span>
+        <span class="brand-name">SuiMesh</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="active" href="#">GitHub</a>
+        <a href="#">Docs</a>
+      </nav>
+
+      <div class="header-cta">
+        <a class="outline-button" href="#">
+          <span>Get Started</span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="hero">
+      <section class="hero-copy">
+        <h1>
+          Own the Context<span class="accent">.</span><br>
+          Verify the Action<span class="accent">.</span>
+        </h1>
+
+        <p class="subtitle">
+          SuiMesh is the agent-to-agent communication protocol<br>
+          for the Sui ecosystem.
+        </p>
+
+        <div class="actions">
+          <a class="primary-button" href="#">
+            <span>Explore Protocol</span>
+            <span class="arrow">↗</span>
+          </a>
+          <a class="ghost-button" href="#">Read Docs</a>
         </div>
-      </div>
-    </div>
-  </div>
+      </section>
 
-  <footer class="ftr">
-    <div class="player">
-      <div class="emblem"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-      <div><div class="pn">Commander</div><div class="pr">Col. · Rank 100 · 8,240 Score/Min</div></div>
-      <div class="xpw">
-        <div class="xpr"><span class="xpl">XP Progress</span><span class="xpl">68%</span></div>
-        <div class="xpt"><div class="xpf"></div></div>
-      </div>
-    </div>
-    <div class="ticker"><div class="tl">Latest Update</div><div class="tt" id="ticker">Dragon's Teeth DLC — Pearl Market, Lumphini Garden now available · Double XP Weekend Active</div></div>
-    <div class="ftr-right">
-      <div class="fqb" onclick="goScreen('s-invite')">
-        <div class="fqb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg></div>
-        <span class="fqb-lbl">Friends</span>
-      </div>
-      <div class="fqb" onclick="showToast('Chat','Group chat is not available in this prototype.')">
-        <div class="fqb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-        <span class="fqb-lbl">Chat</span>
-      </div>
-      <div class="fqb" onclick="showToast('Alerts','3 new alerts — Double XP active, new DLC available, friend request from DELTA_KILO.')">
-        <div class="fqb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
-        <span class="fqb-lbl">Alerts</span>
-      </div>
-    </div>
-  </footer>
-</div>
-
-<!-- ═══════════════ SCREEN 2 — REGISTRATION ═══════════════ -->
-<div id="s-reg" class="screen">
-  <header class="hdr">
-    <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
-    <div class="hdr-r">
-      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk2"></span></div>
-      <div class="tabs">
-        <div class="tab" onclick="goScreen('s-main')">Home</div>
-        <div class="tab on">Register</div>
-        <div class="tab" onclick="goScreen('s-world')">World</div>
-        <div class="tab" onclick="goScreen('s-invite')">Squad</div>
-        <div class="tab" onclick="goScreen('s-room')">Room</div>
-        <div class="tab" onclick="goScreen('s-armory')">Armory</div>
-        <div class="tab" onclick="goScreen('s-server')">Servers</div>
-      </div>
-    </div>
-  </header>
-  <div class="reg-body">
-    <div class="reg-card">
-      <div class="sec-eye">New Soldier</div>
-      <div class="sec-ttl">Create Account</div>
-      <div class="sec-bar"></div>
-      <div class="field-row">
-        <div class="field" id="f-fname"><label>First Name</label><input type="text" id="inp-fname" placeholder="John" oninput="validateField('f-fname','inp-fname','name')"><span class="err-msg">Required</span></div>
-        <div class="field" id="f-lname"><label>Last Name</label><input type="text" id="inp-lname" placeholder="Doe" oninput="validateField('f-lname','inp-lname','name')"><span class="err-msg">Required</span></div>
-      </div>
-      <div class="field" id="f-tag"><label>Soldier Tag (Username)</label><input type="text" id="inp-tag" placeholder="TOMBSTONE_01" style="text-transform:uppercase;letter-spacing:2px;" oninput="validateField('f-tag','inp-tag','tag')"><span class="err-msg">Min 3 chars, letters & numbers only</span></div>
-      <div class="field" id="f-email"><label>Email Address</label><input type="email" id="inp-email" placeholder="soldier@battlefield.com" oninput="validateField('f-email','inp-email','email')"><span class="err-msg">Invalid email address</span></div>
-      <div class="field-row">
-        <div class="field" id="f-pwd"><label>Password</label>
-          <input type="password" id="inp-pwd" placeholder="••••••••" oninput="checkPwd()">
-          <div class="pwd-strength"><div class="pwd-fill" id="pwd-fill"></div></div>
+      <section class="hero-art" aria-hidden="true">
+        <div class="flower">
+          <div class="petal p1"></div>
+          <div class="petal p2"></div>
+          <div class="petal p3"></div>
+          <div class="petal p4"></div>
+          <div class="petal p5"></div>
+          <div class="core"></div>
         </div>
-        <div class="field" id="f-cpwd"><label>Confirm Password</label><input type="password" id="inp-cpwd" placeholder="••••••••" oninput="validateField('f-cpwd','inp-cpwd','confirm')"><span class="err-msg">Passwords do not match</span></div>
-      </div>
-      <div class="field"><label>Region</label>
-        <select id="inp-region">
-          <option>Asia Pacific — Shanghai</option>
-          <option>North America — New York</option>
-          <option>Europe — Frankfurt</option>
-          <option>South America — São Paulo</option>
-          <option>Middle East — Dubai</option>
-        </select>
-      </div>
-      <div class="check-row" onclick="toggleCheck('ck1')">
-        <div class="check-box" id="ck1"></div>
-        <span class="check-lbl">I agree to the Terms of Service and Privacy Policy</span>
-      </div>
-      <button class="btn-p" style="width:100%;justify-content:center;" id="reg-btn" onclick="submitReg()">CREATE SOLDIER PROFILE</button>
-      <div class="alt-link">Already have an account? <a onclick="goScreen('s-main')">Sign In →</a></div>
-    </div>
+      </section>
+    </main>
   </div>
-  <footer class="ftr">
-    <div class="player">
-      <div class="emblem"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-      <div><div class="pn">New Recruit</div><div class="pr">Unregistered · Create your profile to begin</div></div>
-    </div>
-    <div class="ticker"><div class="tl">System</div><div class="tt">Registration is free. Your Soldier Tag must be unique across all regions.</div></div>
-    <div class="ftr-right"><button class="btn-s" onclick="goScreen('s-main')">← BACK TO MENU</button></div>
-  </footer>
-</div>
-
-<!-- ═══════════════ SCREEN 3 — WORLD & IDENTITY ═══════════════ -->
-<div id="s-world" class="screen">
-  <header class="hdr">
-    <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
-    <div class="hdr-r">
-      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk3"></span></div>
-      <div class="tabs">
-        <div class="tab" onclick="goScreen('s-main')">Home</div>
-        <div class="tab" onclick="goScreen('s-reg')">Register</div>
-        <div class="tab on">World</div>
-        <div class="tab" onclick="goScreen('s-invite')">Squad</div>
-        <div class="tab" onclick="goScreen('s-room')">Room</div>
-        <div class="tab" onclick="goScreen('s-armory')">Armory</div>
-        <div class="tab" onclick="goScreen('s-server')">Servers</div>
-      </div>
-    </div>
-  </header>
-  <div class="world-body">
-    <div class="world-half">
-      <div class="sec-eye">Choose Your Theatre</div>
-      <div class="sec-ttl">World Selection</div>
-      <div class="sec-bar"></div>
-      <div class="world-grid">
-        <div class="world-card sel" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag"></span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Shanghai</div><div class="wc-sub">Urban Combat · High Density</div><div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div></div></div>
-        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag"></span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Kunlun Mts</div><div class="wc-sub">Mountain Warfare · Stealth</div><div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div></div></div>
-        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag"></span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Singapore</div><div class="wc-sub">Naval Ops · Mixed Terrain</div><div class="wc-status"><span class="ws-dot" style="background:var(--orange)"></span><span style="color:var(--orange);font-size:8px;letter-spacing:2px;">CONTESTED</span></div></div></div>
-        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag"></span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">South China Sea</div><div class="wc-sub">Naval Combat · Open Water</div><div class="wc-status"><span class="ws-dot" style="background:var(--red)"></span><span style="color:var(--red);font-size:8px;letter-spacing:2px;">HOSTILE</span></div></div></div>
-        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag"></span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Azerbaijan</div><div class="wc-sub">Desert Ops · Vehicle Heavy</div><div class="wc-status"><span class="ws-dot" style="background:var(--orange)"></span><span style="color:var(--orange);font-size:8px;letter-spacing:2px;">CONTESTED</span></div></div></div>
-        <div class="world-card" onclick="selWorld(this)"><div class="wc-img"><span class="wc-flag"></span><div class="wc-overlay"></div></div><div class="wc-info"><div class="wc-name">Hainan Resort</div><div class="wc-sub">Tropical · Air &amp; Sea</div><div class="wc-status"><span class="ws-dot" style="background:var(--green)"></span><span style="color:var(--green);font-size:8px;letter-spacing:2px;">ACTIVE</span></div></div></div>
-      </div>
-    </div>
-    <div class="world-half">
-      <div class="sec-eye">Define Your Role</div>
-      <div class="sec-ttl">Soldier Identity</div>
-      <div class="sec-bar"></div>
-      <div class="role-grid">
-        <div class="role-card sel" onclick="selRole(this)"><div class="rc-ico">⚔️</div><div class="rc-name">Assault</div><div class="rc-desc">Front-line fighter. High health, assault rifles, defibrillator.</div></div>
-        <div class="role-card" onclick="selRole(this)"><div class="rc-ico">🔧</div><div class="rc-name">Engineer</div><div class="rc-desc">Vehicle specialist. Rocket launchers, repair tools, mines.</div></div>
-        <div class="role-card" onclick="selRole(this)"><div class="rc-ico">💊</div><div class="rc-name">Support</div><div class="rc-desc">Team sustain. Ammo crates, LMGs, C4 explosives.</div></div>
-        <div class="role-card" onclick="selRole(this)"><div class="rc-ico">🎯</div><div class="rc-name">Recon</div><div class="rc-desc">Intelligence. Sniper rifles, MAV, motion sensors, C4.</div></div>
-      </div>
-      <div class="callsign-wrap">
-        <label>Callsign / Nickname</label>
-        <input type="text" id="callsign-input" placeholder="e.g. TOMBSTONE_01" style="text-transform:uppercase;" value="COMMANDER">
-      </div>
-    </div>
-  </div>
-  <div class="world-footer">
-    <button class="btn-s" onclick="goScreen('s-main')">← BACK</button>
-    <button class="btn-p" onclick="goScreen('s-invite')">CONFIRM & FIND SQUAD →</button>
-  </div>
-</div>
-
-<!-- ═══════════════ SCREEN 4 — INVITE FRIENDS ═══════════════ -->
-<div id="s-invite" class="screen">
-  <header class="hdr">
-    <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
-    <div class="hdr-r">
-      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk4"></span></div>
-      <div class="tabs">
-        <div class="tab" onclick="goScreen('s-main')">Home</div>
-        <div class="tab" onclick="goScreen('s-reg')">Register</div>
-        <div class="tab" onclick="goScreen('s-world')">World</div>
-        <div class="tab on">Squad</div>
-        <div class="tab" onclick="goScreen('s-room')">Room</div>
-        <div class="tab" onclick="goScreen('s-armory')">Armory</div>
-        <div class="tab" onclick="goScreen('s-server')">Servers</div>
-      </div>
-    </div>
-  </header>
-  <div class="invite-body">
-    <div class="invite-left">
-      <div class="sec-eye">Assemble Your Team</div>
-      <div class="sec-ttl">Invite Friends</div>
-      <div class="sec-bar" style="margin-bottom:20px;"></div>
-      <div class="friend-search">
-        <input class="fsearch-input" placeholder="Search soldiers..." oninput="filterFriends(this.value)">
-      </div>
-      <div class="friend-list" id="friend-list"></div>
-    </div>
-    <div class="invite-right">
-      <div class="sec-eye">Squad Roster</div>
-      <div class="sec-ttl" style="font-size:16px;">Squad Slots</div>
-      <div class="sec-bar" style="width:28px;margin-bottom:0;"></div>
-      <div style="font-size:9px;letter-spacing:2px;color:var(--dim);margin:10px 0 8px;">MEMBERS <span id="squad-count" style="color:var(--orange)">1</span> / 4</div>
-      <div class="squad-slots">
-        <div class="slot filled" id="slot-0"><span class="slot-num">01</span><div class="slot-avatar">CM</div><div><div class="slot-name">Commander</div><div class="slot-role">Assault · Host</div></div></div>
-        <div class="slot" id="slot-1"><span class="slot-num">02</span><div class="slot-avatar empty">?</div><div><span class="slot-empty-txt">Awaiting Soldier</span></div></div>
-        <div class="slot" id="slot-2"><span class="slot-num">03</span><div class="slot-avatar empty">?</div><div><span class="slot-empty-txt">Awaiting Soldier</span></div></div>
-        <div class="slot" id="slot-3"><span class="slot-num">04</span><div class="slot-avatar empty">?</div><div><span class="slot-empty-txt">Awaiting Soldier</span></div></div>
-      </div>
-      <div class="copy-link-btn" id="copy-btn" onclick="copyInviteLink()">⧉ COPY INVITE LINK</div>
-    </div>
-  </div>
-  <div class="invite-footer">
-    <button class="btn-s" onclick="goScreen('s-world')">← BACK</button>
-    <button class="btn-p" onclick="goScreen('s-room')">OPEN ROOM →</button>
-  </div>
-</div>
-
-<!-- ═══════════════ SCREEN 5 — OPEN ROOM ═══════════════ -->
-<div id="s-room" class="screen">
-  <header class="hdr">
-    <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
-    <div class="hdr-r">
-      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk5"></span></div>
-      <div class="tabs">
-        <div class="tab" onclick="goScreen('s-main')">Home</div>
-        <div class="tab" onclick="goScreen('s-reg')">Register</div>
-        <div class="tab" onclick="goScreen('s-world')">World</div>
-        <div class="tab" onclick="goScreen('s-invite')">Squad</div>
-        <div class="tab on">Room</div>
-        <div class="tab" onclick="goScreen('s-armory')">Armory</div>
-        <div class="tab" onclick="goScreen('s-server')">Servers</div>
-      </div>
-    </div>
-  </header>
-  <div class="room-body">
-    <div class="room-left">
-      <div class="sec-eye">Configure Match</div>
-      <div class="sec-ttl">Room Settings</div>
-      <div class="sec-bar" style="margin-bottom:20px;"></div>
-      <div class="form-grid">
-        <div class="field"><label>Room Name</label><input type="text" value="TOMBSTONE_OPS_001" style="letter-spacing:1px;"></div>
-        <div class="field"><label>Max Players</label>
-          <select>
-            <option>16 Players</option><option selected>32 Players</option><option>48 Players</option><option>64 Players</option>
-          </select>
-        </div>
-        <div class="field"><label>Region</label>
-          <select><option>Asia — Shanghai</option><option>NA — New York</option><option>EU — Frankfurt</option></select>
-        </div>
-        <div class="field"><label>Visibility</label>
-          <select><option>Public</option><option>Friends Only</option><option>Private</option></select>
-        </div>
-      </div>
-      <div style="margin:18px 0 8px;font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;">Game Mode</div>
-      <div class="toggle-row" id="mode-row">
-        <div class="tgl on" onclick="toggleMode(this)">Conquest</div>
-        <div class="tgl" onclick="toggleMode(this)">Rush</div>
-        <div class="tgl" onclick="toggleMode(this)">Deathmatch</div>
-        <div class="tgl" onclick="toggleMode(this)">Obliteration</div>
-        <div class="tgl" onclick="toggleMode(this)">Defuse</div>
-        <div class="tgl" onclick="toggleMode(this)">Domination</div>
-      </div>
-      <div style="margin-top:22px;">
-        <div class="slider-field">
-          <label>Ticket Count <span id="ticket-val">200</span></label>
-          <input type="range" min="50" max="800" value="200" oninput="document.getElementById('ticket-val').textContent=this.value">
-        </div>
-        <div class="slider-field">
-          <label>Vehicle Spawn Delay (s) <span id="veh-val">30</span></label>
-          <input type="range" min="0" max="120" value="30" oninput="document.getElementById('veh-val').textContent=this.value">
-        </div>
-      </div>
-      <div style="margin:10px 0 8px;font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;">Gameplay Toggles</div>
-      <div class="toggle-row">
-        <div class="tgl on" onclick="toggleTgl(this)">Friendly Fire</div>
-        <div class="tgl on" onclick="toggleTgl(this)">Vehicles</div>
-        <div class="tgl" onclick="toggleTgl(this)">Only Squad Leader Spawn</div>
-        <div class="tgl on" onclick="toggleTgl(this)">Minimap</div>
-        <div class="tgl" onclick="toggleTgl(this)">3D Spotting</div>
-        <div class="tgl on" onclick="toggleTgl(this)">Kill Cam</div>
-      </div>
-    </div>
-    <div class="room-right">
-      <div class="room-map-thumb">
-        <div class="map-label-overlay">
-          <div class="map-name" id="map-name">Shanghai</div>
-          <div class="map-mode">Conquest Large · 64p</div>
-        </div>
-        <div class="map-arrows">
-          <div class="map-arrow" onclick="prevMap()">▲</div>
-          <div class="map-arrow" onclick="nextMap()">▼</div>
-        </div>
-      </div>
-      <div style="font-size:8.5px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">Players In Lobby</div>
-      <div class="room-players" id="room-players"></div>
-      <div class="room-footer" style="padding:16px 0 0;border-top:1px solid var(--line);margin-top:12px;">
-        <button class="btn-s" onclick="goScreen('s-invite')">← BACK</button>
-        <button class="btn-p" id="launch-btn" onclick="launchRoom()">▶ LAUNCH ROOM</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════ SCREEN 6 — ARMORY ═══════════════ -->
-<div id="s-armory" class="screen">
-  <header class="hdr">
-    <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
-    <div class="hdr-r">
-      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE</span><span class="hmeta" id="clk6"></span></div>
-      <div class="tabs">
-        <div class="tab" onclick="goScreen('s-main')">Home</div>
-        <div class="tab" onclick="goScreen('s-reg')">Register</div>
-        <div class="tab" onclick="goScreen('s-world')">World</div>
-        <div class="tab" onclick="goScreen('s-invite')">Squad</div>
-        <div class="tab" onclick="goScreen('s-room')">Room</div>
-        <div class="tab on">Armory</div>
-        <div class="tab" onclick="goScreen('s-server')">Servers</div>
-      </div>
-    </div>
-  </header>
-  <div class="armory-body">
-    <div class="armory-left">
-      <div class="class-tabs" id="class-tabs">
-        <div class="ctab on" onclick="selectClass('assault',this)">Assault</div>
-        <div class="ctab" onclick="selectClass('engineer',this)">Engineer</div>
-        <div class="ctab" onclick="selectClass('support',this)">Support</div>
-        <div class="ctab" onclick="selectClass('recon',this)">Recon</div>
-      </div>
-      <div class="weapon-items" id="armory-weapon-list"></div>
-    </div>
-    <div class="armory-right" id="armory-detail">
-      <div style="opacity:.18;text-align:center;margin:auto;">
-        <div style="font-size:28px;font-weight:800;color:var(--muted);letter-spacing:4px;">ARMORY</div>
-        <div style="font-size:8.5px;letter-spacing:3px;color:var(--dim);margin-top:8px;">SELECT A WEAPON FROM THE LIST</div>
-      </div>
-    </div>
-  </div>
-  <div class="armory-footer">
-    <button class="btn-s" onclick="goScreen('s-main')">← BACK TO MENU</button>
-    <button class="btn-p" onclick="showToast('Loadout Saved','Weapon loadout confirmed. Entering matchmaking.');goScreen('s-room')">CONFIRM LOADOUT →</button>
-  </div>
-</div>
-
-<!-- ═══════════════ SCREEN 7 — SERVER BROWSER ═══════════════ -->
-<div id="s-server" class="screen">
-  <header class="hdr">
-    <div class="logo" onclick="goScreen('s-main')"><span class="l1">Battlefield</span><span class="l2">4</span><span class="l3">World Online</span></div>
-    <div class="hdr-r">
-      <div class="hdr-meta"><span class="hmeta"><span class="dot"></span>ONLINE · <span id="srv-total-disp">1,340</span> SERVERS</span><span class="hmeta" id="clk7"></span></div>
-      <div class="tabs">
-        <div class="tab" onclick="goScreen('s-main')">Home</div>
-        <div class="tab" onclick="goScreen('s-reg')">Register</div>
-        <div class="tab" onclick="goScreen('s-world')">World</div>
-        <div class="tab" onclick="goScreen('s-invite')">Squad</div>
-        <div class="tab" onclick="goScreen('s-room')">Room</div>
-        <div class="tab" onclick="goScreen('s-armory')">Armory</div>
-        <div class="tab on">Servers</div>
-      </div>
-    </div>
-  </header>
-  <div class="server-body">
-    <div class="server-left">
-      <div class="server-filter">
-        <select class="sf-select" id="sf-mode" onchange="filterServers()">
-          <option value="">All Modes</option>
-          <option>Conquest</option><option>Rush</option><option>Deathmatch</option>
-          <option>Obliteration</option><option>Defuse</option><option>Domination</option>
-        </select>
-        <select class="sf-select" id="sf-region" onchange="filterServers()">
-          <option value="">All Regions</option>
-          <option>AS-SHA</option><option>AS-SGP</option><option>NA-NYC</option>
-          <option>EU-FRA</option><option>SA-SAO</option>
-        </select>
-        <select class="sf-select" id="sf-slots" onchange="filterServers()">
-          <option value="">All Slots</option>
-          <option value="open">Has Open Slots</option>
-          <option value="full">Full Servers</option>
-        </select>
-        <input class="sf-search" id="sf-search" placeholder="Search server name…" oninput="filterServers()">
-        <div class="sf-btn" onclick="refreshServers()">↻ REFRESH</div>
-      </div>
-      <div class="server-table-head">
-        <span class="sth">Server Name</span>
-        <span class="sth">Map</span>
-        <span class="sth">Mode</span>
-        <span class="sth">Players</span>
-        <span class="sth">Ping</span>
-        <span class="sth">Region</span>
-      </div>
-      <div class="server-list" id="server-list"></div>
-    </div>
-    <div class="server-right" id="server-detail">
-      <div class="srv-detail-empty">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="9" width="20" height="4" rx="1"/><rect x="2" y="15" width="20" height="4" rx="1"/></svg>
-        <div style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;">Select a Server<br>to view details</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<script>
-/* ─── BOOT SEQUENCE ─── */
-const BOOT_LINES = [
-  '> Initializing BF4 World Online v2.4.1...',
-  '> Loading player profile: COMMANDER [Rank 100]',
-  '> Connecting to master server: AS-SHANGHAI-01 ... OK',
-  '> Authentication token: valid [expires in 23h 58m]',
-  '> Syncing soldier stats ... 1,240 kills · 64.2% W/R',
-  '> Loading DLC: Dragon\'s Teeth, Final Stand, Naval Strike',
-  '> Checking for friends online ... 47 found',
-  '> World Online ready. Welcome back, Commander.',
-];
-let bootDone = false;
-function runBoot() {
-  const container = document.getElementById('boot-lines');
-  const fill = document.getElementById('boot-fill');
-  const pct = document.getElementById('boot-pct');
-  let i = 0;
-  function addLine() {
-    if (i >= BOOT_LINES.length) { finishBoot(); return; }
-    const div = document.createElement('div');
-    div.className = 'bl';
-    div.textContent = BOOT_LINES[i];
-    div.style.animationDelay = '0s';
-    container.appendChild(div);
-    const p = Math.round(((i + 1) / BOOT_LINES.length) * 100);
-    fill.style.width = p + '%';
-    pct.textContent = p + '%';
-    i++;
-    setTimeout(addLine, 260);
-  }
-  addLine();
-}
-function finishBoot() {
-  if (bootDone) return;
-  bootDone = true;
-  setTimeout(() => {
-    document.getElementById('boot').classList.add('hide');
-    setTimeout(() => { document.getElementById('boot').style.display = 'none'; }, 650);
-  }, 400);
-}
-document.addEventListener('keydown', () => { if (!bootDone) finishBoot(); });
-document.getElementById('boot').addEventListener('click', () => { if (!bootDone) finishBoot(); });
-runBoot();
-
-/* ─── CANVAS BACKGROUND ─── */
-(function() {
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H;
-  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-  // Particles
-  const PARTICLES = Array.from({length: 80}, () => ({
-    x: Math.random(), y: Math.random(),
-    vx: (Math.random() - .5) * .00015, vy: (Math.random() - .5) * .00015,
-    r: Math.random() * 1.2 + .3, a: Math.random() * .5 + .1
-  }));
-  // Sweep lines
-  let sweep = 0;
-  function draw(t) {
-    ctx.clearRect(0, 0, W, H);
-    // Atmospheric glow
-    const g = ctx.createRadialGradient(W * .3, H * .6, 0, W * .3, H * .6, W * .55);
-    g.addColorStop(0, 'rgba(0,60,100,.06)');
-    g.addColorStop(1, 'transparent');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, W, H);
-    const g2 = ctx.createRadialGradient(W * .75, H * .3, 0, W * .75, H * .3, W * .4);
-    g2.addColorStop(0, 'rgba(232,123,0,.025)');
-    g2.addColorStop(1, 'transparent');
-    ctx.fillStyle = g2;
-    ctx.fillRect(0, 0, W, H);
-    // Particles
-    PARTICLES.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
-      if (p.y < 0) p.y = 1; if (p.y > 1) p.y = 0;
-      ctx.beginPath();
-      ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(140,190,220,${p.a * (.6 + .4 * Math.sin(t * .001 + p.x * 10))})`;
-      ctx.fill();
-    });
-    // Sweep line
-    sweep = (sweep + .18) % H;
-    const sg = ctx.createLinearGradient(0, sweep - 60, 0, sweep + 2);
-    sg.addColorStop(0, 'transparent');
-    sg.addColorStop(1, 'rgba(0,153,212,.04)');
-    ctx.fillStyle = sg;
-    ctx.fillRect(0, sweep - 60, W, 62);
-    requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
-})();
-
-/* ─── CLOCK ─── */
-function updateClocks() {
-  const now = new Date();
-  const str = now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit', second:'2-digit'}) + ' UTC+8';
-  ['clk','clk2','clk3','clk4','clk5','clk6','clk7'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = str;
-  });
-}
-setInterval(updateClocks, 1000);
-updateClocks();
-
-/* ─── LIVE PLAYER COUNT ─── */
-setInterval(() => {
-  const n = (24812 + Math.floor((Math.random() - .5) * 80)).toLocaleString();
-  const el = document.getElementById('cnt');
-  if (el) el.textContent = n;
-  if (document.getElementById('ds1')) document.getElementById('ds1').textContent = n;
-}, 4000);
-
-/* ─── TICKER ─── */
-const TICKS = [
-  "Dragon's Teeth DLC — Pearl Market, Lumphini Garden, Propaganda, Sunken Dragon · Double XP Weekend Active",
-  "Patch 1.9.2.0 — Netcode improvements, reduced rubber-banding, improved vehicle physics",
-  "Community Event: Operation Whiteout — Double XP until Sunday 23:59 UTC",
-  "Final Stand DLC — Hangar 21, Giants of Karelia, Hammerhead, Operation Whiteout — OUT NOW",
-];
-let ti = 0;
-setInterval(() => {
-  ti = (ti + 1) % TICKS.length;
-  const el = document.getElementById('ticker');
-  if (!el) return;
-  el.style.opacity = '0';
-  setTimeout(() => { el.textContent = TICKS[ti]; el.style.opacity = '1'; }, 380);
-}, 6000);
-
-/* ─── TOAST NOTIFICATION ─── */
-let toastTimer;
-function showToast(title, msg) {
-  const t = document.getElementById('toast');
-  document.getElementById('toast-title').textContent = title;
-  document.getElementById('toast-msg').textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
-}
-
-/* ─── SCREEN NAV ─── */
-function goScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-/* ─── MAIN MENU DETAIL PANEL ─── */
-function navSelect(niId, title, eye, bg, desc, optsStr, stats, labels, btn) {
-  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
-  document.getElementById(niId).classList.add('on');
-  document.getElementById('det-eye').textContent = eye;
-  document.getElementById('det-ttl').textContent = title;
-  document.getElementById('det-desc').textContent = desc;
-  document.getElementById('det-bg').textContent = bg;
-  document.getElementById('det-btn').textContent = btn;
-  const opts = optsStr.split(',');
-  const c = document.getElementById('det-opts');
-  c.innerHTML = '';
-  opts.forEach((o, i) => {
-    const d = document.createElement('div');
-    d.className = 'dopt';
-    d.innerHTML = `<div class="dopt-lbl">Mode ${String(i+1).padStart(2,'0')}</div><div class="dopt-txt">${o.trim()}</div>`;
-    c.appendChild(d);
-  });
-  ['ds1','ds2','ds3','ds4'].forEach((id, i) => { document.getElementById(id).textContent = stats[i]; });
-  ['dl1','dl2','dl3','dl4'].forEach((id, i) => { document.getElementById(id).textContent = labels[i]; });
-}
-(function() {
-  const opts = ['CONQUEST','RUSH','OBLITERATION','DEATHMATCH','DEFUSE','DOMINATION'];
-  const c = document.getElementById('det-opts');
-  opts.forEach((o, i) => {
-    const d = document.createElement('div');
-    d.className = 'dopt';
-    d.innerHTML = `<div class="dopt-lbl">Mode ${String(i+1).padStart(2,'0')}</div><div class="dopt-txt">${o}</div>`;
-    c.appendChild(d);
-  });
-})();
-
-/* ─── FORM VALIDATION ─── */
-function validateField(fieldId, inputId, type) {
-  const field = document.getElementById(fieldId);
-  const val = document.getElementById(inputId).value.trim();
-  let ok = false;
-  if (type === 'name') ok = val.length >= 1;
-  else if (type === 'tag') ok = /^[A-Za-z0-9_]{3,}$/.test(val);
-  else if (type === 'email') ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-  else if (type === 'confirm') ok = val === document.getElementById('inp-pwd').value && val.length > 0;
-  field.classList.toggle('ok', ok && val.length > 0);
-  field.classList.toggle('err', !ok && val.length > 0);
-}
-function checkPwd() {
-  const val = document.getElementById('inp-pwd').value;
-  const fill = document.getElementById('pwd-fill');
-  let strength = 0;
-  if (val.length >= 6) strength++;
-  if (val.length >= 10) strength++;
-  if (/[A-Z]/.test(val)) strength++;
-  if (/[0-9]/.test(val)) strength++;
-  if (/[^A-Za-z0-9]/.test(val)) strength++;
-  const pct = strength * 20;
-  const colors = ['','#e03a3a','#e87b00','#e87b00','#1fca5c','#1fca5c'];
-  fill.style.width = pct + '%';
-  fill.style.background = colors[strength] || '#e03a3a';
-}
-function toggleCheck(id) {
-  document.getElementById(id).classList.toggle('on');
-}
-function submitReg() {
-  const fields = [
-    ['f-fname','inp-fname','name'],
-    ['f-lname','inp-lname','name'],
-    ['f-tag','inp-tag','tag'],
-    ['f-email','inp-email','email'],
-    ['f-cpwd','inp-cpwd','confirm'],
-  ];
-  let allOk = true;
-  fields.forEach(([fid, iid, type]) => {
-    validateField(fid, iid, type);
-    if (!document.getElementById(fid).classList.contains('ok')) allOk = false;
-  });
-  const terms = document.getElementById('ck1').classList.contains('on');
-  if (!allOk || !terms) {
-    showToast('Validation Error', 'Please fill all required fields correctly and accept the terms.');
-    return;
-  }
-  const btn = document.getElementById('reg-btn');
-  btn.textContent = 'CREATING PROFILE…';
-  btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = '✓ PROFILE CREATED';
-    btn.style.background = 'var(--green)';
-    showToast('Welcome, Soldier!', 'Your profile has been created. Choose your world.');
-    setTimeout(() => goScreen('s-world'), 1200);
-  }, 1000);
-}
-
-/* ─── WORLD & ROLE SELECT ─── */
-function selWorld(el) {
-  document.querySelectorAll('.world-card').forEach(c => c.classList.remove('sel'));
-  el.classList.add('sel');
-}
-function selRole(el) {
-  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('sel'));
-  el.classList.add('sel');
-}
-
-/* ─── TOGGLE BUTTONS ─── */
-function toggleTgl(el) { el.classList.toggle('on'); }
-function toggleMode(el) {
-  document.querySelectorAll('#mode-row .tgl').forEach(t => t.classList.remove('on'));
-  el.classList.add('on');
-}
-
-/* ─── FRIENDS & SQUAD ─── */
-const FRIENDS = [
-  {init:'AX',name:'ALPHA_XRAY',status:'In Game',rank:'Rank 87',role:'Assault',online:true},
-  {init:'BZ',name:'BRAVO_ZERO',status:'Online',rank:'Rank 65',role:'Engineer',online:true},
-  {init:'CR',name:'CHARLIE_R',status:'Online',rank:'Rank 100',role:'Recon',online:true},
-  {init:'DK',name:'DELTA_KILO',status:'In Game',rank:'Rank 42',role:'Support',online:true},
-  {init:'EV',name:'ECHO_VICTOR',status:'Online',rank:'Rank 78',role:'Assault',online:true},
-  {init:'FX',name:'FOXTROT_X',status:'Away',rank:'Rank 55',role:'Engineer',online:false},
-  {init:'GM',name:'GHOST_MIKE',status:'Online',rank:'Rank 91',role:'Recon',online:true},
-  {init:'HB',name:'HAWK_BRAVO',status:'In Game',rank:'Rank 33',role:'Support',online:true},
-  {init:'IW',name:'IRON_WOLF',status:'Online',rank:'Rank 100',role:'Assault',online:true},
-  {init:'JR',name:'JULIET_ROMEO',status:'Away',rank:'Rank 22',role:'Engineer',online:false},
-  {init:'KN',name:'KILO_NOVA',status:'Online',rank:'Rank 66',role:'Recon',online:true},
-  {init:'LT',name:'LIMA_TWO',status:'In Game',rank:'Rank 49',role:'Support',online:true},
-];
-let squadSlots = ['Commander', null, null, null];
-
-function renderFriends(filter='') {
-  const list = document.getElementById('friend-list');
-  if (!list) return;
-  list.innerHTML = '';
-  FRIENDS.filter(f => f.name.toLowerCase().includes(filter.toLowerCase())).forEach(f => {
-    const inSquad = squadSlots.includes(f.name);
-    const div = document.createElement('div');
-    div.className = 'friend-item';
-    div.innerHTML = `
-      <div class="fi-avatar">${f.init}</div>
-      <div class="fi-info">
-        <div class="fi-name">${f.name}</div>
-        <div class="fi-status">
-          <span style="width:5px;height:5px;border-radius:50%;background:${f.online?'var(--green)':'var(--dim)'};display:inline-block;"></span>
-          ${f.status} · ${f.role}
-        </div>
-      </div>
-      <div class="fi-rank">${f.rank}</div>
-      <div class="fi-invite-btn ${inSquad?'sent':''}" onclick="inviteFriend('${f.name}','${f.init}','${f.role}',this)">
-        ${inSquad?'INVITED':'INVITE'}
-      </div>`;
-    list.appendChild(div);
-  });
-}
-function filterFriends(v) { renderFriends(v); }
-
-function inviteFriend(name, init, role, btn) {
-  const idx = squadSlots.indexOf(null);
-  if (idx === -1) { showToast('Squad Full','Your squad is already at maximum capacity (4 players).'); return; }
-  squadSlots[idx] = name;
-  btn.classList.add('sent');
-  btn.textContent = 'INVITED';
-  const slot = document.getElementById('slot-' + idx);
-  if (slot) {
-    slot.classList.add('filled');
-    slot.innerHTML = `
-      <span class="slot-num">0${idx+1}</span>
-      <div class="slot-avatar">${init}</div>
-      <div><div class="slot-name">${name}</div><div class="slot-role">${role}</div></div>
-      <span class="slot-remove" onclick="removeFromSquad(${idx},'${name}')">✕ REMOVE</span>`;
-  }
-  document.getElementById('squad-count').textContent = squadSlots.filter(Boolean).length;
-  showToast('Invite Sent', name + ' has been invited to your squad.');
-}
-function removeFromSquad(idx, name) {
-  squadSlots[idx] = null;
-  const slot = document.getElementById('slot-' + idx);
-  if (slot) {
-    slot.classList.remove('filled');
-    slot.innerHTML = `
-      <span class="slot-num">0${idx+1}</span>
-      <div class="slot-avatar empty">?</div>
-      <div><span class="slot-empty-txt">Awaiting Soldier</span></div>`;
-  }
-  document.getElementById('squad-count').textContent = squadSlots.filter(Boolean).length;
-  renderFriends();
-}
-renderFriends();
-
-function copyInviteLink() {
-  const link = 'https://bf4.world-online.gg/join?squad=TOMBSTONE&token=X9K2M';
-  navigator.clipboard.writeText(link).catch(() => {});
-  const btn = document.getElementById('copy-btn');
-  btn.textContent = '✓ LINK COPIED';
-  btn.classList.add('copied');
-  setTimeout(() => { btn.textContent = '⧉ COPY INVITE LINK'; btn.classList.remove('copied'); }, 2000);
-}
-
-/* ─── ROOM PLAYERS ─── */
-const ROOM_PLAYERS = [
-  {init:'CM',name:'Commander',ping:18,role:'Host'},
-  {init:'AX',name:'Alpha_Xray',ping:24,role:'Assault'},
-  {init:'BZ',name:'Bravo_Zero',ping:31,role:'Engineer'},
-  {init:'CR',name:'Charlie_R',ping:12,role:'Recon'},
-];
-function renderRoomPlayers() {
-  const c = document.getElementById('room-players');
-  if (!c) return;
-  c.innerHTML = '';
-  ROOM_PLAYERS.forEach(p => {
-    const d = document.createElement('div');
-    d.className = 'rp-item';
-    const pingColor = p.ping < 30 ? 'var(--green)' : p.ping < 80 ? 'var(--orange)' : 'var(--red)';
-    d.innerHTML = `
-      <div class="rp-avatar">${p.init}</div>
-      <div class="rp-name">${p.name}</div>
-      <div class="rp-ping" style="color:${pingColor}">${p.ping}ms</div>
-      ${p.role !== 'Host'
-        ? `<div class="rp-kick" onclick="kickPlayer(this,'${p.name}')">KICK</div>`
-        : `<div style="font-size:8px;letter-spacing:2px;color:var(--orange);">HOST</div>`}`;
-    c.appendChild(d);
-  });
-}
-function kickPlayer(btn, name) {
-  btn.closest('.rp-item').style.opacity = '0';
-  setTimeout(() => { btn.closest('.rp-item').remove(); }, 300);
-  showToast('Player Kicked', name + ' has been removed from the room.');
-}
-renderRoomPlayers();
-
-/* ─── MAP ROTATION ─── */
-const MAPS = ['Shanghai','Siege of Shanghai','Paracel Storm','Hainan Resort','Flood Zone','Zavod 311','Lancang Dam','Rogue Transmission','Operation Locker','Golmud Railway'];
-let mapIdx = 0;
-function nextMap() { mapIdx = (mapIdx + 1) % MAPS.length; document.getElementById('map-name').textContent = MAPS[mapIdx]; }
-function prevMap() { mapIdx = (mapIdx - 1 + MAPS.length) % MAPS.length; document.getElementById('map-name').textContent = MAPS[mapIdx]; }
-
-/* ─── LAUNCH ROOM ─── */
-function launchRoom() {
-  const btn = document.getElementById('launch-btn');
-  btn.textContent = 'LAUNCHING…';
-  btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = '✓ ROOM LIVE';
-    btn.style.background = 'var(--green)';
-    showToast('Room Live!', 'Your room is now active. Share the invite link to fill your squad.');
-  }, 1200);
-}
-/* ─── ARMORY ─── */
-const WEAPONS_DB = {
-  assault:{
-    primary:[
-      {name:'M416',cat:'Assault Rifle',dmg:62,rng:55,acc:70,fire:88,stab:74,att:{Sight:'PKA-S',Barrel:'Heavy Barrel',Grip:'Angled Grip',Accessory:'Laser Sight',Stock:'Folding Stock'}},
-      {name:'AEK-971',cat:'Assault Rifle',dmg:72,rng:44,acc:60,fire:98,stab:52,att:{Sight:'Reflex',Barrel:'Flash Hider',Grip:'Stubby Grip',Accessory:'Tactical Light',Stock:'Default'}},
-      {name:'AK-12',cat:'Assault Rifle',dmg:66,rng:58,acc:64,fire:80,stab:66,att:{Sight:'ACOG 4×',Barrel:'Suppressor',Grip:'Vertical Grip',Accessory:'None',Stock:'Default'}},
-      {name:'M16A4',cat:'Assault Rifle',dmg:60,rng:68,acc:78,fire:55,stab:82,att:{Sight:'MARS',Barrel:'Heavy Barrel',Grip:'Angled Grip',Accessory:'None',Stock:'Default'}},
-      {name:'FAMAS',cat:'Assault Rifle',dmg:55,rng:48,acc:56,fire:96,stab:50,att:{Sight:'Holographic',Barrel:'Muzzle Brake',Grip:'Angled Grip',Accessory:'Laser Sight',Stock:'Default'}},
-      {name:'CZ-805',cat:'Assault Rifle',dmg:64,rng:54,acc:72,fire:84,stab:76,att:{Sight:'PKA-S',Barrel:'Flash Hider',Grip:'Vertical Grip',Accessory:'None',Stock:'Default'}},
-    ],
-    secondary:[
-      {name:'P226',cat:'Pistol',dmg:78,rng:22,acc:62,fire:68,stab:72,att:{Sight:'None',Barrel:'Suppressor',Grip:'N/A',Accessory:'Laser Sight',Stock:'N/A'}},
-      {name:'M9',cat:'Pistol',dmg:70,rng:24,acc:65,fire:72,stab:68,att:{Sight:'None',Barrel:'Flash Hider',Grip:'N/A',Accessory:'None',Stock:'N/A'}},
-      {name:'.44 Magnum',cat:'Revolver',dmg:96,rng:20,acc:52,fire:38,stab:52,att:{Sight:'None',Barrel:'None',Grip:'N/A',Accessory:'None',Stock:'N/A'}},
-    ]
-  },
-  engineer:{
-    primary:[
-      {name:'SCAR-H SV',cat:'Battle Rifle',dmg:88,rng:72,acc:72,fire:58,stab:62,att:{Sight:'ACOG 4×',Barrel:'Heavy Barrel',Grip:'Angled Grip',Accessory:'None',Stock:'Default'}},
-      {name:'ACE 52 CQB',cat:'Battle Rifle',dmg:85,rng:62,acc:68,fire:65,stab:58,att:{Sight:'MARS',Barrel:'Flash Hider',Grip:'Stubby Grip',Accessory:'Tactical Light',Stock:'Default'}},
-      {name:'M4',cat:'Carbine',dmg:58,rng:46,acc:66,fire:88,stab:70,att:{Sight:'Reflex',Barrel:'Flash Hider',Grip:'Vertical Grip',Accessory:'Laser Sight',Stock:'Folding Stock'}},
-      {name:'PDW-R',cat:'PDW',dmg:50,rng:38,acc:62,fire:94,stab:64,att:{Sight:'Holographic',Barrel:'Suppressor',Grip:'Angled Grip',Accessory:'Laser Sight',Stock:'Default'}},
-    ],
-    secondary:[
-      {name:'MP7',cat:'PDW',dmg:45,rng:30,acc:62,fire:97,stab:60,att:{Sight:'Reflex',Barrel:'Suppressor',Grip:'N/A',Accessory:'Laser Sight',Stock:'N/A'}},
-      {name:'UMP-45',cat:'SMG',dmg:82,rng:28,acc:58,fire:68,stab:74,att:{Sight:'None',Barrel:'Flash Hider',Grip:'N/A',Accessory:'None',Stock:'N/A'}},
-    ]
-  },
-  support:{
-    primary:[
-      {name:'M249',cat:'LMG',dmg:62,rng:58,acc:52,fire:88,stab:42,att:{Sight:'ACOG 4×',Barrel:'Heavy Barrel',Grip:'Bipod',Accessory:'None',Stock:'Default'}},
-      {name:'PKP Pecheneg',cat:'LMG',dmg:85,rng:65,acc:48,fire:72,stab:38,att:{Sight:'PKA-S',Barrel:'Muzzle Brake',Grip:'Bipod',Accessory:'None',Stock:'Default'}},
-      {name:'QBB-95-1',cat:'LMG',dmg:60,rng:52,acc:58,fire:88,stab:56,att:{Sight:'Holographic',Barrel:'Flash Hider',Grip:'Stubby Grip',Accessory:'Laser Sight',Stock:'Default'}},
-      {name:'AWS',cat:'LMG',dmg:72,rng:60,acc:55,fire:78,stab:48,att:{Sight:'MARS',Barrel:'Heavy Barrel',Grip:'Bipod',Accessory:'None',Stock:'Default'}},
-    ],
-    secondary:[
-      {name:'SPAS-12',cat:'Shotgun',dmg:98,rng:12,acc:38,fire:42,stab:32,att:{Sight:'None',Barrel:'Choke',Grip:'N/A',Accessory:'None',Stock:'Folding Stock'}},
-      {name:'P226',cat:'Pistol',dmg:78,rng:22,acc:62,fire:68,stab:72,att:{Sight:'None',Barrel:'Suppressor',Grip:'N/A',Accessory:'Laser Sight',Stock:'N/A'}},
-    ]
-  },
-  recon:{
-    primary:[
-      {name:'M40A5',cat:'Bolt-Action Sniper',dmg:95,rng:96,acc:88,fire:24,stab:82,att:{Sight:'8× Scope',Barrel:'Heavy Barrel',Grip:'Bipod',Accessory:'None',Stock:'Default'}},
-      {name:'SV98',cat:'Bolt-Action Sniper',dmg:92,rng:94,acc:86,fire:22,stab:80,att:{Sight:'12× Scope',Barrel:'Suppressor',Grip:'Bipod',Accessory:'None',Stock:'Default'}},
-      {name:'Scout Elite',cat:'Bolt-Action Sniper',dmg:88,rng:90,acc:84,fire:28,stab:78,att:{Sight:'8× Scope',Barrel:'Heavy Barrel',Grip:'Bipod',Accessory:'None',Stock:'Default'}},
-      {name:'SR-2',cat:'Semi-Auto Sniper',dmg:75,rng:82,acc:78,fire:48,stab:66,att:{Sight:'ACOG 4×',Barrel:'Flash Hider',Grip:'Angled Grip',Accessory:'None',Stock:'Default'}},
-    ],
-    secondary:[
-      {name:'ACE 23',cat:'Assault Rifle',dmg:62,rng:55,acc:70,fire:82,stab:72,att:{Sight:'Holographic',Barrel:'Suppressor',Grip:'Angled Grip',Accessory:'None',Stock:'Default'}},
-      {name:'M416',cat:'Assault Rifle',dmg:62,rng:55,acc:70,fire:88,stab:74,att:{Sight:'PKA-S',Barrel:'Heavy Barrel',Grip:'Angled Grip',Accessory:'Laser Sight',Stock:'Folding Stock'}},
-    ]
-  }
-};
-
-let currentClass='assault';let selectedWeapon=null;
-
-function selectClass(cls,tabEl){
-  currentClass=cls;selectedWeapon=null;
-  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('on'));
-  tabEl.classList.add('on');
-  renderWeaponList();
-  const d=document.getElementById('armory-detail');
-  if(d)d.innerHTML='<div style="opacity:.18;text-align:center;margin:auto;"><div style="font-size:28px;font-weight:800;color:var(--muted);letter-spacing:4px;">ARMORY</div><div style="font-size:8.5px;letter-spacing:3px;color:var(--dim);margin-top:8px;">SELECT A WEAPON FROM THE LIST</div></div>';
-}
-
-function renderWeaponList(){
-  const list=document.getElementById('armory-weapon-list');
-  if(!list)return;
-  const data=WEAPONS_DB[currentClass];
-  let html='<div class="weapon-type-label">PRIMARY</div>';
-  data.primary.forEach((w,i)=>{
-    const init=w.name.replace(/[^A-Z0-9]/gi,'').substring(0,3).toUpperCase();
-    const sel=selectedWeapon===w?' sel':'';
-    html+=`<div class="wep-item${sel}" onclick="selectWeapon(${i},'primary')"><div class="wep-init">${init}</div><div class="wep-info"><div class="wep-name">${w.name}</div><div class="wep-cat">${w.cat}</div></div><div class="wep-slot-badge">PRI</div></div>`;
-  });
-  html+='<div class="weapon-type-label" style="margin-top:6px;border-top:1px solid var(--line);padding-top:12px;">SECONDARY</div>';
-  data.secondary.forEach((w,i)=>{
-    const init=w.name.replace(/[^A-Z0-9]/gi,'').substring(0,3).toUpperCase();
-    const sel=selectedWeapon===w?' sel':'';
-    html+=`<div class="wep-item${sel}" onclick="selectWeapon(${i},'secondary')"><div class="wep-init">${init}</div><div class="wep-info"><div class="wep-name">${w.name}</div><div class="wep-cat">${w.cat}</div></div><div class="wep-slot-badge">SEC</div></div>`;
-  });
-  list.innerHTML=html;
-}
-
-function selectWeapon(idx,slot){
-  const w=WEAPONS_DB[currentClass][slot][idx];
-  selectedWeapon=w;
-  renderWeaponList();
-  const detail=document.getElementById('armory-detail');
-  if(!detail)return;
-  const stats=[{l:'Damage',v:w.dmg},{l:'Range',v:w.rng},{l:'Accuracy',v:w.acc},{l:'Fire Rate',v:w.fire},{l:'Stability',v:w.stab}];
-  const statRows=stats.map(s=>`<div class="stat-row"><span class="stat-label">${s.l}</span><div class="stat-track"><div class="stat-fill" data-val="${s.v}" style="width:0%"></div></div><span class="stat-val">${s.v}</span></div>`).join('');
-  const attSlots=Object.entries(w.att).map(([k,v])=>`<div class="att-slot"><div class="att-slot-label">${k}</div><div class="att-slot-value${v==='None'||v==='N/A'?' none-val':''}">${v}</div></div>`).join('');
-  detail.innerHTML=`<div class="wep-detail-cat">${slot.toUpperCase()} WEAPON &nbsp;·&nbsp; ${currentClass.toUpperCase()}</div><div class="wep-detail-name">${w.name}</div><div class="wep-visual"><div class="wep-visual-line"></div><div class="wep-visual-text">${w.name.split(' ')[0]}</div><div class="wep-visual-label">${w.cat.toUpperCase()}</div></div><div class="stat-section-title">Combat Statistics</div>${statRows}<div class="stat-section-title" style="margin-top:14px;">Attachments</div><div class="att-grid">${attSlots}</div>`;
-  requestAnimationFrame(()=>{detail.querySelectorAll('.stat-fill').forEach(el=>{el.style.width=el.dataset.val+'%';});});
-}
-
-setTimeout(()=>renderWeaponList(),200);
-
-/* ─── SERVER BROWSER ─── */
-const SERVERS_DB=[
-  {name:'[DICE] Official #247',map:'Shanghai',mode:'Conquest',players:62,max:64,ping:18,ranked:true,official:true,region:'AS-SHA',owner:'DICE',rules:['Ranked','All Vehicles','No Cheats']},
-  {name:'[DICE] Official #251',map:'Paracel Storm',mode:'Rush',players:28,max:32,ping:22,ranked:true,official:true,region:'AS-SHA',owner:'DICE',rules:['Ranked','Hardcore OFF']},
-  {name:'[DICE] Official #188',map:'Operation Locker',mode:'Deathmatch',players:18,max:20,ping:19,ranked:true,official:true,region:'AS-SHA',owner:'DICE',rules:['Ranked','Infantry Only']},
-  {name:'ProGaming #12',map:'Golmud Railway',mode:'Conquest',players:48,max:64,ping:34,ranked:true,official:false,region:'AS-SHA',owner:'ProGaming_CN',rules:['Ranked','No Jets','Teambalance ON']},
-  {name:'SHANGHAI ELITE',map:'Rogue Transmission',mode:'Obliteration',players:22,max:32,ping:28,ranked:false,official:false,region:'AS-SHA',owner:'SH_Elite',rules:['Unranked','No Kill Cam','Squad Leader Spawn']},
-  {name:'APAC HARDCORE',map:'Hainan Resort',mode:'Conquest',players:56,max:64,ping:45,ranked:false,official:false,region:'AS-SGP',owner:'APAC_HC',rules:['Hardcore Mode','Friendly Fire ON','HUD Disabled']},
-  {name:'[DICE] Official #309',map:'Zavod 311',mode:'Rush',players:32,max:32,ping:52,ranked:true,official:true,region:'NA-NYC',owner:'DICE',rules:['Ranked']},
-  {name:'NA West Pro League',map:'Flood Zone',mode:'Defuse',players:8,max:10,ping:88,ranked:true,official:false,region:'NA-NYC',owner:'NA_WestPro',rules:['Ranked','No Vehicles','Hardcore Rules']},
-  {name:'[DICE] EU Official #44',map:'Lancang Dam',mode:'Domination',players:24,max:24,ping:142,ranked:true,official:true,region:'EU-FRA',owner:'DICE',rules:['Ranked']},
-  {name:'EU Competitive Arena',map:'Shanghai',mode:'Conquest',players:40,max:64,ping:155,ranked:true,official:false,region:'EU-FRA',owner:'EUComp',rules:['Ranked','No Artillery','Teambalance']},
-  {name:'OPERATION WHITEOUT',map:'Hammerhead',mode:'Conquest',players:44,max:64,ping:38,ranked:true,official:false,region:'AS-SGP',owner:'IronWolf',rules:['Ranked','All DLC Required','No Spawn Beacon']},
-  {name:'Casual Weekend',map:'Siege of Shanghai',mode:'Conquest',players:58,max:64,ping:26,ranked:false,official:false,region:'AS-SHA',owner:'CasualCrew',rules:['Unranked','Friendly Play','No Kick']},
-  {name:'Sniper Paradise',map:'Golmud Railway',mode:'Deathmatch',players:14,max:20,ping:30,ranked:false,official:false,region:'AS-SHA',owner:'SniperKing',rules:['Unranked','Sniper Only','No Vehicles']},
-  {name:'[DICE] Official #502',map:'Siege of Shanghai',mode:'Conquest',players:60,max:64,ping:20,ranked:true,official:true,region:'AS-SHA',owner:'DICE',rules:['Ranked']},
-  {name:'Brazil Mix Server',map:'Paracel Storm',mode:'Rush',players:12,max:32,ping:210,ranked:false,official:false,region:'SA-SAO',owner:'BRMix',rules:['Unranked','Open Rules']},
-];
-
-let filteredServers=[...SERVERS_DB];
-let selectedServer=null;
-
-function filterServers(){
-  const mode=document.getElementById('sf-mode')?.value||'';
-  const region=document.getElementById('sf-region')?.value||'';
-  const slots=document.getElementById('sf-slots')?.value||'';
-  const search=(document.getElementById('sf-search')?.value||'').toLowerCase();
-  filteredServers=SERVERS_DB.filter(s=>{
-    if(mode&&!s.mode.includes(mode))return false;
-    if(region&&s.region!==region)return false;
-    if(slots==='open'&&s.players>=s.max)return false;
-    if(slots==='full'&&s.players<s.max)return false;
-    if(search&&!s.name.toLowerCase().includes(search)&&!s.map.toLowerCase().includes(search))return false;
-    return true;
-  });
-  renderServerList();
-}
-
-function renderServerList(){
-  const list=document.getElementById('server-list');
-  if(!list)return;
-  list.innerHTML='';
-  filteredServers.forEach(s=>{
-    const pingColor=s.ping<50?'var(--green)':s.ping<100?'var(--orange)':'var(--red)';
-    const pct=s.players/s.max;
-    const pc=pct>=1?'full':pct>=.85?'near':'';
-    const div=document.createElement('div');
-    div.className='srv-row'+(selectedServer===s?' sel':'');
-    div.innerHTML=`<div class="srv-name"><span class="srv-name-text">${s.name}</span>${s.official?'<span class="srv-badge official">OFF</span>':''}${s.ranked?'<span class="srv-badge ranked">RNK</span>':''}</div><div class="srv-map">${s.map}</div><div class="srv-mode">${s.mode}</div><div class="srv-players ${pc}">${s.players}/${s.max}</div><div class="srv-ping" style="color:${pingColor}">${s.ping}ms</div><div class="srv-region">${s.region}</div>`;
-    div.onclick=()=>selectServer(s);
-    list.appendChild(div);
-  });
-}
-
-function selectServer(s){
-  selectedServer=s;
-  renderServerList();
-  const detail=document.getElementById('server-detail');
-  if(!detail)return;
-  const pingColor=s.ping<50?'var(--green)':s.ping<100?'var(--orange)':'var(--red)';
-  const pct=s.players/s.max;
-  const pc=pct>=1?'color:var(--red)':pct>=.85?'color:var(--orange)':'';
-  detail.innerHTML=`<div class="srv-detail-map"><div class="srv-detail-map-text"><div class="srv-detail-name">${s.name}</div><div class="srv-detail-owner">${s.map.toUpperCase()} &nbsp;·&nbsp; ${s.owner}</div></div></div><div class="srv-detail-stats"><div class="sds"><div class="sds-v" style="${pc}">${s.players}/${s.max}</div><div class="sds-l">Players</div></div><div class="sds"><div class="sds-v" style="color:${pingColor}">${s.ping}ms</div><div class="sds-l">Ping</div></div><div class="sds"><div class="sds-v">${s.mode}</div><div class="sds-l">Mode</div></div><div class="sds"><div class="sds-v">${s.region}</div><div class="sds-l">Region</div></div></div><div class="sdr-title">Server Rules</div>${s.rules.map(r=>`<div class="sdr-item"><div class="sdr-dot"></div>${r}</div>`).join('')}<div style="margin-top:auto;padding-top:14px;"><button class="btn-p" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="joinServer()">▶ JOIN SERVER</button><button class="btn-s" style="width:100%;justify-content:center;" onclick="showToast('Spectate','Spectator mode coming soon.')">◉ SPECTATE</button></div>`;
-}
-
-function joinServer(){
-  if(!selectedServer)return;
-  showToast('Connecting…','Joining '+selectedServer.name+' · '+selectedServer.map);
-  setTimeout(()=>{showToast('In Queue','Position #3 in queue · Est. wait: 14s');},2000);
-}
-
-function refreshServers(){
-  SERVERS_DB.forEach(s=>{const d=Math.floor((Math.random()-.4)*3);s.players=Math.max(0,Math.min(s.max,s.players+d));});
-  filterServers();
-  showToast('Refreshed','Server list updated · '+filteredServers.length+' servers found.');
-}
-
-setTimeout(()=>{filteredServers=[...SERVERS_DB];renderServerList();},300);
-
-/* ─── KEYBOARD SHORTCUTS ─── */
-document.addEventListener('keydown',function(e){
-  if(!bootDone)return;
-  const tag=e.target.tagName;
-  if(tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA')return;
-  if(e.key==='Escape')goScreen('s-main');
-  if(e.key==='1')goScreen('s-main');
-  if(e.key==='2')goScreen('s-reg');
-  if(e.key==='3')goScreen('s-world');
-  if(e.key==='4')goScreen('s-invite');
-  if(e.key==='5')goScreen('s-room');
-  if(e.key==='6')goScreen('s-armory');
-  if(e.key==='7')goScreen('s-server');
-});
-
-/* ─── FACTION TERRITORY CONTROL ─── */
-let factionUsmc=63;
-function updateFactionBar(){
-  const usmc=document.getElementById('fb-usmc');
-  const pla=document.getElementById('fb-pla');
-  const ul=document.getElementById('fb-usmc-pct');
-  const pl=document.getElementById('fb-pla-pct');
-  const pct=Math.round(factionUsmc);
-  if(usmc)usmc.style.width=pct+'%';
-  if(pla)pla.style.width=(100-pct)+'%';
-  if(ul)ul.textContent='USMC '+pct+'%';
-  if(pl)pl.textContent='PLA '+(100-pct)+'%';
-}
-setTimeout(updateFactionBar,600);
-setInterval(()=>{
-  factionUsmc+=(Math.random()-.5)*4;
-  factionUsmc=Math.max(28,Math.min(72,factionUsmc));
-  updateFactionBar();
-},5000);
-
-</script>
 </body>
 </html>
