@@ -4,117 +4,180 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SuiMesh</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta
+    name="description"
+    content="SuiMesh is the communication protocol layer for AI Agents on Sui, built for auditable coordination, traceable execution, and onchain memory."
+  >
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000000;
+      --bg-deep: #000000;
+      --panel: rgba(10, 15, 27, 0.42);
+      --panel-strong: rgba(14, 20, 34, 0.56);
+      --panel-soft: rgba(255, 255, 255, 0.035);
+      --border: rgba(173, 215, 255, 0.18);
+      --border-strong: rgba(145, 209, 255, 0.32);
+      --white: #f5f8ff;
+      --text: rgba(240, 246, 255, 0.92);
+      --muted: rgba(190, 205, 228, 0.76);
+      --dim: rgba(159, 179, 209, 0.54);
+      --blue: #7dcfff;
+      --blue-2: #4c91ff;
+      --blue-3: #16357a;
+      --glow: rgba(84, 150, 255, 0.34);
+      --shadow: 0 24px 80px rgba(0, 10, 28, 0.42);
+      --radius-xl: 36px;
+      --radius-lg: 28px;
+      --radius-md: 22px;
+      --radius-sm: 18px;
+      --page-width: 1540px;
+      --content-width: 1360px;
+      --hero-shift-x: 0px;
+      --hero-shift-y: 0px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    :root {
-      --bg: #020202;
-      --panel: rgba(255, 255, 255, 0.024);
-      --line: rgba(110, 184, 255, 0.3);
-      --line-soft: rgba(255, 255, 255, 0.12);
-      --text: #f1f6ff;
-      --muted: rgba(230, 239, 255, 0.78);
-      --subtle: rgba(170, 194, 229, 0.72);
-      --blue: #79c8ff;
-      --blue-strong: #2e78ff;
-      --page-width: 1600px;
+    html {
+      scroll-behavior: smooth;
     }
 
-    html,
     body {
-      min-height: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
       background: #000;
       color: var(--text);
-      font-family: "Inter", sans-serif;
+      font-family:
+        "SF Pro Display",
+        "SF Pro Text",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Inter",
+        "Segoe UI",
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      position: relative;
     }
 
-    body {
-      overflow-x: hidden;
-      background:
-        radial-gradient(circle at 73% 34%, rgba(52, 110, 255, 0.1), transparent 20%),
-        radial-gradient(circle at 82% 52%, rgba(44, 98, 255, 0.11), transparent 26%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0) 18%),
-        #020202;
-    }
-
-    body::before {
+    body::before,
+    body::after {
       content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background:
-        radial-gradient(circle at 23% 40%, rgba(255, 255, 255, 0.018), transparent 22%),
-        radial-gradient(circle at 78% 50%, rgba(69, 132, 255, 0.08), transparent 30%);
-      opacity: 0.95;
+      z-index: 0;
+    }
+
+    body::before {
+      display: none;
+    }
+
+    body::after {
+      display: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
     }
 
     .page {
       position: relative;
+      z-index: 1;
       width: min(100%, var(--page-width));
-      min-height: 100vh;
       margin: 0 auto;
-      padding: 24px 28px 48px;
-      isolation: isolate;
+      padding: 24px 28px 80px;
     }
 
-    .header {
-      display: grid;
-      grid-template-columns: 220px 1fr 220px;
-      align-items: center;
-      gap: 16px;
+    .glass {
       position: relative;
-      z-index: 4;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+        linear-gradient(180deg, rgba(6, 10, 18, 0.68), rgba(6, 10, 18, 0.34));
+      border: 1px solid var(--border);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -14px 24px rgba(14, 32, 74, 0.12),
+        var(--shadow);
+      overflow: hidden;
     }
 
-    .brand {
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 28%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 55%);
+      pointer-events: none;
+    }
+
+    .page-header {
+      display: grid;
+      grid-template-columns: 240px 1fr 240px;
+      align-items: center;
+      gap: 20px;
+      position: sticky;
+      top: 18px;
+      z-index: 20;
+      margin-bottom: 24px;
+    }
+
+    .brand-lockup {
       width: 186px;
       height: 66px;
       display: inline-flex;
       align-items: center;
       justify-content: flex-start;
       padding: 0 18px;
-      text-decoration: none;
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.018);
+      border-radius: 0;
+      background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.035);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.01);
     }
 
-    .brand-image {
+    .brand-lockup img {
       width: 118px;
       height: auto;
-      display: block;
     }
 
-    .nav {
-      display: flex;
-      align-items: center;
+    .main-nav {
+      display: inline-flex;
       justify-content: center;
-      gap: 44px;
+      align-items: center;
+      gap: 34px;
+      width: fit-content;
+      margin: 0 auto;
+      padding: 14px 22px;
+      border-radius: 999px;
     }
 
-    .nav a {
+    .main-nav a {
       position: relative;
-      text-decoration: none;
-      color: rgba(255, 255, 255, 0.86);
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: -0.025em;
+      font-size: 16px;
+      font-weight: 560;
+      color: rgba(243, 247, 255, 0.78);
+      letter-spacing: -0.02em;
+      transition: color 160ms ease;
     }
 
-    .nav a.active {
-      color: #fff;
-      font-weight: 700;
+    .main-nav a:hover,
+    .main-nav a.active {
+      color: var(--white);
     }
 
-    .nav a.active::after {
+    .main-nav a.active::after {
       content: "";
       position: absolute;
       left: 50%;
@@ -123,355 +186,1099 @@
       height: 5px;
       border-radius: 999px;
       transform: translateX(-50%);
-      background: #33a6ff;
-      box-shadow: 0 0 12px rgba(51, 166, 255, 1);
+      background: #33a8ff;
+      box-shadow: 0 0 14px rgba(63, 172, 255, 1);
     }
 
-    .header-cta {
+    .header-actions {
       display: flex;
       justify-content: flex-end;
+      gap: 10px;
+      align-items: center;
     }
 
-    .button-outline,
-    .button-primary,
-    .button-ghost {
-      border-radius: 999px;
-      text-decoration: none;
-      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-    }
-
-    .button-outline:hover,
-    .button-primary:hover,
-    .button-ghost:hover {
-      transform: translateY(-1px);
-    }
-
-    .button-outline {
-      min-width: 168px;
-      height: 50px;
+    .button,
+    .ghost-button,
+    .text-button {
+      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      color: #7ed3ff;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(8, 14, 26, 0.92), rgba(3, 8, 18, 0.6));
+      transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease;
+      isolation: isolate;
+    }
+
+    .button:hover,
+    .ghost-button:hover,
+    .text-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button {
+      min-width: 168px;
+      height: 50px;
+      padding: 0 22px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      color: #90dcff;
+      background:
+        linear-gradient(180deg, rgba(11, 18, 31, 0.92), rgba(6, 11, 20, 0.58));
       box-shadow:
-        inset 0 0 18px rgba(87, 169, 255, 0.08),
-        0 0 16px rgba(40, 116, 255, 0.16);
+        inset 0 0 24px rgba(96, 177, 255, 0.08),
+        0 0 20px rgba(44, 118, 255, 0.16);
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 620;
+      overflow: hidden;
+    }
+
+    .button::before,
+    .hero-button::before {
+      content: "";
+      position: absolute;
+      inset: -40% -20%;
+      background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.28) 48%, transparent 78%);
+      transform: translateX(-140%) rotate(2deg);
+      animation: sheen 5.8s linear infinite;
+      pointer-events: none;
+    }
+
+    .hero-button {
+      min-width: 286px;
+      height: 68px;
+      padding: 0 34px;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid rgba(163, 223, 255, 0.36);
+      color: var(--white);
+      background:
+        radial-gradient(circle at 15% 26%, rgba(255, 255, 255, 0.55), transparent 24%),
+        radial-gradient(circle at 86% 50%, rgba(41, 111, 255, 0.88), rgba(11, 43, 128, 0.98) 46%, rgba(6, 16, 36, 0.98) 100%),
+        linear-gradient(90deg, rgba(145, 206, 255, 0.95), rgba(45, 103, 255, 1));
+      box-shadow:
+        inset 0 0 26px rgba(255, 255, 255, 0.24),
+        inset -20px 0 28px rgba(30, 98, 255, 0.28),
+        0 0 34px rgba(60, 126, 255, 0.32);
+      font-size: 19px;
+      font-weight: 560;
+      letter-spacing: -0.024em;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-button-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .ghost-button {
+      min-width: 186px;
+      height: 68px;
+      padding: 0 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: rgba(247, 250, 255, 0.92);
+      background: rgba(255, 255, 255, 0.02);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+      font-size: 18px;
+      font-weight: 540;
+      letter-spacing: -0.024em;
+    }
+
+    .text-button {
+      color: #9fdcff;
+      font-size: 15px;
+      font-weight: 560;
+      letter-spacing: -0.02em;
+      padding: 8px 0;
     }
 
     .hero {
       display: grid;
-      grid-template-columns: minmax(620px, 0.94fr) minmax(640px, 1.06fr);
+      grid-template-columns: minmax(580px, 0.95fr) minmax(620px, 1.05fr);
       align-items: center;
-      min-height: calc(100vh - 112px);
+      gap: 28px;
+      width: min(100%, var(--content-width));
+      margin: 0 auto;
+      padding: 20px 0 44px;
+      min-height: calc(100vh - 160px);
+      position: relative;
+    }
+
+    .hero-copy {
+      max-width: 660px;
+      padding-left: 22px;
       position: relative;
       z-index: 2;
     }
 
-    .hero-copy {
-      max-width: 760px;
-      padding-left: 22px;
-      margin-top: -34px;
-    }
-
-    h1 {
-      font-size: clamp(72px, 6vw, 84px);
-      line-height: 0.97;
+    .hero-copy h1 {
+      font-size: clamp(72px, 5.8vw, 86px);
+      line-height: 0.95;
       font-weight: 300;
-      letter-spacing: -0.07em;
+      letter-spacing: -0.075em;
       color: #eef5ff;
-      text-wrap: balance;
     }
 
-    .headline-line {
-      display: block;
+    .hero-copy .accent {
+      color: #a3d6ff;
     }
 
-    .headline-line .accent {
-      color: #a8d8ff;
+    .hero-copy .subhead {
+      margin-top: 24px;
+      color: rgba(221, 233, 251, 0.78);
+      font-size: 24px;
+      line-height: 1.36;
+      font-weight: 420;
+      letter-spacing: -0.03em;
+      max-width: 590px;
     }
 
-    .subtitle {
-      margin-top: 32px;
-      max-width: 580px;
+    .hero-copy .support {
+      margin-top: 24px;
       color: var(--muted);
-      font-size: 19px;
+      font-size: 20px;
       line-height: 1.58;
       font-weight: 400;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.024em;
+      max-width: 580px;
     }
 
-    .actions {
+    .hero-actions {
       display: flex;
       align-items: center;
-      gap: 18px;
-      margin-top: 42px;
+      gap: 16px;
+      margin-top: 34px;
       flex-wrap: wrap;
     }
 
-    .button-primary {
-      min-width: 292px;
-      height: 68px;
-      display: inline-flex;
+    .hero-stage {
+      position: relative;
+      min-height: 760px;
+      display: grid;
+      place-items: center;
+      z-index: 2;
+    }
+
+    .hero-stage::before,
+    .hero-stage::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(18px);
+    }
+
+    .hero-stage::before {
+      inset: 12% 10% 10% 16%;
+      background: radial-gradient(circle, rgba(49, 110, 255, 0.15), transparent 66%);
+    }
+
+    .hero-stage::after {
+      width: 560px;
+      height: 560px;
+      top: 16%;
+      right: 12%;
+      background: radial-gradient(circle, rgba(121, 176, 255, 0.12), transparent 70%);
+    }
+
+    .hero-art-shell {
+      position: relative;
+      width: min(64vw, 920px);
+      max-width: 920px;
+      aspect-ratio: 1 / 1;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
-      padding: 0 34px;
-      border: 1px solid rgba(154, 219, 255, 0.38);
-      color: #fff;
+    }
+
+    .hero-art-shell::before {
+      content: "";
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
       background:
-        radial-gradient(circle at 16% 28%, rgba(255, 255, 255, 0.52), transparent 24%),
-        radial-gradient(circle at 84% 50%, rgba(42, 111, 255, 0.86), rgba(13, 44, 135, 0.98) 48%, rgba(6, 17, 38, 0.98) 100%),
-        linear-gradient(90deg, rgba(121, 196, 255, 0.96), rgba(38, 103, 255, 1));
-      box-shadow:
-        inset 0 0 28px rgba(255, 255, 255, 0.24),
-        inset -22px 0 32px rgba(28, 108, 255, 0.32),
-        0 0 28px rgba(53, 122, 255, 0.34);
-      font-size: 19px;
-      font-weight: 500;
-      letter-spacing: -0.025em;
+        radial-gradient(circle, rgba(74, 132, 255, 0.12), transparent 58%),
+        radial-gradient(circle at 45% 46%, rgba(255, 255, 255, 0.08), transparent 18%);
+      filter: blur(8px);
     }
 
-    .button-ghost {
-      min-width: 184px;
-      height: 68px;
+    .hero-flower {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 860px;
+      mix-blend-mode: screen;
+      filter:
+        saturate(1.05)
+        drop-shadow(0 0 34px rgba(44, 110, 255, 0.12))
+        drop-shadow(0 0 120px rgba(44, 110, 255, 0.08));
+    }
+
+    .metrics {
+      width: min(100%, var(--content-width));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      padding-top: 8px;
+    }
+
+    .metric-card,
+    .feature-card,
+    .protocol-card,
+    .surface-card,
+    .cta-card {
+      border-radius: var(--radius-lg);
+    }
+
+    .metric-card {
+      padding: 24px 24px 22px;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(171, 192, 224, 0.68);
+      margin-bottom: 10px;
+    }
+
+    .metric-value {
+      font-size: 22px;
+      font-weight: 620;
+      color: rgba(245, 248, 255, 0.96);
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .metric-copy {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .section {
+      width: min(100%, var(--content-width));
+      margin: 0 auto;
+      padding-top: 112px;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 30px;
+    }
+
+    .section-kicker {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 0 34px;
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      color: rgba(255, 255, 255, 0.93);
-      background: rgba(255, 255, 255, 0.012);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: -0.025em;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      font-size: 11px;
+      font-weight: 640;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(210, 228, 251, 0.84);
     }
 
-    .hero-microcopy {
-      margin-top: 22px;
-      color: var(--subtle);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.14em;
+    .section h2 {
+      font-size: clamp(44px, 4vw, 58px);
+      line-height: 0.98;
+      font-weight: 360;
+      letter-spacing: -0.06em;
+      color: rgba(241, 246, 255, 0.98);
+    }
+
+    .section p.lead {
+      margin-top: 16px;
+      font-size: 19px;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 720px;
+      letter-spacing: -0.024em;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      padding: 28px;
+      min-height: 250px;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .feature-card:hover,
+    .surface-card:hover,
+    .cta-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(170, 219, 255, 0.28);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -14px 24px rgba(14, 32, 74, 0.12),
+        0 30px 100px rgba(0, 12, 30, 0.42);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 22px;
+      font-size: 18px;
+      color: #d8efff;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.22), transparent 34%),
+        linear-gradient(180deg, rgba(93, 164, 255, 0.2), rgba(21, 68, 171, 0.18));
+      border: 1px solid rgba(164, 216, 255, 0.16);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    }
+
+    .feature-card h3,
+    .surface-card h3,
+    .cta-card h3 {
+      font-size: 28px;
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+      color: rgba(247, 250, 255, 0.98);
+      font-weight: 520;
+      margin-bottom: 14px;
+    }
+
+    .feature-card p,
+    .surface-card p,
+    .cta-card p {
+      font-size: 16px;
+      line-height: 1.68;
+      color: var(--muted);
+      letter-spacing: -0.02em;
+    }
+
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .protocol-card {
+      padding: 28px;
+    }
+
+    .protocol-shell {
+      display: grid;
+      gap: 16px;
+      height: 100%;
+    }
+
+    .protocol-trace {
+      border-radius: 24px;
+      padding: 22px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+        rgba(5, 9, 18, 0.52);
+      border: 1px solid rgba(166, 214, 255, 0.12);
+      min-height: 100%;
+    }
+
+    .trace-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      color: rgba(197, 215, 239, 0.7);
+      font-size: 13px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
-    .hero-art {
-      position: relative;
-      min-height: 760px;
+    .trace-dots {
       display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      overflow: visible;
+      gap: 6px;
     }
 
-    .hero-art::before {
-      content: "";
-      position: absolute;
-      right: 84px;
-      top: 110px;
-      width: 700px;
-      height: 700px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(35, 90, 255, 0.12), transparent 58%);
-      filter: blur(16px);
-      pointer-events: none;
+    .trace-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
     }
 
-    .hero-image {
-      width: min(58vw, 900px);
-      max-width: 900px;
+    .trace-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .trace-item {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 14px;
+      padding: 14px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .trace-item:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .trace-time {
+      color: rgba(153, 178, 215, 0.72);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 630;
+    }
+
+    .trace-body strong {
       display: block;
-      transform: translate(86px, 14px);
-      mix-blend-mode: screen;
-      filter: saturate(1.04) drop-shadow(0 0 28px rgba(34, 103, 255, 0.18));
+      color: rgba(245, 249, 255, 0.95);
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      margin-bottom: 5px;
+      font-weight: 560;
     }
 
-    .arrow {
-      font-size: 1.06em;
-      line-height: 1;
-      transform: translateY(-1px);
+    .trace-body span {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.62;
     }
 
-    @media (max-width: 1360px) {
+    .protocol-steps {
+      display: grid;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .step {
+      padding: 16px 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(168, 214, 255, 0.12);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+        rgba(7, 12, 20, 0.38);
+    }
+
+    .step-index {
+      color: #a6daff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .step h4 {
+      font-size: 20px;
+      letter-spacing: -0.03em;
+      color: rgba(246, 249, 255, 0.96);
+      margin-bottom: 8px;
+      font-weight: 560;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.62;
+    }
+
+    .surface-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .surface-card {
+      padding: 26px;
+      min-height: 220px;
+      border-radius: 28px;
+      transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+    }
+
+    .surface-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(166, 214, 255, 0.12);
+      background: rgba(255, 255, 255, 0.025);
+      color: rgba(199, 216, 239, 0.74);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 650;
+    }
+
+    .cta {
+      padding-top: 110px;
+    }
+
+    .cta-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: center;
+      padding: 34px;
+      border-radius: 34px;
+    }
+
+    .cta-copy p {
+      max-width: 720px;
+      margin-top: 14px;
+      font-size: 17px;
+      line-height: 1.68;
+      color: var(--muted);
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .footer {
+      width: min(100%, var(--content-width));
+      margin: 0 auto;
+      padding-top: 84px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      color: rgba(153, 176, 206, 0.68);
+      font-size: 14px;
+      letter-spacing: -0.015em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(22px);
+      transition:
+        opacity 700ms ease,
+        transform 700ms ease;
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes sheen {
+      0% {
+        transform: translateX(-140%) rotate(2deg);
+      }
+
+      100% {
+        transform: translateX(150%) rotate(2deg);
+      }
+    }
+
+    @keyframes drift {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes floatUp {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @media (max-width: 1320px) {
       .hero {
-        grid-template-columns: minmax(520px, 0.94fr) minmax(560px, 1.06fr);
+        grid-template-columns: minmax(520px, 1fr) minmax(560px, 1fr);
       }
 
-      .hero-copy {
-        max-width: 690px;
+      .hero-copy h1 {
+        font-size: clamp(64px, 5.8vw, 78px);
       }
 
-      h1 {
-        font-size: clamp(66px, 5.8vw, 80px);
+      .hero-copy .subhead {
+        font-size: 22px;
       }
 
-      .hero-image {
-        width: min(60vw, 820px);
-        transform: translate(52px, 8px);
+      .hero-art-shell {
+        width: min(68vw, 820px);
       }
     }
 
-    @media (max-width: 1200px) {
-      .header {
+    @media (max-width: 1180px) {
+      .page-header {
         grid-template-columns: 1fr;
         justify-items: center;
-        gap: 18px;
+        gap: 16px;
       }
 
-      .header-cta {
+      .header-actions {
         justify-content: center;
       }
 
       .hero {
         grid-template-columns: 1fr;
-        gap: 24px;
-        padding-top: 34px;
+        padding-top: 12px;
+        gap: 40px;
+        min-height: auto;
       }
 
       .hero-copy {
-        margin: 0 auto;
+        max-width: 760px;
         padding-left: 0;
+        margin: 0 auto;
         text-align: center;
       }
 
-      .subtitle {
+      .hero-copy .subhead,
+      .hero-copy .support {
         margin-left: auto;
         margin-right: auto;
       }
 
-      .actions {
+      .hero-actions {
         justify-content: center;
       }
 
-      .hero-art {
-        min-height: 560px;
-        justify-content: center;
+      .hero-stage {
+        min-height: 620px;
       }
 
-      .hero-art::before {
-        right: auto;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 36px;
+      .metrics,
+      .feature-grid,
+      .protocol-grid,
+      .surface-grid {
+        grid-template-columns: 1fr;
       }
 
-      .hero-image {
-        width: min(84vw, 760px);
-        transform: none;
+      .cta-card {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-actions {
+        justify-content: flex-start;
       }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 760px) {
       .page {
-        padding: 18px 16px 28px;
+        padding: 16px 16px 48px;
       }
 
-      .brand {
-        width: 100%;
-        max-width: 220px;
-        justify-content: center;
+      .brand-lockup {
+        width: 170px;
       }
 
-      .nav {
-        gap: 28px;
+      .brand-lockup img {
+        width: 110px;
       }
 
-      .nav a {
-        font-size: 16px;
+      .main-nav {
+        gap: 20px;
+        padding: 12px 16px;
       }
 
-      .hero {
-        min-height: auto;
+      .main-nav a {
+        font-size: 14px;
       }
 
-      h1 {
-        font-size: clamp(48px, 14vw, 68px);
+      .hero-copy h1 {
+        font-size: clamp(48px, 15vw, 64px);
       }
 
-      .subtitle {
+      .hero-sheet {
+        display: none;
+      }
+
+      .hero-copy .subhead {
+        font-size: 18px;
+      }
+
+      .hero-copy .support,
+      .section p.lead {
         font-size: 17px;
       }
 
-      .button-primary,
-      .button-ghost,
-      .button-outline {
+      .hero-actions {
+        gap: 12px;
+      }
+
+      .hero-button,
+      .ghost-button,
+      .button {
         width: 100%;
         min-width: 0;
       }
 
-      .actions {
-        gap: 14px;
+      .hero-stage {
+        min-height: 380px;
       }
 
-      .hero-art {
-        min-height: 360px;
+      .hero-art-shell {
+        width: min(95vw, 520px);
       }
 
-      .hero-image {
-        width: min(94vw, 520px);
+      .feature-card,
+      .metric-card,
+      .protocol-card,
+      .surface-card,
+      .cta-card {
+        padding: 22px;
       }
 
-      .hero-microcopy {
-        font-size: 11px;
-        line-height: 1.6;
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <header class="header">
-      <a class="brand" href="#" aria-label="SuiMesh home">
-        <img class="brand-image" src="./assets/brand-lockup.png" alt="SuiMesh">
+    <header class="page-header">
+      <a class="brand-lockup" href="#top" aria-label="SuiMesh home">
+        <img src="./assets/brand-lockup.png" alt="SuiMesh">
       </a>
 
-      <nav class="nav" aria-label="Primary navigation">
-        <a class="active" href="#">GitHub</a>
-        <a href="#">Docs</a>
+      <nav class="main-nav glass" aria-label="Primary navigation">
+        <a href="#overview">Whitepaper</a>
+        <a href="#protocol">Docs</a>
+        <a class="active" href="#surfaces">GitHub</a>
       </nav>
 
-      <div class="header-cta">
-        <a class="button-outline" href="#">
+      <div class="header-actions">
+        <a class="button" href="#cta">
           <span>Get Started</span>
-          <span class="arrow">↗</span>
+          <span aria-hidden="true">↗</span>
         </a>
       </div>
     </header>
 
-    <main class="hero">
-      <section class="hero-copy">
-        <h1>
-          <span class="headline-line">Own the Context<span class="accent">.</span></span>
-          <span class="headline-line">Verify the Action<span class="accent">.</span></span>
-        </h1>
+    <main>
+      <section class="hero" id="top">
+        <div class="hero-copy" data-reveal>
+          <h1>
+            Own the Context<span class="accent">.</span><br>
+            Verify the Action<span class="accent">.</span>
+          </h1>
 
-        <p class="subtitle">
-          SuiMesh is the communication protocol layer for AI Agents on Sui.
-        </p>
+          <p class="subhead">
+            An official-grade protocol layer for agent-to-agent coordination on Sui.
+          </p>
 
-        <div class="actions">
-          <a class="button-primary" href="#">
-            <span>Explore Protocol</span>
-            <span class="arrow">↗</span>
-          </a>
-          <a class="button-ghost" href="#">Read Docs</a>
+          <p class="support">
+            SuiMesh is the communication protocol layer for AI Agents on Sui, designed for auditable coordination, traceable execution, and memory that can be committed onchain.
+          </p>
+
+          <div class="hero-actions">
+            <a class="hero-button" href="#overview">
+              <span class="hero-button-label">Explore Protocol</span>
+            </a>
+            <a class="ghost-button glass" href="#protocol">Read Docs</a>
+          </div>
         </div>
 
-        <p class="hero-microcopy">
-          Building the coordination infrastructure for autonomous agents.
-        </p>
+        <div class="hero-stage" id="hero-stage" data-reveal>
+          <div class="hero-art-shell">
+            <img class="hero-flower" src="./assets/hero-flower-transparent.png" alt="">
+          </div>
+        </div>
       </section>
 
-      <section class="hero-art" aria-hidden="true">
-        <img class="hero-image" src="./assets/hero-flower-transparent.png" alt="">
+      <section class="metrics">
+        <article class="metric-card glass" data-reveal>
+          <div class="metric-label">Official capability</div>
+          <div class="metric-value">Auditable coordination</div>
+          <p class="metric-copy">
+            Agent decisions, tool invocations, and downstream actions can be anchored to an inspectable trail instead of vanishing into black-box workflows.
+          </p>
+        </article>
+
+        <article class="metric-card glass" data-reveal>
+          <div class="metric-label">Official capability</div>
+          <div class="metric-value">Traceable execution</div>
+          <p class="metric-copy">
+            SuiMesh makes every context handoff verifiable, so operators can understand who acted, what was approved, and what changed at each step.
+          </p>
+        </article>
+
+        <article class="metric-card glass" data-reveal>
+          <div class="metric-label">Official capability</div>
+          <div class="metric-value">Onchain memory</div>
+          <p class="metric-copy">
+            Long-running agent systems need memory that survives sessions. SuiMesh turns that memory into infrastructure instead of an afterthought.
+          </p>
+        </article>
+      </section>
+
+      <section class="section" id="overview">
+        <div class="section-head" data-reveal>
+          <div class="section-kicker glass">Why SuiMesh</div>
+          <h2>Designed to make multi-agent systems official, inspectable, and production-ready.</h2>
+          <p class="lead">
+            The hardest part of agent collaboration is not generating output. It is keeping context intact, enforcing human intent, and preserving a trustworthy record when multiple autonomous systems coordinate over time.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card glass" data-reveal>
+            <div class="feature-icon">01</div>
+            <h3>Auditable execution</h3>
+            <p>
+              Every action can produce a durable receipt. That means teams can inspect historical behavior, validate outcomes, and understand why an agent chose a path before trusting it at scale.
+            </p>
+          </article>
+
+          <article class="feature-card glass" data-reveal>
+            <div class="feature-icon">02</div>
+            <h3>Traceable coordination</h3>
+            <p>
+              Context is no longer passed informally between agents. SuiMesh preserves the handoff layer itself, so distributed workflows become understandable instead of opaque.
+            </p>
+          </article>
+
+          <article class="feature-card glass" data-reveal>
+            <div class="feature-icon">03</div>
+            <h3>Memory on Sui</h3>
+            <p>
+              Shared memory is treated as first-class protocol infrastructure. Important state can be committed onchain, making recall, replay, and collaborative continuity far more reliable.
+            </p>
+          </article>
+
+          <article class="feature-card glass" data-reveal>
+            <div class="feature-icon">04</div>
+            <h3>Policy before action</h3>
+            <p>
+              Official systems need more than fast agents. They need a verified decision surface where rules, approvals, and operational intent are checked before actions propagate.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="protocol">
+        <div class="section-head" data-reveal>
+          <div class="section-kicker glass">Protocol Flow</div>
+          <h2>From agent intent to verifiable record.</h2>
+          <p class="lead">
+            SuiMesh is built around a simple idea: coordination should be observable. The protocol does not just move messages. It preserves the context, the verification step, and the resulting memory layer.
+          </p>
+        </div>
+
+        <div class="protocol-grid">
+          <article class="protocol-card glass" data-reveal>
+            <div class="protocol-shell">
+              <div class="protocol-trace">
+                <div class="trace-head">
+                  <span>Execution Trace</span>
+                  <div class="trace-dots" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+
+                <div class="trace-list">
+                  <div class="trace-item">
+                    <div class="trace-time">Step 01</div>
+                    <div class="trace-body">
+                      <strong>Capture context</strong>
+                      <span>Agent state, input references, and operating constraints are packaged into a shared context envelope.</span>
+                    </div>
+                  </div>
+
+                  <div class="trace-item">
+                    <div class="trace-time">Step 02</div>
+                    <div class="trace-body">
+                      <strong>Verify the action</strong>
+                      <span>Intended execution is checked against policy, user intent, and permission rules before handoff.</span>
+                    </div>
+                  </div>
+
+                  <div class="trace-item">
+                    <div class="trace-time">Step 03</div>
+                    <div class="trace-body">
+                      <strong>Commit shared memory</strong>
+                      <span>Relevant outputs and state deltas become durable memory, suitable for inspection, replay, or onchain anchoring.</span>
+                    </div>
+                  </div>
+
+                  <div class="trace-item">
+                    <div class="trace-time">Step 04</div>
+                    <div class="trace-body">
+                      <strong>Replay and inspect</strong>
+                      <span>Operators, downstream agents, and governance surfaces can reconstruct what happened without relying on guesswork.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="protocol-card glass" data-reveal>
+            <div class="protocol-shell">
+              <div class="protocol-steps">
+                <div class="step">
+                  <div class="step-index">Layer One</div>
+                  <h4>Context integrity</h4>
+                  <p>
+                    Shared context should survive agent boundaries without losing provenance, approval state, or operational assumptions.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <div class="step-index">Layer Two</div>
+                  <h4>Verification before execution</h4>
+                  <p>
+                    Official AI systems need a control point between intent and action. SuiMesh introduces that layer natively.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <div class="step-index">Layer Three</div>
+                  <h4>Memory as infrastructure</h4>
+                  <p>
+                    Rather than treating memory as transient app state, SuiMesh allows collaborative memory to become an auditable protocol primitive.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="surfaces">
+        <div class="section-head" data-reveal>
+          <div class="section-kicker glass">Build Surfaces</div>
+          <h2>Everything needed to evaluate, integrate, and ship.</h2>
+          <p class="lead">
+            The site should feel official because the product itself is infrastructure. These entry points are intentionally simple: learn the protocol, inspect the implementation, and understand the operating model.
+          </p>
+        </div>
+
+        <div class="surface-grid">
+          <article class="surface-card glass" data-reveal>
+            <div class="surface-meta">Read</div>
+            <h3>Whitepaper</h3>
+            <p>
+              Understand the protocol model, the memory layer, and why auditable agent collaboration needs a dedicated coordination surface.
+            </p>
+            <div style="margin-top: 22px;">
+              <a class="text-button" href="#top">
+                <span>Open whitepaper</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="surface-card glass" data-reveal>
+            <div class="surface-meta">Inspect</div>
+            <h3>GitHub</h3>
+            <p>
+              Review the implementation directly, follow protocol evolution, and anchor trust in public source rather than product claims alone.
+            </p>
+            <div style="margin-top: 22px;">
+              <a class="text-button" href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">
+                <span>Visit repository</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="surface-card glass" data-reveal>
+            <div class="surface-meta">Integrate</div>
+            <h3>Protocol docs</h3>
+            <p>
+              Explore the message model, execution lifecycle, and integration path for Sui-native systems that need reliable agent coordination.
+            </p>
+            <div style="margin-top: 22px;">
+              <a class="text-button" href="#protocol">
+                <span>Read documentation</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section cta" id="cta">
+        <div class="cta-card glass" data-reveal>
+          <div class="cta-copy">
+            <div class="section-kicker glass" style="margin-bottom: 16px;">Official Launch Surface</div>
+            <h3>Build agent systems that can be inspected, governed, and trusted.</h3>
+            <p>
+              SuiMesh is for teams that believe agent coordination needs more than orchestration. It needs protocol-level guarantees around context, verification, and memory.
+            </p>
+          </div>
+
+          <div class="cta-actions">
+            <a class="hero-button" href="#overview">
+              <span>Explore Protocol</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a class="ghost-button glass" href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
       </section>
     </main>
+
+    <footer class="footer">
+      <div>SuiMesh · Auditable communication infrastructure for AI Agents on Sui.</div>
+      <div class="footer-links">
+        <a href="#overview">Whitepaper</a>
+        <a href="#protocol">Docs</a>
+        <a href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </footer>
   </div>
+
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.18 }
+    );
+
+    document.querySelectorAll("[data-reveal]").forEach((node) => observer.observe(node));
+  </script>
 </body>
 </html>
