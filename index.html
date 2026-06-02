@@ -53,12 +53,11 @@
       background: #000;
       color: var(--text);
       font-family:
-        "SF Pro Display",
-        "SF Pro Text",
-        -apple-system,
-        BlinkMacSystemFont,
+        "PingFang SC",
         "Inter",
-        "Segoe UI",
+        "SF Pro Display",
+        "Helvetica Neue",
+        Arial,
         sans-serif;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
@@ -166,28 +165,14 @@
     .main-nav a {
       position: relative;
       font-size: 16px;
-      font-weight: 560;
+      font-weight: 600;
       color: rgba(243, 247, 255, 0.78);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       transition: color 160ms ease;
     }
 
-    .main-nav a:hover,
-    .main-nav a.active {
+    .main-nav a:hover {
       color: var(--white);
-    }
-
-    .main-nav a.active::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: -14px;
-      width: 5px;
-      height: 5px;
-      border-radius: 999px;
-      transform: translateX(-50%);
-      background: #33a8ff;
-      box-shadow: 0 0 14px rgba(63, 172, 255, 1);
     }
 
     .header-actions {
@@ -205,6 +190,9 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
       transition:
         transform 180ms ease,
         box-shadow 180ms ease,
@@ -232,26 +220,17 @@
         inset 0 0 24px rgba(96, 177, 255, 0.08),
         0 0 20px rgba(44, 118, 255, 0.16);
       font-size: 16px;
-      font-weight: 620;
+      font-weight: 600;
       overflow: hidden;
     }
 
-    .button::before,
-    .hero-button::before {
-      content: "";
-      position: absolute;
-      inset: -40% -20%;
-      background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.28) 48%, transparent 78%);
-      transform: translateX(-140%) rotate(2deg);
-      animation: sheen 5.8s linear infinite;
-      pointer-events: none;
-    }
-
     .hero-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       min-width: 286px;
       height: 68px;
       padding: 0 34px;
-      justify-content: center;
       border-radius: 999px;
       border: 1px solid rgba(163, 223, 255, 0.36);
       color: var(--white);
@@ -263,9 +242,9 @@
         inset 0 0 26px rgba(255, 255, 255, 0.24),
         inset -20px 0 28px rgba(30, 98, 255, 0.28),
         0 0 34px rgba(60, 126, 255, 0.32);
-      font-size: 19px;
-      font-weight: 560;
-      letter-spacing: -0.024em;
+      font-size: 20px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
       overflow: hidden;
       text-align: center;
     }
@@ -274,9 +253,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
+      gap: 10px;
+      line-height: 1;
+      white-space: nowrap;
       text-align: center;
       pointer-events: none;
+      position: relative;
+      z-index: 1;
     }
 
     .ghost-button {
@@ -289,15 +272,15 @@
       background: rgba(255, 255, 255, 0.02);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
       font-size: 18px;
-      font-weight: 540;
-      letter-spacing: -0.024em;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
 
     .text-button {
       color: #9fdcff;
       font-size: 15px;
-      font-weight: 560;
-      letter-spacing: -0.02em;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       padding: 8px 0;
     }
 
@@ -321,10 +304,10 @@
     }
 
     .hero-copy h1 {
-      font-size: clamp(72px, 5.8vw, 86px);
-      line-height: 0.95;
-      font-weight: 300;
-      letter-spacing: -0.075em;
+      font-size: clamp(64px, 5.2vw, 80px);
+      line-height: 1.02;
+      font-weight: 500;
+      letter-spacing: -0.045em;
       color: #eef5ff;
     }
 
@@ -336,20 +319,20 @@
       margin-top: 24px;
       color: rgba(221, 233, 251, 0.78);
       font-size: 24px;
-      line-height: 1.36;
-      font-weight: 420;
-      letter-spacing: -0.03em;
-      max-width: 590px;
+      line-height: 1.45;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      max-width: 540px;
     }
 
     .hero-copy .support {
       margin-top: 24px;
       color: var(--muted);
-      font-size: 20px;
-      line-height: 1.58;
-      font-weight: 400;
-      letter-spacing: -0.024em;
-      max-width: 580px;
+      font-size: 19px;
+      line-height: 1.72;
+      font-weight: 450;
+      letter-spacing: -0.01em;
+      max-width: 560px;
     }
 
     .hero-actions {
@@ -423,47 +406,10 @@
         drop-shadow(0 0 120px rgba(44, 110, 255, 0.08));
     }
 
-    .metrics {
-      width: min(100%, var(--content-width));
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-      padding-top: 8px;
-    }
-
-    .metric-card,
     .feature-card,
     .protocol-card,
-    .surface-card,
-    .cta-card {
+    .surface-card {
       border-radius: var(--radius-lg);
-    }
-
-    .metric-card {
-      padding: 24px 24px 22px;
-    }
-
-    .metric-label {
-      font-size: 12px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(171, 192, 224, 0.68);
-      margin-bottom: 10px;
-    }
-
-    .metric-value {
-      font-size: 22px;
-      font-weight: 620;
-      color: rgba(245, 248, 255, 0.96);
-      letter-spacing: -0.03em;
-      margin-bottom: 8px;
-    }
-
-    .metric-copy {
-      font-size: 15px;
-      line-height: 1.55;
-      color: var(--muted);
     }
 
     .section {
@@ -492,25 +438,25 @@
     }
 
     .section h2 {
-      font-size: clamp(44px, 4vw, 58px);
-      line-height: 0.98;
-      font-weight: 360;
-      letter-spacing: -0.06em;
+      font-size: clamp(38px, 3.5vw, 50px);
+      line-height: 1.14;
+      font-weight: 600;
+      letter-spacing: -0.03em;
       color: rgba(241, 246, 255, 0.98);
     }
 
     .section p.lead {
       margin-top: 16px;
-      font-size: 19px;
-      line-height: 1.65;
+      font-size: 18px;
+      line-height: 1.78;
       color: var(--muted);
       max-width: 720px;
-      letter-spacing: -0.024em;
+      letter-spacing: -0.01em;
     }
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
     }
 
@@ -524,8 +470,7 @@
     }
 
     .feature-card:hover,
-    .surface-card:hover,
-    .cta-card:hover {
+    .surface-card:hover {
       transform: translateY(-2px);
       border-color: rgba(170, 219, 255, 0.28);
       box-shadow:
@@ -551,23 +496,21 @@
     }
 
     .feature-card h3,
-    .surface-card h3,
-    .cta-card h3 {
+    .surface-card h3 {
       font-size: 28px;
-      line-height: 1.04;
-      letter-spacing: -0.045em;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
       color: rgba(247, 250, 255, 0.98);
-      font-weight: 520;
+      font-weight: 650;
       margin-bottom: 14px;
     }
 
     .feature-card p,
-    .surface-card p,
-    .cta-card p {
+    .surface-card p {
       font-size: 16px;
-      line-height: 1.68;
+      line-height: 1.72;
       color: var(--muted);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
 
     .protocol-grid {
@@ -650,9 +593,9 @@
       display: block;
       color: rgba(245, 249, 255, 0.95);
       font-size: 16px;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       margin-bottom: 5px;
-      font-weight: 560;
+      font-weight: 650;
     }
 
     .trace-body span {
@@ -687,10 +630,10 @@
 
     .step h4 {
       font-size: 20px;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.015em;
       color: rgba(246, 249, 255, 0.96);
       margin-bottom: 8px;
-      font-weight: 560;
+      font-weight: 650;
     }
 
     .step p {
@@ -731,94 +674,47 @@
       font-weight: 650;
     }
 
-    .cta {
-      padding-top: 110px;
-    }
-
-    .cta-card {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 20px;
-      align-items: center;
-      padding: 34px;
-      border-radius: 34px;
-    }
-
-    .cta-copy p {
-      max-width: 720px;
-      margin-top: 14px;
-      font-size: 17px;
-      line-height: 1.68;
-      color: var(--muted);
-    }
-
-    .cta-actions {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
     .footer {
       width: min(100%, var(--content-width));
       margin: 0 auto;
-      padding-top: 84px;
+      padding-top: 78px;
       display: flex;
       justify-content: space-between;
       gap: 16px;
       align-items: center;
       color: rgba(153, 176, 206, 0.68);
       font-size: 14px;
-      letter-spacing: -0.015em;
+      letter-spacing: -0.01em;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .footer-links {
       display: flex;
-      gap: 18px;
+      gap: 22px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
-    [data-reveal] {
-      opacity: 0;
-      transform: translateY(22px);
-      transition:
-        opacity 700ms ease,
-        transform 700ms ease;
+    .footer-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(183, 199, 223, 0.8);
+      font-size: 15px;
+      font-weight: 560;
+      letter-spacing: -0.01em;
+      transition: color 160ms ease, transform 160ms ease;
     }
 
-    [data-reveal].is-visible {
-      opacity: 1;
-      transform: translateY(0);
+    .footer-links a:hover {
+      color: rgba(244, 248, 255, 0.94);
+      transform: translateY(-1px);
     }
 
-    @keyframes sheen {
-      0% {
-        transform: translateX(-140%) rotate(2deg);
-      }
-
-      100% {
-        transform: translateX(150%) rotate(2deg);
-      }
-    }
-
-    @keyframes drift {
-      0%, 100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-10px);
-      }
-    }
-
-    @keyframes floatUp {
-      0%, 100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-8px);
-      }
+    .footer-links img {
+      width: 15px;
+      height: 15px;
+      opacity: 0.82;
     }
 
     @media (max-width: 1320px) {
@@ -827,11 +723,11 @@
       }
 
       .hero-copy h1 {
-        font-size: clamp(64px, 5.8vw, 78px);
+        font-size: clamp(58px, 5.3vw, 72px);
       }
 
       .hero-copy .subhead {
-        font-size: 22px;
+        font-size: 21px;
       }
 
       .hero-art-shell {
@@ -878,19 +774,10 @@
         min-height: 620px;
       }
 
-      .metrics,
       .feature-grid,
       .protocol-grid,
       .surface-grid {
         grid-template-columns: 1fr;
-      }
-
-      .cta-card {
-        grid-template-columns: 1fr;
-      }
-
-      .cta-actions {
-        justify-content: flex-start;
       }
     }
 
@@ -917,7 +804,7 @@
       }
 
       .hero-copy h1 {
-        font-size: clamp(48px, 15vw, 64px);
+        font-size: clamp(46px, 13vw, 58px);
       }
 
       .hero-sheet {
@@ -953,10 +840,8 @@
       }
 
       .feature-card,
-      .metric-card,
       .protocol-card,
-      .surface-card,
-      .cta-card {
+      .surface-card {
         padding: 22px;
       }
 
@@ -977,11 +862,11 @@
       <nav class="main-nav glass" aria-label="Primary navigation">
         <a href="#overview">Whitepaper</a>
         <a href="#protocol">Docs</a>
-        <a class="active" href="#surfaces">GitHub</a>
+        <a href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">GitHub</a>
       </nav>
 
       <div class="header-actions">
-        <a class="button" href="#cta">
+        <a class="button" href="#protocol">
           <span>Get Started</span>
           <span aria-hidden="true">↗</span>
         </a>
@@ -997,16 +882,19 @@
           </h1>
 
           <p class="subhead">
-            An official-grade protocol layer for agent-to-agent coordination on Sui.
+            The communication protocol layer for AI Agents on Sui.
           </p>
 
           <p class="support">
-            SuiMesh is the communication protocol layer for AI Agents on Sui, designed for auditable coordination, traceable execution, and memory that can be committed onchain.
+            Built for auditable coordination, traceable execution, and onchain memory.
           </p>
 
           <div class="hero-actions">
             <a class="hero-button" href="#overview">
-              <span class="hero-button-label">Explore Protocol</span>
+              <span class="hero-button-label">
+                <span>Explore Protocol</span>
+                <span aria-hidden="true">↗</span>
+              </span>
             </a>
             <a class="ghost-button glass" href="#protocol">Read Docs</a>
           </div>
@@ -1019,47 +907,21 @@
         </div>
       </section>
 
-      <section class="metrics">
-        <article class="metric-card glass" data-reveal>
-          <div class="metric-label">Official capability</div>
-          <div class="metric-value">Auditable coordination</div>
-          <p class="metric-copy">
-            Agent decisions, tool invocations, and downstream actions can be anchored to an inspectable trail instead of vanishing into black-box workflows.
-          </p>
-        </article>
-
-        <article class="metric-card glass" data-reveal>
-          <div class="metric-label">Official capability</div>
-          <div class="metric-value">Traceable execution</div>
-          <p class="metric-copy">
-            SuiMesh makes every context handoff verifiable, so operators can understand who acted, what was approved, and what changed at each step.
-          </p>
-        </article>
-
-        <article class="metric-card glass" data-reveal>
-          <div class="metric-label">Official capability</div>
-          <div class="metric-value">Onchain memory</div>
-          <p class="metric-copy">
-            Long-running agent systems need memory that survives sessions. SuiMesh turns that memory into infrastructure instead of an afterthought.
-          </p>
-        </article>
-      </section>
-
       <section class="section" id="overview">
         <div class="section-head" data-reveal>
           <div class="section-kicker glass">Why SuiMesh</div>
-          <h2>Designed to make multi-agent systems official, inspectable, and production-ready.</h2>
+          <h2>Built for agent systems that need auditability, control, and durable memory.</h2>
           <p class="lead">
-            The hardest part of agent collaboration is not generating output. It is keeping context intact, enforcing human intent, and preserving a trustworthy record when multiple autonomous systems coordinate over time.
+            SuiMesh keeps context intact, verifies actions before execution, and preserves memory as protocol infrastructure instead of leaving it to application logic.
           </p>
         </div>
 
         <div class="feature-grid">
           <article class="feature-card glass" data-reveal>
             <div class="feature-icon">01</div>
-            <h3>Auditable execution</h3>
+            <h3>Auditable coordination</h3>
             <p>
-              Every action can produce a durable receipt. That means teams can inspect historical behavior, validate outcomes, and understand why an agent chose a path before trusting it at scale.
+              Every handoff can leave a durable receipt, so teams can inspect how agents coordinated and why a decision path was taken.
             </p>
           </article>
 
@@ -1067,7 +929,7 @@
             <div class="feature-icon">02</div>
             <h3>Traceable coordination</h3>
             <p>
-              Context is no longer passed informally between agents. SuiMesh preserves the handoff layer itself, so distributed workflows become understandable instead of opaque.
+              Context no longer disappears between agents. SuiMesh preserves the handoff layer so multi-agent systems stay understandable.
             </p>
           </article>
 
@@ -1075,15 +937,7 @@
             <div class="feature-icon">03</div>
             <h3>Memory on Sui</h3>
             <p>
-              Shared memory is treated as first-class protocol infrastructure. Important state can be committed onchain, making recall, replay, and collaborative continuity far more reliable.
-            </p>
-          </article>
-
-          <article class="feature-card glass" data-reveal>
-            <div class="feature-icon">04</div>
-            <h3>Policy before action</h3>
-            <p>
-              Official systems need more than fast agents. They need a verified decision surface where rules, approvals, and operational intent are checked before actions propagate.
+              Shared memory becomes durable protocol state, making replay, recall, and long-running agent continuity far more reliable.
             </p>
           </article>
         </div>
@@ -1094,7 +948,7 @@
           <div class="section-kicker glass">Protocol Flow</div>
           <h2>From agent intent to verifiable record.</h2>
           <p class="lead">
-            SuiMesh is built around a simple idea: coordination should be observable. The protocol does not just move messages. It preserves the context, the verification step, and the resulting memory layer.
+            The protocol does not just move messages. It carries context, inserts verification, and records the resulting memory layer.
           </p>
         </div>
 
@@ -1185,7 +1039,7 @@
           <div class="section-kicker glass">Build Surfaces</div>
           <h2>Everything needed to evaluate, integrate, and ship.</h2>
           <p class="lead">
-            The site should feel official because the product itself is infrastructure. These entry points are intentionally simple: learn the protocol, inspect the implementation, and understand the operating model.
+            Learn the model, inspect the implementation, and understand how SuiMesh fits into production agent systems.
           </p>
         </div>
 
@@ -1194,7 +1048,7 @@
             <div class="surface-meta">Read</div>
             <h3>Whitepaper</h3>
             <p>
-              Understand the protocol model, the memory layer, and why auditable agent collaboration needs a dedicated coordination surface.
+              Understand the coordination model, the verification layer, and the role of durable shared memory.
             </p>
             <div style="margin-top: 22px;">
               <a class="text-button" href="#top">
@@ -1208,7 +1062,7 @@
             <div class="surface-meta">Inspect</div>
             <h3>GitHub</h3>
             <p>
-              Review the implementation directly, follow protocol evolution, and anchor trust in public source rather than product claims alone.
+              Review the implementation directly and anchor trust in public source instead of product claims alone.
             </p>
             <div style="margin-top: 22px;">
               <a class="text-button" href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">
@@ -1222,7 +1076,7 @@
             <div class="surface-meta">Integrate</div>
             <h3>Protocol docs</h3>
             <p>
-              Explore the message model, execution lifecycle, and integration path for Sui-native systems that need reliable agent coordination.
+              Explore the message model, execution lifecycle, and integration path for Sui-native agent systems.
             </p>
             <div style="margin-top: 22px;">
               <a class="text-button" href="#protocol">
@@ -1234,51 +1088,26 @@
         </div>
       </section>
 
-      <section class="section cta" id="cta">
-        <div class="cta-card glass" data-reveal>
-          <div class="cta-copy">
-            <div class="section-kicker glass" style="margin-bottom: 16px;">Official Launch Surface</div>
-            <h3>Build agent systems that can be inspected, governed, and trusted.</h3>
-            <p>
-              SuiMesh is for teams that believe agent coordination needs more than orchestration. It needs protocol-level guarantees around context, verification, and memory.
-            </p>
-          </div>
-
-          <div class="cta-actions">
-            <a class="hero-button" href="#overview">
-              <span>Explore Protocol</span>
-              <span aria-hidden="true">↗</span>
-            </a>
-            <a class="ghost-button glass" href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">GitHub</a>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
       <div>SuiMesh · Auditable communication infrastructure for AI Agents on Sui.</div>
       <div class="footer-links">
-        <a href="#overview">Whitepaper</a>
-        <a href="#protocol">Docs</a>
-        <a href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="#overview">
+          <span>Whitepaper</span>
+          <img src="./assets/icon-external.svg" alt="" aria-hidden="true">
+        </a>
+        <a href="#protocol">
+          <span>Docs</span>
+          <img src="./assets/icon-external.svg" alt="" aria-hidden="true">
+        </a>
+        <a href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">
+          <span>GitHub</span>
+          <img src="./assets/icon-external.svg" alt="" aria-hidden="true">
+        </a>
       </div>
     </footer>
   </div>
 
-  <script>
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.18 }
-    );
-
-    document.querySelectorAll("[data-reveal]").forEach((node) => observer.observe(node));
-  </script>
 </body>
 </html>
