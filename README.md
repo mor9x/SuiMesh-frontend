@@ -16,7 +16,7 @@ The original reference does not provide real destinations, so all links currentl
 
 ## Run Locally
 
-Open [index.html](index.html) directly in a browser, or run a local static server:
+Open [index.html](/Users/zhuanz1mima0000/Documents/New%20project/repo-inspect-world-online/index.html) directly in a browser, or run a local static server:
 
 ```bash
 cd repo-inspect-world-online
