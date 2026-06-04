@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuiMesh Explore Protocol</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --text: rgba(245, 248, 255, 0.94);
+      --muted: rgba(190, 205, 228, 0.76);
+      --border: rgba(255, 255, 255, 0.14);
+      --content-width: 1360px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #000;
+      color: var(--text);
+      font-family: "PingFang SC", "Inter", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .page-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      width: 100%;
+      padding: 24px 32px 16px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.86), rgba(0, 0, 0, 0.52) 72%, rgba(0, 0, 0, 0));
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    }
+
+    .header-grid {
+      display: grid;
+      grid-template-columns: minmax(190px, 1fr) auto minmax(220px, 1fr);
+      align-items: center;
+      gap: 28px;
+      width: min(100%, var(--content-width));
+      min-height: 76px;
+      margin: 0 auto;
+    }
+
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      width: 190px;
+      height: 54px;
+    }
+
+    .brand-lockup img {
+      width: 178px;
+    }
+
+    .main-nav {
+      display: inline-flex;
+      justify-self: center;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(42px, 7vw, 126px);
+      width: min(100%, 720px);
+    }
+
+    .main-nav a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      color: rgba(248, 250, 255, 0.88);
+      font-size: 22px;
+      font-weight: 620;
+      text-shadow: 0 0 18px rgba(87, 118, 255, 0.18);
+    }
+
+    .main-nav a:hover,
+    .main-nav a[aria-current="page"] {
+      color: #fff;
+      text-shadow: 0 0 26px rgba(124, 154, 255, 0.46);
+    }
+
+    .header-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-width: 246px;
+      height: 76px;
+      padding: 0 31px 0 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      color: rgba(255, 255, 255, 0.96);
+      background: rgba(7, 7, 9, 0.52);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.055), 0 0 34px rgba(255, 255, 255, 0.045);
+      font-size: 25px;
+      font-weight: 620;
+      white-space: nowrap;
+    }
+
+    main {
+      width: min(100%, var(--content-width));
+      margin: 0 auto;
+      padding: 178px 28px 88px;
+    }
+
+    .eyebrow {
+      margin-bottom: 20px;
+      color: rgba(181, 210, 255, 0.8);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 1040px;
+      font-size: clamp(52px, 7vw, 106px);
+      line-height: 0.98;
+      font-weight: 690;
+    }
+
+    .lead {
+      max-width: 900px;
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: clamp(20px, 2vw, 27px);
+      line-height: 1.58;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 70px;
+    }
+
+    .card {
+      min-height: 254px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.016)), rgba(8, 10, 15, 0.54);
+    }
+
+    .card span {
+      color: rgba(160, 202, 255, 0.82);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .card h2 {
+      margin-top: 20px;
+      font-size: 27px;
+      line-height: 1.14;
+    }
+
+    .card p {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    @media (max-width: 1180px) {
+      .header-grid {
+        grid-template-columns: 1fr auto;
+        grid-template-areas: "brand cta" "nav nav";
+        gap: 10px 18px;
+      }
+
+      .brand-lockup {
+        grid-area: brand;
+      }
+
+      .main-nav {
+        grid-area: nav;
+        width: 100%;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .header-actions {
+        grid-area: cta;
+      }
+
+      .nav-cta {
+        min-width: 178px;
+        height: 54px;
+        padding: 0 20px;
+        font-size: 17px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page-header {
+        padding: 14px 16px 12px;
+      }
+
+      .brand-lockup {
+        width: 136px;
+        height: 38px;
+      }
+
+      .brand-lockup img {
+        width: 132px;
+      }
+
+      .main-nav {
+        gap: 10px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .main-nav a {
+        min-height: 34px;
+        font-size: 15px;
+        white-space: nowrap;
+      }
+
+      .nav-cta {
+        min-width: 134px;
+        height: 42px;
+        padding: 0 14px;
+        font-size: 14px;
+      }
+
+      main {
+        padding: 146px 16px 56px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-grid">
+      <a class="brand-lockup" href="./index.html" aria-label="SuiMesh home">
+        <img src="./assets/suimesh-lockup-hd.png" alt="SuiMesh">
+      </a>
+
+      <nav class="main-nav" aria-label="Primary navigation">
+        <a href="./discover.html" aria-current="page">Explore Protocol</a>
+        <a href="./build.html">Build</a>
+        <a href="./ecosystem.html">Ecosystem</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="nav-cta" href="./protocol.html">
+          <span>Read the docs</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="eyebrow">Explore Protocol · 探索协议</div>
+    <h1>Why AI agents need a communication protocol, not another closed app layer.</h1>
+    <p class="lead">
+      面向投资人、行业用户、潜在合伙人和 AI 产品方，Explore Protocol 先讲清楚 SuiMesh 要做什么，以及为什么多 Agent 协作需要可审计、可验证、可追溯的通信协议。
+    </p>
+
+    <section class="grid" aria-label="Explore Protocol pillars">
+      <article class="card">
+        <span>Problem</span>
+        <h2>Agent coordination is still opaque.</h2>
+        <p>多 Agent 系统正在进入生产场景，但上下文交接、执行权限和结果责任常常散落在应用内部。</p>
+      </article>
+      <article class="card">
+        <span>Protocol</span>
+        <h2>SuiMesh turns communication into infrastructure.</h2>
+        <p>协议层负责保留上下文、验证行动、沉淀记忆，让协作过程能被检查、复盘和扩展。</p>
+      </article>
+      <article class="card">
+        <span>Audience</span>
+        <h2>A pre-product narrative for early partners.</h2>
+        <p>这一页用于替代成熟产品介绍，帮助潜在合作方理解方向、边界和早期机会。</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
