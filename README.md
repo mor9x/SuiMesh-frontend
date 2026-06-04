@@ -1,5 +1,9 @@
 # SuiMesh Landing Page Replica
 
+> 🎨 **This is the SuiMesh design file.**
+> 
+> The next generation Internet is a multi-agent cooperative Internet.
+
 Static single-page recreation of the provided SuiMesh hero section.
 
 ## Included
