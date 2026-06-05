@@ -197,7 +197,7 @@
     }
 
     .brand-lockup {
-      width: 150px;
+      width: 132px;
       height: 44px;
       display: inline-flex;
       align-items: center;
@@ -206,8 +206,11 @@
     }
 
     .brand-lockup img {
-      width: 140px;
+      width: 118px;
       height: auto;
+      filter:
+        drop-shadow(0 0 12px rgba(95, 166, 255, 0.18))
+        drop-shadow(0 0 28px rgba(44, 95, 210, 0.12));
     }
 
     .main-nav {
@@ -483,8 +486,8 @@
       gap: 16px;
       width: min(100%, var(--content-width));
       margin: 0 auto;
-      padding: 132px 0 44px;
-      min-height: calc(100vh - 160px);
+      padding: 124px 0 24px;
+      min-height: calc(100vh - 190px);
       position: relative;
       isolation: isolate;
       transform: scale(calc(1 - var(--hero-stage-fade) * 0.035));
@@ -541,9 +544,9 @@
 
     .hero-copy h1 {
       font-size: clamp(74px, 6.1vw, 100px);
-      line-height: 0.94;
+      line-height: 1.02;
       font-weight: 680;
-      letter-spacing: -0.035em;
+      letter-spacing: -0.022em;
       color: #eef5ff;
       max-width: 920px;
       text-shadow:
@@ -562,16 +565,31 @@
 
     .headline-display {
       font-size: clamp(74px, 6.1vw, 100px);
-      line-height: 0.94;
-      letter-spacing: -0.04em;
+      line-height: 1.08;
+      letter-spacing: -0.018em;
       font-weight: 680;
     }
 
     .headline-line {
       display: block;
-      overflow: hidden;
+      overflow: visible;
       white-space: nowrap;
-      min-height: 0.98em;
+      min-height: 1.18em;
+      padding: 0.055em 0.08em 0.13em;
+      margin-inline: -0.08em;
+    }
+
+    #overview .headline-line {
+      min-height: 1.16em;
+      padding-inline: 0.08em;
+      margin-inline: -0.08em;
+      white-space: normal;
+    }
+
+    #overview .headline-type {
+      max-width: 100%;
+      white-space: normal;
+      text-wrap: balance;
     }
 
     .slogan-word {
@@ -596,8 +614,8 @@
     .reveal-ready .headline-type,
     .reveal-ready .slogan-type {
       clip-path: inset(0 100% 0 0);
-      opacity: 0.76;
-      filter: blur(6px);
+      opacity: 0.88;
+      filter: blur(4px);
     }
 
     .reveal-ready .is-visible .headline-type,
@@ -609,8 +627,8 @@
     @keyframes headlineTypeIn {
       0% {
         clip-path: inset(0 100% 0 0);
-        opacity: 0.22;
-        filter: blur(16px);
+        opacity: 0.7;
+        filter: blur(10px);
       }
 
       100% {
@@ -765,7 +783,7 @@
     #overview {
       position: relative;
       isolation: isolate;
-      padding-top: 124px;
+      padding-top: 96px;
       scroll-margin-top: 120px;
     }
 
@@ -784,7 +802,7 @@
     }
 
     #overview .section-head {
-      max-width: 1060px;
+      max-width: min(100%, 1400px);
       margin: 0 auto 88px;
       text-align: center;
       position: relative;
@@ -819,7 +837,7 @@
 
     #overview h2 {
       font-size: inherit;
-      line-height: inherit;
+      line-height: 1.01;
       font-weight: inherit;
       letter-spacing: inherit;
       background: linear-gradient(180deg, #ffffff 0%, #eef4ff 46%, #a9b6c9 100%);
@@ -834,9 +852,9 @@
     .story-title,
     .vision-title {
       font-size: clamp(74px, 6.1vw, 100px);
-      line-height: 0.94;
+      line-height: 1.08;
       font-weight: 680;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.018em;
     }
 
     #overview .feature-grid {
@@ -983,6 +1001,14 @@
       background: transparent;
       border: 0;
       box-shadow: none;
+    }
+
+    .feature-icon-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(112, 164, 255, 0.12));
     }
 
     .feature-card h3,
@@ -1457,7 +1483,7 @@
     .story-section,
     .vision-section {
       position: relative;
-      padding-top: 118px;
+      padding-top: 96px;
     }
 
     .story-section::before,
@@ -1531,6 +1557,12 @@
         filter 180ms linear;
     }
 
+    .story-copy {
+      display: grid;
+      align-content: start;
+      gap: 26px;
+    }
+
     .story-lead {
       font-size: clamp(24px, 2.3vw, 34px);
       line-height: 1.22;
@@ -1574,8 +1606,8 @@
     }
 
     .story-conclusion {
-      margin-top: 26px;
-      max-width: 920px;
+      margin-top: 0;
+      max-width: 100%;
       color: rgba(206, 219, 238, 0.84);
       font-size: 20px;
       line-height: 1.62;
@@ -1584,8 +1616,9 @@
     }
 
     .vision-section {
-      padding-top: 132px;
+      padding-top: 70px;
       padding-bottom: 0;
+      overflow: hidden;
     }
 
     .vision-section::before {
@@ -1600,27 +1633,23 @@
     }
 
     .vision-shell {
-      padding: 54px 56px 0;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      padding: 12px 0 0;
       min-height: 760px;
-      border-bottom-color: transparent;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      background:
-        linear-gradient(180deg, rgba(7, 8, 12, 0.98), rgba(3, 4, 7, 0.99));
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 -40px 72px rgba(5, 10, 24, 0.34),
-        0 0 0 1px rgba(255, 255, 255, 0.03),
-        0 30px 80px rgba(0, 0, 0, 0.32);
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       display: grid;
       justify-items: center;
+      overflow: visible;
     }
 
     .vision-shell::before {
-      inset: 1px;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.016) 14%, rgba(255, 255, 255, 0) 28%);
-      opacity: 0.72;
+      content: none;
     }
 
     .vision-shell::after {
@@ -1649,69 +1678,267 @@
       }
     }
 
-    .vision-title {
-      max-width: 1220px;
-      font-size: clamp(58px, 5.6vw, 98px);
-      line-height: 0.96;
-      letter-spacing: -0.05em;
-      font-weight: 670;
-      background: linear-gradient(180deg, #ffffff 0%, #edf3ff 48%, #aeb9cc 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-wrap: balance;
-      margin-bottom: 42px;
-      text-align: center;
-    }
-
     .vision-copy {
+      position: relative;
+      width: min(100%, 1540px);
+      min-height: 760px;
+      padding: 12px 0 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .vision-orb {
+      --vision-orb-size: min(46vw, 720px);
+      position: absolute;
+      top: 10%;
+      width: var(--vision-orb-size);
+      aspect-ratio: 1 / 1;
+      background: url("./assets/vision-flower-new.png") center / contain no-repeat;
+      filter:
+        drop-shadow(0 0 26px rgba(43, 92, 219, 0.12))
+        drop-shadow(0 0 60px rgba(40, 78, 175, 0.08));
+      pointer-events: none;
+      opacity: 0.58;
+      z-index: 0;
+    }
+
+    .vision-orb::before {
+      content: "";
+      position: absolute;
+      inset: 8% 2% 4%;
+      background: radial-gradient(circle at 50% 50%, rgba(62, 107, 255, 0.1) 0%, rgba(27, 56, 132, 0.04) 38%, rgba(0, 0, 0, 0) 70%);
+      filter: blur(26px);
+      z-index: -1;
+    }
+
+    .vision-orb-left {
+      left: calc(var(--vision-orb-size) * -0.48);
+      transform: scaleX(-1) rotate(-6deg);
+      transform-origin: center;
+    }
+
+    .vision-orb-right {
+      right: calc(var(--vision-orb-size) * -0.48);
+      transform: rotate(6deg);
+      transform-origin: center;
+    }
+
+    .vision-poster {
+      width: min(100%, 1180px);
       display: grid;
-      gap: 26px;
-      max-width: 1120px;
-      padding: 34px 0 56px;
-      width: 100%;
       justify-items: center;
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+      padding: clamp(190px, 14vw, 250px) clamp(24px, 4vw, 56px) clamp(92px, 7vw, 124px);
     }
 
-    .vision-lines {
-      display: grid;
-      gap: 0;
-      max-width: 960px;
-      padding: 24px 28px 18px;
-      border-radius: 36px 36px 0 0;
+    .vision-poster::before,
+    .vision-poster::after {
+      content: none;
+    }
+
+    .vision-deco {
+      position: absolute;
+      left: 50%;
+      top: clamp(12px, 2vw, 28px);
+      z-index: 0;
+      width: min(116vw, 1500px);
+      height: clamp(188px, 16vw, 248px);
+      margin-bottom: 0;
+      pointer-events: none;
+      opacity: 0.74;
+      filter:
+        drop-shadow(0 0 18px rgba(20, 48, 116, 0.2))
+        drop-shadow(0 0 54px rgba(11, 28, 72, 0.18));
+      isolation: isolate;
+      transform: translateX(-50%);
+    }
+
+    .vision-deco-bottom {
+      top: auto;
+      bottom: clamp(10px, 2vw, 28px);
+      opacity: 0.36;
+      transform: translateX(-50%) scaleY(-1);
+      filter:
+        drop-shadow(0 0 16px rgba(14, 35, 88, 0.16))
+        drop-shadow(0 0 46px rgba(5, 18, 54, 0.16));
+    }
+
+    .vision-deco::before,
+    .vision-deco::after {
+      content: none;
+    }
+
+    .vision-deco-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      animation: topologyDrift 12s ease-in-out infinite alternate;
+    }
+
+    .vision-deco-network,
+    .vision-deco-polygon,
+    .vision-deco-link,
+    .vision-deco-flow {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .vision-deco-network {
+      stroke: url(#visionNetworkStroke);
+      stroke-width: 1.05;
+      opacity: 0.34;
+    }
+
+    .vision-deco-polygon {
+      stroke: rgba(84, 115, 166, 0.34);
+      stroke-width: 1.15;
+      opacity: 0.5;
+    }
+
+    .vision-deco-link {
+      stroke: rgba(91, 122, 172, 0.28);
+      stroke-width: 1;
+      opacity: 0.56;
+    }
+
+    .vision-deco-flow {
+      stroke: url(#visionFlowStroke);
+      stroke-width: 1.35;
+      stroke-dasharray: 42 410;
+      stroke-dashoffset: 0;
+      opacity: 0.24;
+      animation: topologyFlow 7.8s linear infinite;
+    }
+
+    .vision-deco-grid {
+      position: absolute;
+      inset: 4% 2% 16%;
+      opacity: 0.08;
       background:
-        linear-gradient(180deg, rgba(6, 7, 11, 0.98), rgba(2, 3, 8, 1));
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-bottom: 0;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 0 0 1px rgba(255, 255, 255, 0.02);
+        linear-gradient(90deg, rgba(73, 104, 160, 0.32) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(73, 104, 160, 0.24) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse at 50% 54%, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.42) 46%, rgba(0, 0, 0, 0) 78%);
     }
 
-    .vision-line {
-      padding: 24px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      color: rgba(236, 241, 249, 0.92);
-      font-size: clamp(28px, 2.2vw, 42px);
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-      font-weight: 560;
-      text-wrap: balance;
+    .vision-deco-node {
+      fill: rgba(101, 128, 174, 0.46);
+      filter: drop-shadow(0 0 8px rgba(41, 76, 152, 0.22));
+      animation: topologyNodePulse 5.6s ease-in-out infinite;
     }
 
-    .vision-line:last-child {
-      border-bottom: 0;
-      padding-bottom: 20px;
+    .vision-deco-line {
+      display: none;
     }
 
-    .vision-support {
-      max-width: 760px;
-      color: rgba(160, 177, 205, 0.82);
-      font-size: clamp(18px, 1.34vw, 22px);
-      line-height: 1.74;
-      letter-spacing: -0.016em;
-      text-wrap: balance;
+    .vision-deco-mark {
+      display: none;
+    }
+
+    @keyframes topologyFlow {
+      to {
+        stroke-dashoffset: -452;
+      }
+    }
+
+    @keyframes topologyDrift {
+      from {
+        transform: translate3d(-8px, 2px, 0) scale(1);
+        opacity: 0.9;
+      }
+
+      to {
+        transform: translate3d(10px, -4px, 0) scale(1.012);
+        opacity: 1;
+      }
+    }
+
+    @keyframes topologyNodePulse {
+      0%, 100% {
+        opacity: 0.34;
+      }
+
+      50% {
+        opacity: 0.62;
+      }
+    }
+
+    .vision-captions {
+      width: min(100%, 1080px);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px 30px;
+      align-items: end;
+      padding: 0 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .vision-caption {
+      color: rgba(193, 206, 227, 0.74);
+      font-size: clamp(15px, 1.12vw, 18px);
+      line-height: 1.45;
+      letter-spacing: -0.014em;
       text-align: center;
+      text-wrap: balance;
+    }
+
+    .vision-caption strong {
+      color: rgba(239, 244, 252, 0.94);
+      font-weight: 560;
+    }
+
+    .vision-title {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .vision-title .headline-display {
+      font-size: clamp(48px, 4.25vw, 72px);
+      line-height: 1.12;
+      letter-spacing: -0.012em;
+      font-weight: 670;
+    }
+
+    .vision-title .headline-line {
+      min-height: 1.2em;
+      padding: 0.05em 0.08em 0.14em;
+      margin-inline: -0.08em;
+      overflow: visible;
+      white-space: normal;
+    }
+
+    .vision-title .headline-type {
+      white-space: normal;
+      max-width: 100%;
+      text-wrap: balance;
+      overflow-wrap: normal;
+      color: #f6f9ff;
+      text-shadow:
+        0 0 18px rgba(74, 123, 255, 0.14),
+        0 14px 42px rgba(33, 70, 154, 0.12);
+    }
+
+    .vision-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: clamp(18px, 2.2vw, 32px);
+      position: relative;
+      z-index: 2;
     }
 
     .footer {
@@ -1755,6 +1982,13 @@
       letter-spacing: -0.01em;
     }
 
+    .footer-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 18px;
+    }
+
     .footer-links {
       display: flex;
       flex-wrap: wrap;
@@ -1790,6 +2024,17 @@
       height: 18px;
       fill: currentColor;
       opacity: 0.9;
+    }
+
+    .founder-signature {
+      width: clamp(78px, 7.4vw, 118px);
+      height: auto;
+      opacity: 0.76;
+      filter:
+        drop-shadow(0 0 10px rgba(255, 255, 255, 0.16))
+        drop-shadow(0 0 18px rgba(78, 132, 255, 0.08));
+      mix-blend-mode: screen;
+      pointer-events: none;
     }
 
     @media (max-width: 1320px) {
@@ -1948,12 +2193,13 @@
       }
 
       .brand-lockup {
-        width: 120px;
+        width: 112px;
         height: 34px;
       }
 
       .brand-lockup img {
-        width: 116px;
+        width: 108px;
+        height: auto;
       }
 
       .main-nav {
@@ -2069,16 +2315,51 @@
       }
 
       .vision-copy {
-        padding: 20px 0 36px;
+        min-height: 620px;
+        padding: 8px 0 42px;
       }
 
-      .vision-lines {
-        padding: 18px 18px 12px;
-        border-radius: 28px 28px 0 0;
+      .vision-orb {
+        --vision-orb-size: min(62vw, 360px);
+        width: var(--vision-orb-size);
+        top: 12%;
+        opacity: 0.32;
       }
 
-      .vision-line {
-        padding: 18px 0;
+      .vision-orb-left {
+        left: calc(var(--vision-orb-size) * -0.5);
+      }
+
+      .vision-orb-right {
+        right: calc(var(--vision-orb-size) * -0.5);
+      }
+
+      .vision-poster {
+        gap: 18px;
+        padding: 174px 18px 86px;
+      }
+
+      .vision-deco {
+        top: 6px;
+        width: min(112vw, 620px);
+        height: 132px;
+        margin-bottom: 0;
+        transform: translateX(-50%);
+      }
+
+      .vision-deco-bottom {
+        top: auto;
+        bottom: 10px;
+        transform: translateX(-50%) scaleY(-1);
+      }
+
+      .vision-captions {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .vision-title .headline-display {
+        font-size: clamp(38px, 8.6vw, 54px);
       }
 
       .footer {
@@ -2094,9 +2375,18 @@
         align-items: flex-start;
       }
 
+      .footer-right {
+        align-items: flex-start;
+        gap: 16px;
+      }
+
       .footer-links {
         gap: 12px 18px;
         justify-content: flex-start;
+      }
+
+      .founder-signature {
+        width: 92px;
       }
 
       #overview .feature-grid {
@@ -2201,15 +2491,7 @@
         <div class="feature-grid">
           <article class="feature-card glass" data-reveal>
             <div class="feature-icon" aria-hidden="true">
-              <svg class="feature-icon-svg" viewBox="0 0 24 24">
-                <circle cx="6" cy="7" r="1.8"></circle>
-                <circle cx="18" cy="7" r="1.8"></circle>
-                <circle cx="12" cy="17" r="1.8"></circle>
-                <path class="accent" d="M7.6 7.8 10.9 15"></path>
-                <path class="accent" d="M16.4 7.8 13.1 15"></path>
-                <path d="M8 6.6h8"></path>
-                <path d="M12 15.2v-5.8"></path>
-              </svg>
+              <img class="feature-icon-image" src="./assets/overview-icon-1.png" alt="">
             </div>
             <h3>Connect Any Agent</h3>
             <p>
@@ -2219,10 +2501,7 @@
 
           <article class="feature-card glass" data-reveal>
             <div class="feature-icon" aria-hidden="true">
-              <svg class="feature-icon-svg" viewBox="0 0 24 24">
-                <path d="M12 3 19 6.2v5.1c0 4.2-2.8 7.8-7 9.2-4.2-1.4-7-5-7-9.2V6.2L12 3z"></path>
-                <path class="accent" d="M8.2 12.3 11 15l4.9-5.2"></path>
-              </svg>
+              <img class="feature-icon-image" src="./assets/overview-icon-2.png" alt="">
             </div>
             <h3>Control Action</h3>
             <p>
@@ -2232,13 +2511,7 @@
 
           <article class="feature-card glass" data-reveal>
             <div class="feature-icon" aria-hidden="true">
-              <svg class="feature-icon-svg" viewBox="0 0 24 24">
-                <path d="M6 4.8h8l4 4V19H6z"></path>
-                <path class="accent" d="M14 4.8V9h4"></path>
-                <path d="M8.2 12h7.6"></path>
-                <path d="M8.2 15.2h5.4"></path>
-                <path class="accent" d="M8.2 9.2 9.8 10.8 12.8 7.8"></path>
-              </svg>
+              <img class="feature-icon-image" src="./assets/overview-icon-3.png" alt="">
             </div>
             <h3>Audit Everything</h3>
             <p>
@@ -2260,9 +2533,15 @@
 
         <div class="story-panel" data-reveal>
           <div class="story-grid">
-            <p class="story-lead">
-              SuiMesh provides a verifiable communication layer for autonomous agents.
-            </p>
+            <div class="story-copy">
+              <p class="story-lead">
+                SuiMesh provides a verifiable communication layer for autonomous agents.
+              </p>
+
+              <p class="story-conclusion">
+                So agents can communicate with confidence across applications, organizations, and networks.
+              </p>
+            </div>
 
             <div class="story-points">
               <div class="story-point">Every interaction can be identified.</div>
@@ -2270,31 +2549,127 @@
               <div class="story-point">Every action can be verified.</div>
             </div>
           </div>
-
-          <p class="story-conclusion">
-            So agents can communicate with confidence across applications, organizations, and networks.
-          </p>
         </div>
       </section>
 
       <section class="section vision-section" id="vision">
         <div class="vision-shell" data-reveal>
-          <h2 class="vision-title headline-display">
-            <span class="headline-line">
-              <span class="headline-type" style="--duration: 1420ms; --delay: 40ms;">The Next Network Is Not Human-Only.</span>
-            </span>
-          </h2>
-
           <div class="vision-copy">
-            <div class="vision-lines">
-              <div class="vision-line">The internet connected people.</div>
-              <div class="vision-line">Cloud platforms connected software.</div>
-              <div class="vision-line">SuiMesh connects autonomous agents.</div>
-            </div>
+            <div class="vision-orb vision-orb-left" aria-hidden="true"></div>
+            <div class="vision-orb vision-orb-right" aria-hidden="true"></div>
 
-            <p class="vision-support">
-              As intelligence becomes abundant, coordination becomes infrastructure.
-            </p>
+            <div class="vision-poster">
+              <div class="vision-deco" aria-hidden="true">
+                <div class="vision-deco-grid"></div>
+                <svg class="vision-deco-svg" viewBox="0 0 1120 260" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="visionNetworkStroke" x1="0" y1="0" x2="1120" y2="0" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="rgba(25,44,86,0)"></stop>
+                      <stop offset="0.22" stop-color="rgba(66,92,145,0.5)"></stop>
+                      <stop offset="0.5" stop-color="rgba(82,112,170,0.72)"></stop>
+                      <stop offset="0.78" stop-color="rgba(66,92,145,0.5)"></stop>
+                      <stop offset="1" stop-color="rgba(25,44,86,0)"></stop>
+                    </linearGradient>
+                    <linearGradient id="visionFlowStroke" x1="0" y1="0" x2="1120" y2="0" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="rgba(63,99,174,0)"></stop>
+                      <stop offset="0.5" stop-color="rgba(95,131,194,0.7)"></stop>
+                      <stop offset="1" stop-color="rgba(63,99,174,0)"></stop>
+                    </linearGradient>
+                  </defs>
+                  <polyline class="vision-deco-network" points="64,198 184,128 306,166 438,88 560,132 682,88 814,166 936,128 1056,198"></polyline>
+                  <polyline class="vision-deco-network" points="184,128 248,52 438,88 560,28 682,88 872,52 936,128"></polyline>
+                  <polyline class="vision-deco-network" points="306,166 438,216 560,132 682,216 814,166"></polyline>
+                  <polyline class="vision-deco-polygon" points="560,28 682,88 636,216 484,216 438,88 560,28"></polyline>
+                  <polyline class="vision-deco-polygon" points="248,52 438,88 306,166 184,128 248,52"></polyline>
+                  <polyline class="vision-deco-polygon" points="872,52 936,128 814,166 682,88 872,52"></polyline>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="560" y2="28"></line>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="682" y2="88"></line>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="636" y2="216"></line>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="484" y2="216"></line>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="438" y2="88"></line>
+                  <line class="vision-deco-link" x1="306" y1="166" x2="438" y2="88"></line>
+                  <line class="vision-deco-link" x1="814" y1="166" x2="682" y2="88"></line>
+                  <polyline class="vision-deco-flow" points="64,198 184,128 306,166 438,88 560,132 682,88 814,166 936,128 1056,198"></polyline>
+                  <polyline class="vision-deco-flow" points="184,128 248,52 438,88 560,28 682,88 872,52 936,128"></polyline>
+                  <circle class="vision-deco-node" cx="64" cy="198" r="2.4"></circle>
+                  <circle class="vision-deco-node" cx="184" cy="128" r="3"></circle>
+                  <circle class="vision-deco-node" cx="248" cy="52" r="2.8"></circle>
+                  <circle class="vision-deco-node" cx="306" cy="166" r="3"></circle>
+                  <circle class="vision-deco-node" cx="438" cy="88" r="3.2"></circle>
+                  <circle class="vision-deco-node" cx="484" cy="216" r="2.8"></circle>
+                  <circle class="vision-deco-node" cx="560" cy="28" r="3"></circle>
+                  <circle class="vision-deco-node" cx="560" cy="132" r="3.2"></circle>
+                  <circle class="vision-deco-node" cx="636" cy="216" r="2.8"></circle>
+                  <circle class="vision-deco-node" cx="682" cy="88" r="3.2"></circle>
+                  <circle class="vision-deco-node" cx="814" cy="166" r="3"></circle>
+                  <circle class="vision-deco-node" cx="872" cy="52" r="2.8"></circle>
+                  <circle class="vision-deco-node" cx="936" cy="128" r="3"></circle>
+                  <circle class="vision-deco-node" cx="1056" cy="198" r="2.4"></circle>
+                </svg>
+                <div class="vision-deco-line"></div>
+              </div>
+
+              <div class="vision-deco vision-deco-bottom" aria-hidden="true">
+                <div class="vision-deco-grid"></div>
+                <svg class="vision-deco-svg" viewBox="0 0 1120 260" preserveAspectRatio="none">
+                  <polyline class="vision-deco-network" points="64,198 184,128 306,166 438,88 560,132 682,88 814,166 936,128 1056,198"></polyline>
+                  <polyline class="vision-deco-network" points="184,128 248,52 438,88 560,28 682,88 872,52 936,128"></polyline>
+                  <polyline class="vision-deco-network" points="306,166 438,216 560,132 682,216 814,166"></polyline>
+                  <polyline class="vision-deco-polygon" points="560,28 682,88 636,216 484,216 438,88 560,28"></polyline>
+                  <polyline class="vision-deco-polygon" points="248,52 438,88 306,166 184,128 248,52"></polyline>
+                  <polyline class="vision-deco-polygon" points="872,52 936,128 814,166 682,88 872,52"></polyline>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="560" y2="28"></line>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="682" y2="88"></line>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="636" y2="216"></line>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="484" y2="216"></line>
+                  <line class="vision-deco-link" x1="560" y1="132" x2="438" y2="88"></line>
+                  <line class="vision-deco-link" x1="306" y1="166" x2="438" y2="88"></line>
+                  <line class="vision-deco-link" x1="814" y1="166" x2="682" y2="88"></line>
+                  <polyline class="vision-deco-flow" points="64,198 184,128 306,166 438,88 560,132 682,88 814,166 936,128 1056,198"></polyline>
+                  <polyline class="vision-deco-flow" points="184,128 248,52 438,88 560,28 682,88 872,52 936,128"></polyline>
+                  <circle class="vision-deco-node" cx="64" cy="198" r="2.4"></circle>
+                  <circle class="vision-deco-node" cx="184" cy="128" r="3"></circle>
+                  <circle class="vision-deco-node" cx="248" cy="52" r="2.8"></circle>
+                  <circle class="vision-deco-node" cx="306" cy="166" r="3"></circle>
+                  <circle class="vision-deco-node" cx="438" cy="88" r="3.2"></circle>
+                  <circle class="vision-deco-node" cx="484" cy="216" r="2.8"></circle>
+                  <circle class="vision-deco-node" cx="560" cy="28" r="3"></circle>
+                  <circle class="vision-deco-node" cx="560" cy="132" r="3.2"></circle>
+                  <circle class="vision-deco-node" cx="636" cy="216" r="2.8"></circle>
+                  <circle class="vision-deco-node" cx="682" cy="88" r="3.2"></circle>
+                  <circle class="vision-deco-node" cx="814" cy="166" r="3"></circle>
+                  <circle class="vision-deco-node" cx="872" cy="52" r="2.8"></circle>
+                  <circle class="vision-deco-node" cx="936" cy="128" r="3"></circle>
+                  <circle class="vision-deco-node" cx="1056" cy="198" r="2.4"></circle>
+                </svg>
+              </div>
+
+              <div class="vision-captions">
+                <div class="vision-caption"><strong>The internet</strong> connected people.</div>
+                <div class="vision-caption"><strong>Cloud platforms</strong> connected software.</div>
+                <div class="vision-caption"><strong>SuiMesh</strong> connects autonomous agents.</div>
+              </div>
+
+              <h2 class="vision-title">
+                <span class="headline-display">
+                  <span class="headline-line">
+                    <span class="headline-type" style="--duration: 1420ms; --delay: 40ms;">The next generation Internet</span>
+                  </span>
+                  <span class="headline-line">
+                    <span class="headline-type" style="--duration: 1500ms; --delay: 620ms;">is a multi-agent cooperative Internet.</span>
+                  </span>
+                </span>
+              </h2>
+
+              <div class="vision-actions">
+                <a class="hero-button" href="./build.html">
+                  <span class="hero-button-label">
+                    <span>Start Building</span>
+                    <span aria-hidden="true">↗</span>
+                  </span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -2307,24 +2682,27 @@
           <span>© 2026 SuiMesh</span>
         </div>
 
-        <div class="footer-links">
-          <a class="footer-social" href="./ecosystem.html" aria-label="@SuiMesh">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.27l-4.9-7.38L5.56 22H2.45l7.24-8.28L1.6 2h6.43l4.43 6.8L18.9 2zM17.8 19.95h1.74L7.1 3.94H5.22z"></path>
-            </svg>
-          </a>
-          <a class="footer-social" href="./ecosystem.html" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4.98 3.5A2.48 2.48 0 1 1 5 8.46a2.48 2.48 0 0 1-.02-4.96zM3 9h4v12H3zM10 9h3.83v1.64h.06c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.13V21h-4v-5.55c0-1.33-.03-3.03-1.85-3.03-1.86 0-2.15 1.45-2.15 2.94V21h-4z"></path>
-            </svg>
-          </a>
-          <a class="footer-social" href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.74.08-.74 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.8 1.31 3.49 1 .11-.78.42-1.31.77-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.13-.31-.54-1.56.12-3.24 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.67 1.68.25 2.93.12 3.24.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.38.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58A12 12 0 0 0 12 .5z"></path>
-            </svg>
-          </a>
-          <a class="footer-link" href="./protocol.html">Docs</a>
-          <a class="footer-link" href="./protocol.html">Terms of Service</a>
+        <div class="footer-right">
+          <div class="footer-links">
+            <a class="footer-social" href="./ecosystem.html" aria-label="@SuiMesh">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18.9 2H22l-6.77 7.74L23.2 22h-6.27l-4.9-7.38L5.56 22H2.45l7.24-8.28L1.6 2h6.43l4.43 6.8L18.9 2zM17.8 19.95h1.74L7.1 3.94H5.22z"></path>
+              </svg>
+            </a>
+            <a class="footer-social" href="./ecosystem.html" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4.98 3.5A2.48 2.48 0 1 1 5 8.46a2.48 2.48 0 0 1-.02-4.96zM3 9h4v12H3zM10 9h3.83v1.64h.06c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.13V21h-4v-5.55c0-1.33-.03-3.03-1.85-3.03-1.86 0-2.15 1.45-2.15 2.94V21h-4z"></path>
+              </svg>
+            </a>
+            <a class="footer-social" href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.74.08-.74 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.8 1.31 3.49 1 .11-.78.42-1.31.77-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.13-.31-.54-1.56.12-3.24 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.67 1.68.25 2.93.12 3.24.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.38.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58A12 12 0 0 0 12 .5z"></path>
+              </svg>
+            </a>
+            <a class="footer-link" href="./protocol.html">Docs</a>
+            <a class="footer-link" href="./protocol.html">Terms of Service</a>
+          </div>
+          <img class="founder-signature" src="./assets/founder-signature.png" alt="Aris and Ari signature">
         </div>
       </div>
     </footer>
@@ -2456,7 +2834,7 @@
       }
 
       if (visionSection) {
-        visionSection.style.setProperty("--section-fade", computeSectionFade(visionSection, 0.5, 0.9).toFixed(3));
+        visionSection.style.setProperty("--section-fade", computeSectionFade(visionSection, 0.82, 1.08).toFixed(3));
       }
 
       if (pageHeader) {
