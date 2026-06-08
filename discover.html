@@ -132,23 +132,20 @@
 
     .main-nav a:hover,
     .main-nav a[aria-current="page"] {
-      color: #fff;
-      text-shadow: 0 0 26px rgba(124, 154, 255, 0.46);
+      color: #8fbcff;
+      text-shadow: 0 0 22px rgba(102, 162, 255, 0.34);
     }
 
-    .main-nav a[aria-current="page"]::before {
+    .main-nav a[aria-current="page"]::after {
       content: "";
       position: absolute;
-      left: 50%;
-      bottom: -24px;
-      width: calc(100% + 54px);
-      height: 44px;
-      border-radius: 18px 18px 0 0;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 0;
-      background: linear-gradient(180deg, rgba(12, 18, 32, 0.64), rgba(4, 5, 8, 0.18));
-      transform: translateX(-50%);
-      z-index: -1;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(95, 156, 255, 0.2), #6aa8ff 50%, rgba(95, 156, 255, 0.2));
+      box-shadow: 0 0 16px rgba(78, 139, 255, 0.38);
       pointer-events: none;
     }
 
