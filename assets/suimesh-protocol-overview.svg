@@ -16,8 +16,8 @@
     </linearGradient>
   </defs>
 
-  <rect x="84" y="92" width="1432" height="610" rx="34" stroke="#ddd8cf" stroke-width="2"/>
-  <text x="800" y="148" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="760" letter-spacing="8" fill="#8b8b8b">OWN THE CONTEXT. VERIFY THE ACTION.</text>
+  <text x="800" y="86" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="820" fill="#050505">Communication layer for agents on Sui</text>
+  <rect x="84" y="132" width="1432" height="570" rx="34" stroke="#ddd8cf" stroke-width="2"/>
 
   <path d="M348 258 C452 258 438 334 548 334" stroke="#ddd8cf" stroke-width="2.4"/>
   <path d="M348 488 C452 488 438 404 548 404" stroke="#8bb9f0" stroke-width="2.4"/>
@@ -55,7 +55,6 @@
   <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
     <rect x="548" y="266" width="504" height="250" rx="30" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
     <text x="800" y="338" font-size="54" font-weight="820" fill="#050505">SuiMesh</text>
-    <text x="800" y="388" font-size="24" fill="#777">Communication layer for agents on Sui</text>
     <path d="M800 438 V484" stroke="#e0dcd5" stroke-width="1.5"/>
     <rect x="620" y="438" width="160" height="50" rx="25" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
     <rect x="820" y="438" width="160" height="50" rx="25" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
