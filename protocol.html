@@ -97,11 +97,13 @@
     .main-nav a {
       display: inline-flex;
       align-items: center;
+      flex: 0 0 auto;
       min-height: 44px;
       color: rgba(248, 250, 255, 0.88);
       font-size: 22px;
       font-weight: 620;
       text-shadow: 0 0 18px rgba(87, 118, 255, 0.18);
+      white-space: nowrap;
     }
 
     .main-nav a:hover {
@@ -273,8 +275,8 @@
       .main-nav {
         grid-area: nav;
         width: 100%;
-        justify-content: space-between;
-        gap: 18px;
+        justify-content: center;
+        gap: clamp(18px, 6vw, 54px);
       }
 
       .header-actions {
@@ -317,9 +319,9 @@
       }
 
       .main-nav {
-        gap: 10px;
-        overflow-x: auto;
-        scrollbar-width: none;
+        gap: 18px;
+        justify-content: flex-start;
+        overflow: visible;
       }
 
       .main-nav a {
