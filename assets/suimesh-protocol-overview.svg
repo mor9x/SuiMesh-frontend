@@ -16,56 +16,55 @@
     </linearGradient>
   </defs>
 
-  <text x="800" y="86" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="820" fill="#050505">Communication layer for agents on Sui</text>
-  <rect x="84" y="132" width="1432" height="570" rx="34" stroke="#ddd8cf" stroke-width="2"/>
+  <rect x="84" y="96" width="1432" height="600" rx="34" stroke="#ddd8cf" stroke-width="2"/>
 
-  <path d="M348 258 C452 258 438 334 548 334" stroke="#ddd8cf" stroke-width="2.4"/>
-  <path d="M348 488 C452 488 438 404 548 404" stroke="#8bb9f0" stroke-width="2.4"/>
-  <path d="M1052 334 C1162 334 1148 258 1252 258" stroke="#ddd8cf" stroke-width="2.4"/>
-  <path d="M1052 404 C1162 404 1148 488 1252 488" stroke="#8bb9f0" stroke-width="2.4"/>
+  <path d="M376 241 C474 241 470 334 548 334" stroke="#ddd8cf" stroke-width="2.4"/>
+  <path d="M376 501 C474 501 470 406 548 406" stroke="#8bb9f0" stroke-width="2.4"/>
+  <path d="M1052 334 C1130 334 1126 241 1224 241" stroke="#ddd8cf" stroke-width="2.4"/>
+  <path d="M1052 406 C1130 406 1126 501 1224 501" stroke="#8bb9f0" stroke-width="2.4"/>
   <g fill="#c8c2b9">
-    <rect x="344" y="254" width="8" height="8" rx="4"/>
+    <rect x="372" y="237" width="8" height="8" rx="4"/>
     <rect x="544" y="330" width="8" height="8" rx="4"/>
-    <rect x="344" y="484" width="8" height="8" rx="4"/>
-    <rect x="544" y="400" width="8" height="8" rx="4"/>
+    <rect x="372" y="497" width="8" height="8" rx="4"/>
+    <rect x="544" y="402" width="8" height="8" rx="4"/>
     <rect x="1048" y="330" width="8" height="8" rx="4"/>
-    <rect x="1248" y="254" width="8" height="8" rx="4"/>
-    <rect x="1048" y="400" width="8" height="8" rx="4"/>
-    <rect x="1248" y="484" width="8" height="8" rx="4"/>
+    <rect x="1220" y="237" width="8" height="8" rx="4"/>
+    <rect x="1048" y="402" width="8" height="8" rx="4"/>
+    <rect x="1220" y="497" width="8" height="8" rx="4"/>
   </g>
 
   <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
-    <rect x="136" y="180" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="256" y="254" font-size="28" font-weight="780" fill="#050505">Human</text>
-    <text x="256" y="294" font-size="18" fill="#818181">intent + consent</text>
+    <rect x="136" y="166" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="256" y="240" font-size="28" font-weight="780" fill="#050505">Human</text>
+    <text x="256" y="280" font-size="18" fill="#818181">intent + consent</text>
 
-    <rect x="136" y="410" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="256" y="484" font-size="28" font-weight="780" fill="#050505">Wallet</text>
-    <text x="256" y="524" font-size="18" fill="#818181">policy + execution</text>
+    <rect x="136" y="426" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="256" y="500" font-size="28" font-weight="780" fill="#050505">Wallet</text>
+    <text x="256" y="540" font-size="18" fill="#818181">policy + execution</text>
 
-    <rect x="1224" y="180" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="1344" y="254" font-size="28" font-weight="780" fill="#050505">Agent</text>
-    <text x="1344" y="294" font-size="18" fill="#818181">proposal + report</text>
+    <rect x="1224" y="166" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="1344" y="240" font-size="28" font-weight="780" fill="#050505">Agent</text>
+    <text x="1344" y="280" font-size="18" fill="#818181">proposal + report</text>
 
-    <rect x="1224" y="410" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="1344" y="484" font-size="28" font-weight="780" fill="#050505">Sui App</text>
-    <text x="1344" y="524" font-size="18" fill="#818181">contract state</text>
+    <rect x="1224" y="426" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="1344" y="500" font-size="28" font-weight="780" fill="#050505">Sui App</text>
+    <text x="1344" y="540" font-size="18" fill="#818181">contract state</text>
   </g>
 
   <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
-    <rect x="548" y="286" width="504" height="204" rx="30" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="548" y="286" width="504" height="180" rx="30" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
     <text x="800" y="354" font-size="54" font-weight="820" fill="#050505">SuiMesh</text>
-    <path d="M800 376 V434" stroke="#e0dcd5" stroke-width="1.5"/>
-    <rect x="632" y="394" width="156" height="48" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <rect x="812" y="394" width="156" height="48" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="710" y="426" font-size="18" font-weight="760" fill="#050505">Context</text>
-    <text x="890" y="426" font-size="18" font-weight="760" fill="#050505">Action</text>
+    <path d="M800 374 V430" stroke="#e0dcd5" stroke-width="1.5"/>
+    <rect x="632" y="390" width="156" height="48" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="812" y="390" width="156" height="48" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="710" y="422" font-size="18" font-weight="760" fill="#050505">Context</text>
+    <text x="890" y="422" font-size="18" font-weight="760" fill="#050505">Action</text>
   </g>
 
   <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
-    <rect x="596" y="584" width="196" height="58" rx="29" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="694" y="622" font-size="24" font-weight="760" fill="#666">Walrus</text>
-    <rect x="840" y="584" width="180" height="58" rx="29" fill="#fbfaf7" stroke="#a9cdf5" stroke-width="2"/>
-    <text x="930" y="622" font-size="24" font-weight="760" fill="#2368a8">Sui</text>
+    <rect x="596" y="566" width="196" height="58" rx="29" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="694" y="604" font-size="24" font-weight="760" fill="#666">Walrus</text>
+    <rect x="840" y="566" width="180" height="58" rx="29" fill="#fbfaf7" stroke="#a9cdf5" stroke-width="2"/>
+    <text x="930" y="604" font-size="24" font-weight="760" fill="#2368a8">Sui</text>
   </g>
 </svg>

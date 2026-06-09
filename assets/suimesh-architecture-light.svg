@@ -19,55 +19,55 @@
   <text x="800" y="150" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" fill="#666">Communication state stays portable across clients, agents, wallets, and Sui apps.</text>
 
   <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
-    <rect x="108" y="236" width="310" height="132" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="263" y="298" font-size="28" font-weight="780" fill="#050505">Clients</text>
-    <text x="263" y="338" font-size="18" fill="#777">Web, CLI, TG, wallets</text>
+    <rect x="108" y="246" width="310" height="118" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="263" y="300" font-size="28" font-weight="780" fill="#050505">Clients</text>
+    <text x="263" y="336" font-size="18" fill="#777">Web, CLI, TG, wallets</text>
 
-    <rect x="108" y="434" width="310" height="132" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="263" y="496" font-size="28" font-weight="780" fill="#050505">Agents</text>
-    <text x="263" y="536" font-size="18" fill="#777">Any framework via adapter</text>
+    <rect x="108" y="410" width="310" height="118" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="263" y="464" font-size="28" font-weight="780" fill="#050505">Agents</text>
+    <text x="263" y="500" font-size="18" fill="#777">Any framework via adapter</text>
 
-    <rect x="108" y="632" width="310" height="132" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="263" y="694" font-size="28" font-weight="780" fill="#050505">Executors</text>
-    <text x="263" y="734" font-size="18" fill="#777">Wallets, bots, services</text>
+    <rect x="108" y="574" width="310" height="118" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="263" y="628" font-size="28" font-weight="780" fill="#050505">Executors</text>
+    <text x="263" y="664" font-size="18" fill="#777">Wallets, bots, services</text>
   </g>
 
-  <path d="M418 302 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
-  <path d="M418 500 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
-  <path d="M418 698 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
+  <path d="M418 305 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
+  <path d="M418 469 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
+  <path d="M418 633 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
 
   <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
-    <rect x="514" y="210" width="572" height="580" rx="30" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <text x="800" y="296" font-size="44" font-weight="820" fill="#050505">SuiMesh SDK</text>
+    <rect x="514" y="210" width="572" height="512" rx="30" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="800" y="284" font-size="44" font-weight="820" fill="#050505">SuiMesh SDK</text>
 
-    <rect x="596" y="360" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <rect x="832" y="360" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <rect x="596" y="490" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <rect x="832" y="490" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <rect x="596" y="620" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
-    <rect x="832" y="620" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="596" y="336" width="212" height="82" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="832" y="336" width="212" height="82" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="596" y="464" width="212" height="82" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="832" y="464" width="212" height="82" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="596" y="592" width="212" height="82" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="832" y="592" width="212" height="82" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
 
-    <text x="702" y="416" font-size="20" font-weight="760" fill="#050505">Codec</text>
-    <text x="938" y="416" font-size="20" font-weight="760" fill="#050505">Transport</text>
-    <text x="702" y="546" font-size="20" font-weight="760" fill="#050505">Inspector</text>
-    <text x="938" y="546" font-size="20" font-weight="760" fill="#050505">Policy</text>
-    <text x="702" y="676" font-size="20" font-weight="760" fill="#050505">Trace Guard</text>
-    <text x="938" y="676" font-size="20" font-weight="760" fill="#050505">Storage</text>
-    <text x="800" y="752" font-size="20" fill="#777">JSON routes events. BCS proves heavy actions.</text>
+    <text x="702" y="386" font-size="20" font-weight="760" fill="#050505">Codec</text>
+    <text x="938" y="386" font-size="20" font-weight="760" fill="#050505">Transport</text>
+    <text x="702" y="514" font-size="20" font-weight="760" fill="#050505">Inspector</text>
+    <text x="938" y="514" font-size="20" font-weight="760" fill="#050505">Policy</text>
+    <text x="702" y="642" font-size="20" font-weight="760" fill="#050505">Trace Guard</text>
+    <text x="938" y="642" font-size="20" font-weight="760" fill="#050505">Storage</text>
+    <text x="800" y="700" font-size="20" fill="#777">JSON routes events. BCS proves heavy actions.</text>
   </g>
 
-  <path d="M1086 410 H1192" stroke="#83b99a" stroke-width="2.4" marker-end="url(#arrowWalrus)"/>
-  <path d="M1086 620 H1192" stroke="#6e9bd6" stroke-width="2.4" marker-end="url(#arrowSui)"/>
+  <path d="M1086 377 H1192" stroke="#83b99a" stroke-width="2.4" marker-end="url(#arrowWalrus)"/>
+  <path d="M1086 633 H1192" stroke="#6e9bd6" stroke-width="2.4" marker-end="url(#arrowSui)"/>
 
   <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
-    <rect x="1192" y="334" width="310" height="152" rx="24" fill="#fbfaf7" stroke="#c9e3d1" stroke-width="2"/>
-    <text x="1347" y="396" font-size="28" font-weight="780" fill="#0f6b5d">Walrus</text>
-    <text x="1347" y="442" font-size="18" fill="#666">Encrypted messages</text>
-    <text x="1347" y="474" font-size="18" fill="#666">Memory and audit archives</text>
+    <rect x="1192" y="316" width="310" height="122" rx="24" fill="#fbfaf7" stroke="#c9e3d1" stroke-width="2"/>
+    <text x="1347" y="366" font-size="28" font-weight="780" fill="#0f6b5d">Walrus</text>
+    <text x="1347" y="406" font-size="18" fill="#666">Encrypted messages</text>
+    <text x="1347" y="430" font-size="18" fill="#666">Memory and audit archives</text>
 
-    <rect x="1192" y="594" width="310" height="152" rx="24" fill="#fbfaf7" stroke="#c4daf7" stroke-width="2"/>
-    <text x="1347" y="656" font-size="28" font-weight="780" fill="#2368a8">Sui</text>
-    <text x="1347" y="702" font-size="18" fill="#666">Ownership, status</text>
-    <text x="1347" y="734" font-size="18" fill="#666">Claims and integrity refs</text>
+    <rect x="1192" y="572" width="310" height="122" rx="24" fill="#fbfaf7" stroke="#c4daf7" stroke-width="2"/>
+    <text x="1347" y="622" font-size="28" font-weight="780" fill="#2368a8">Sui</text>
+    <text x="1347" y="662" font-size="18" fill="#666">Ownership, status</text>
+    <text x="1347" y="686" font-size="18" fill="#666">Claims and integrity refs</text>
   </g>
 </svg>
