@@ -1,0 +1,72 @@
+<svg width="1600" height="780" viewBox="0 0 1600 780" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SuiMesh protocol overview</title>
+  <desc id="desc">Human intent and wallet policy connect to agent proposals and Sui app state through SuiMesh context and action flows.</desc>
+  <rect width="1600" height="780" rx="36" fill="#fbfaf7"/>
+
+  <defs>
+    <linearGradient id="contextLine" x1="224" y1="0" x2="1368" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ddd8cf"/>
+      <stop offset="0.48" stop-color="#8ec0ff"/>
+      <stop offset="1" stop-color="#ddd8cf"/>
+    </linearGradient>
+    <linearGradient id="actionLine" x1="224" y1="0" x2="1368" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ddd8cf"/>
+      <stop offset="0.5" stop-color="#54c9b5"/>
+      <stop offset="1" stop-color="#ddd8cf"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="84" y="92" width="1432" height="610" rx="34" stroke="#ddd8cf" stroke-width="2"/>
+  <text x="800" y="148" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="760" letter-spacing="8" fill="#8b8b8b">OWN THE CONTEXT. VERIFY THE ACTION.</text>
+
+  <path d="M348 258 C452 258 438 334 548 334" stroke="#ddd8cf" stroke-width="2.4"/>
+  <path d="M348 488 C452 488 438 404 548 404" stroke="#8bb9f0" stroke-width="2.4"/>
+  <path d="M1052 334 C1162 334 1148 258 1252 258" stroke="#ddd8cf" stroke-width="2.4"/>
+  <path d="M1052 404 C1162 404 1148 488 1252 488" stroke="#8bb9f0" stroke-width="2.4"/>
+  <g fill="#c8c2b9">
+    <rect x="344" y="254" width="8" height="8" rx="4"/>
+    <rect x="544" y="330" width="8" height="8" rx="4"/>
+    <rect x="344" y="484" width="8" height="8" rx="4"/>
+    <rect x="544" y="400" width="8" height="8" rx="4"/>
+    <rect x="1048" y="330" width="8" height="8" rx="4"/>
+    <rect x="1248" y="254" width="8" height="8" rx="4"/>
+    <rect x="1048" y="400" width="8" height="8" rx="4"/>
+    <rect x="1248" y="484" width="8" height="8" rx="4"/>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <rect x="136" y="180" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="256" y="254" font-size="28" font-weight="780" fill="#050505">Human</text>
+    <text x="256" y="294" font-size="18" fill="#818181">intent + consent</text>
+
+    <rect x="136" y="410" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="256" y="484" font-size="28" font-weight="780" fill="#050505">Wallet</text>
+    <text x="256" y="524" font-size="18" fill="#818181">policy + execution</text>
+
+    <rect x="1224" y="180" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="1344" y="254" font-size="28" font-weight="780" fill="#050505">Agent</text>
+    <text x="1344" y="294" font-size="18" fill="#818181">proposal + report</text>
+
+    <rect x="1224" y="410" width="240" height="150" rx="22" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="1344" y="484" font-size="28" font-weight="780" fill="#050505">Sui App</text>
+    <text x="1344" y="524" font-size="18" fill="#818181">contract state</text>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <rect x="548" y="266" width="504" height="250" rx="30" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="800" y="338" font-size="54" font-weight="820" fill="#050505">SuiMesh</text>
+    <text x="800" y="388" font-size="24" fill="#777">Communication layer for agents on Sui</text>
+    <path d="M800 438 V484" stroke="#e0dcd5" stroke-width="1.5"/>
+    <rect x="620" y="438" width="160" height="50" rx="25" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="820" y="438" width="160" height="50" rx="25" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="700" y="471" font-size="18" font-weight="760" fill="#050505">Context</text>
+    <text x="900" y="471" font-size="18" font-weight="760" fill="#050505">Action</text>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <rect x="596" y="626" width="196" height="58" rx="29" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="694" y="664" font-size="24" font-weight="760" fill="#666">Walrus</text>
+    <rect x="840" y="626" width="180" height="58" rx="29" fill="#fbfaf7" stroke="#a9cdf5" stroke-width="2"/>
+    <text x="930" y="664" font-size="24" font-weight="760" fill="#2368a8">Sui</text>
+  </g>
+</svg>

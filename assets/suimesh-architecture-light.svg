@@ -1,0 +1,73 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SuiMesh architecture</title>
+  <desc id="desc">Clients, agents, and executors connect through SuiMesh SDK modules to Walrus storage and Sui integrity references.</desc>
+  <rect width="1600" height="900" rx="36" fill="#fbfaf7"/>
+
+  <defs>
+    <marker id="arrowNeutral" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M1 1 L13 7 L1 13 Z" fill="#b8b2aa"/>
+    </marker>
+    <marker id="arrowWalrus" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M1 1 L13 7 L1 13 Z" fill="#83b99a"/>
+    </marker>
+    <marker id="arrowSui" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+      <path d="M1 1 L13 7 L1 13 Z" fill="#6e9bd6"/>
+    </marker>
+  </defs>
+
+  <text x="800" y="92" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="52" font-weight="820" fill="#050505">SuiMesh Architecture</text>
+  <text x="800" y="150" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" fill="#666">Communication state stays portable across clients, agents, wallets, and Sui apps.</text>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <rect x="108" y="236" width="310" height="132" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="263" y="298" font-size="28" font-weight="780" fill="#050505">Clients</text>
+    <text x="263" y="338" font-size="18" fill="#777">Web, CLI, TG, wallets</text>
+
+    <rect x="108" y="434" width="310" height="132" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="263" y="496" font-size="28" font-weight="780" fill="#050505">Agents</text>
+    <text x="263" y="536" font-size="18" fill="#777">Any framework via adapter</text>
+
+    <rect x="108" y="632" width="310" height="132" rx="24" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="263" y="694" font-size="28" font-weight="780" fill="#050505">Executors</text>
+    <text x="263" y="734" font-size="18" fill="#777">Wallets, bots, services</text>
+  </g>
+
+  <path d="M418 302 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
+  <path d="M418 500 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
+  <path d="M418 698 H514" stroke="#b8b2aa" stroke-width="2.4" marker-end="url(#arrowNeutral)"/>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <rect x="514" y="210" width="572" height="580" rx="30" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <text x="800" y="296" font-size="44" font-weight="820" fill="#050505">SuiMesh SDK</text>
+
+    <rect x="596" y="360" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="832" y="360" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="596" y="490" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="832" y="490" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="596" y="620" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+    <rect x="832" y="620" width="212" height="90" rx="18" fill="#fbfaf7" stroke="#ddd8cf" stroke-width="2"/>
+
+    <text x="702" y="416" font-size="20" font-weight="760" fill="#050505">Codec</text>
+    <text x="938" y="416" font-size="20" font-weight="760" fill="#050505">Transport</text>
+    <text x="702" y="546" font-size="20" font-weight="760" fill="#050505">Inspector</text>
+    <text x="938" y="546" font-size="20" font-weight="760" fill="#050505">Policy</text>
+    <text x="702" y="676" font-size="20" font-weight="760" fill="#050505">Trace Guard</text>
+    <text x="938" y="676" font-size="20" font-weight="760" fill="#050505">Storage</text>
+    <text x="800" y="752" font-size="20" fill="#777">JSON routes events. BCS proves heavy actions.</text>
+  </g>
+
+  <path d="M1086 410 H1192" stroke="#83b99a" stroke-width="2.4" marker-end="url(#arrowWalrus)"/>
+  <path d="M1086 620 H1192" stroke="#6e9bd6" stroke-width="2.4" marker-end="url(#arrowSui)"/>
+
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <rect x="1192" y="334" width="310" height="152" rx="24" fill="#fbfaf7" stroke="#c9e3d1" stroke-width="2"/>
+    <text x="1347" y="396" font-size="28" font-weight="780" fill="#0f6b5d">Walrus</text>
+    <text x="1347" y="442" font-size="18" fill="#666">Encrypted messages</text>
+    <text x="1347" y="474" font-size="18" fill="#666">Memory and audit archives</text>
+
+    <rect x="1192" y="594" width="310" height="152" rx="24" fill="#fbfaf7" stroke="#c4daf7" stroke-width="2"/>
+    <text x="1347" y="656" font-size="28" font-weight="780" fill="#2368a8">Sui</text>
+    <text x="1347" y="702" font-size="18" fill="#666">Ownership, status</text>
+    <text x="1347" y="734" font-size="18" fill="#666">Claims and integrity refs</text>
+  </g>
+</svg>

@@ -120,11 +120,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex: 0 0 auto;
       min-height: 38px;
       font-size: 17px;
       font-weight: 620;
       color: rgba(248, 250, 255, 0.88);
       text-shadow: 0 0 18px rgba(87, 118, 255, 0.18);
+      white-space: nowrap;
       transition: color 220ms ease, text-shadow 220ms ease;
     }
 
@@ -357,8 +359,8 @@
       .main-nav {
         grid-area: nav;
         width: 100%;
-        justify-content: space-between;
-        gap: 18px;
+        justify-content: center;
+        gap: clamp(18px, 6vw, 54px);
       }
 
       .header-actions {
@@ -381,9 +383,8 @@
       }
 
       .main-nav {
-        gap: 16px;
-        overflow-x: auto;
-        scrollbar-width: none;
+        gap: 18px;
+        overflow: visible;
         justify-content: flex-start;
       }
 
@@ -457,7 +458,7 @@
             </svg>
           </div>
           <h2>Say hi on Discord</h2>
-          <a class="small-button" href="./ecosystem.html">Join Discord <span aria-hidden="true">↗</span></a>
+          <a class="small-button" href="https://discord.gg/eBkXGq45" target="_blank" rel="noreferrer">Join Discord <span aria-hidden="true">↗</span></a>
         </article>
 
         <article class="action-card">
@@ -467,7 +468,7 @@
             </svg>
           </div>
           <h2>Build in public on GitHub</h2>
-          <a class="small-button" href="https://github.com/ArisLiWind/SuiMesh" target="_blank" rel="noreferrer">Open GitHub <span aria-hidden="true">↗</span></a>
+          <a class="small-button" href="https://github.com/mor9x/suimesh" target="_blank" rel="noreferrer">Open GitHub <span aria-hidden="true">↗</span></a>
         </article>
       </section>
     </section>
