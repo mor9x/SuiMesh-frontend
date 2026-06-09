@@ -19,6 +19,7 @@
       --blue-strong: #41a8ff;
       --teal: #7df0df;
       --ink: #060a10;
+      --ring-angle: 0deg;
     }
 
     * {
@@ -48,6 +49,12 @@
       text-rendering: optimizeLegibility;
     }
 
+    @keyframes ctaBorderSpin {
+      to {
+        --ring-angle: 360deg;
+      }
+    }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -59,7 +66,7 @@
     }
 
     .page {
-      width: min(100%, 1480px);
+      width: 100%;
       margin: 0 auto;
       padding: 0 28px 56px;
     }
@@ -100,6 +107,7 @@
     }
 
     .main-nav {
+      position: relative;
       display: inline-flex;
       justify-self: center;
       justify-content: center;
@@ -108,12 +116,28 @@
       width: min(100%, 720px);
     }
 
+    .main-nav::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: -1;
+      width: min(52vw, 620px);
+      height: 84px;
+      background:
+        radial-gradient(ellipse at 50% 52%, rgba(47, 118, 255, 0.16) 0%, rgba(21, 75, 184, 0.09) 38%, rgba(0, 0, 0, 0) 72%),
+        linear-gradient(90deg, transparent 0%, rgba(30, 94, 220, 0.06) 32%, rgba(90, 154, 255, 0.11) 50%, rgba(30, 94, 220, 0.06) 68%, transparent 100%);
+      filter: blur(20px);
+      opacity: 0.5;
+      transform: translate(-50%, -44%);
+    }
+
     .main-nav a {
       display: inline-flex;
       align-items: center;
       min-height: 44px;
       color: rgba(248, 250, 255, 0.88);
-      font-size: 22px;
+      font-size: 17px;
       font-weight: 620;
       white-space: nowrap;
       text-shadow: 0 0 18px rgba(87, 118, 255, 0.18);
@@ -130,36 +154,77 @@
     }
 
     .nav-cta,
-    .button {
+    .button,
+    .card a {
+      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      color: rgba(255, 255, 255, 0.96);
-      background: rgba(7, 7, 9, 0.52);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.055), 0 0 34px rgba(65, 168, 255, 0.08);
-      font-weight: 650;
+      line-height: 1;
+      text-align: center;
       white-space: nowrap;
+      transition:
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        background 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      isolation: isolate;
+      overflow: hidden;
     }
 
     .nav-cta {
-      min-width: 246px;
-      height: 76px;
-      padding: 0 31px 0 34px;
-      font-size: 25px;
+      min-width: 190px;
+      height: 52px;
+      padding: 0 22px 0 24px;
+      border-radius: 999px;
+      border: 1.5px solid transparent;
+      color: rgba(255, 255, 255, 0.96);
+      background:
+        radial-gradient(circle at 78% 50%, rgba(44, 105, 255, 0.12), transparent 42%) padding-box,
+        linear-gradient(rgba(7, 7, 9, 0.72), rgba(7, 7, 9, 0.72)) padding-box,
+        conic-gradient(from var(--ring-angle), transparent 0deg, rgba(111, 190, 255, 0.88) 48deg, rgba(53, 100, 255, 0.82) 88deg, transparent 136deg, transparent 360deg) border-box;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.045),
+        0 0 18px rgba(84, 145, 255, 0.12);
+      font-size: 18px;
+      font-weight: 650;
+      animation: ctaBorderSpin 3.4s linear infinite;
+    }
+
+    .nav-cta:hover,
+    .button:hover,
+    .card a:hover {
+      transform: translateY(-2px) scale(1.015);
+      border-color: rgba(188, 225, 255, 0.58);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+        inset 0 0 30px rgba(79, 142, 255, 0.14),
+        0 0 22px rgba(121, 178, 255, 0.16),
+        0 0 64px rgba(42, 94, 255, 0.18);
     }
 
     .button {
       min-height: 52px;
       padding: 0 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(126, 201, 255, 0.34);
+      color: #90dcff;
+      background:
+        linear-gradient(180deg, rgba(11, 18, 31, 0.92), rgba(6, 11, 20, 0.58));
+      box-shadow:
+        inset 0 0 24px rgba(96, 177, 255, 0.08),
+        0 0 20px rgba(44, 118, 255, 0.16);
       font-size: 16px;
+      font-weight: 650;
     }
 
     .button.primary {
+      color: rgba(255, 255, 255, 0.96);
       border-color: rgba(126, 201, 255, 0.72);
-      background: linear-gradient(180deg, rgba(126, 201, 255, 0.22), rgba(65, 168, 255, 0.1));
+      background:
+        radial-gradient(circle at 72% 50%, rgba(59, 110, 255, 0.26), transparent 44%),
+        linear-gradient(180deg, rgba(23, 45, 78, 0.9), rgba(8, 16, 28, 0.72));
     }
 
     main {
@@ -180,11 +245,15 @@
       display: inline-flex;
       align-items: center;
       min-height: 34px;
-      padding: 0 12px;
-      border: 1px solid rgba(126, 201, 255, 0.34);
+      padding: 0 18px;
+      border: 1px solid rgba(126, 201, 255, 0.42);
       border-radius: 999px;
       color: var(--blue);
-      background: rgba(126, 201, 255, 0.08);
+      background:
+        linear-gradient(180deg, rgba(18, 34, 56, 0.72), rgba(7, 12, 20, 0.44));
+      box-shadow:
+        inset 0 0 18px rgba(126, 201, 255, 0.08),
+        0 0 20px rgba(65, 168, 255, 0.08);
       font-size: 12px;
       font-weight: 720;
       letter-spacing: 0.12em;
@@ -195,8 +264,8 @@
       max-width: 1040px;
       margin-top: 24px;
       color: #fff;
-      font-size: clamp(56px, 7vw, 108px);
-      line-height: 0.94;
+      font-size: clamp(76px, 12vw, 170px);
+      line-height: 0.9;
       font-weight: 760;
       letter-spacing: -0.04em;
     }
@@ -313,9 +382,15 @@
     }
 
     .card a {
-      display: inline-flex;
+      width: fit-content;
+      min-height: 38px;
       margin-top: 22px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(126, 201, 255, 0.28);
       color: var(--blue);
+      background: rgba(126, 201, 255, 0.07);
+      font-size: 14px;
       font-weight: 680;
     }
 
@@ -516,16 +591,16 @@
 
     @media (max-width: 1120px) {
       .header-grid {
-        grid-template-columns: 1fr;
-        justify-items: center;
+        grid-template-columns: minmax(150px, 0.9fr) minmax(360px, 1.3fr) auto;
+        gap: 18px;
       }
 
       .header-actions {
-        justify-content: center;
+        justify-content: flex-end;
       }
 
       main {
-        padding-top: 270px;
+        padding-top: 150px;
       }
 
       .quick-grid,
@@ -548,7 +623,20 @@
         padding: 18px 16px 12px;
       }
 
+      .header-grid {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "brand cta"
+          "nav nav";
+        gap: 10px 18px;
+      }
+
+      .brand-lockup {
+        grid-area: brand;
+      }
+
       .main-nav {
+        grid-area: nav;
         gap: 16px;
         overflow-x: auto;
         justify-content: flex-start;
@@ -562,17 +650,21 @@
 
       .nav-cta {
         min-width: 0;
-        width: 100%;
-        height: 58px;
-        font-size: 18px;
+        height: 46px;
+        padding: 0 18px;
+        font-size: 15px;
+      }
+
+      .header-actions {
+        grid-area: cta;
       }
 
       main {
-        padding-top: 246px;
+        padding-top: 156px;
       }
 
       h1 {
-        font-size: clamp(46px, 15vw, 70px);
+        font-size: clamp(64px, 22vw, 96px);
       }
 
       .lead {
@@ -633,7 +725,7 @@
       <div class="docs-shell">
         <section class="hero">
           <div class="eyebrow">SuiMesh Docs</div>
-          <h1>SuiMesh is an Agent Action Communication Protocol.</h1>
+          <h1>SuiMesh</h1>
           <p class="lead">
             SuiMesh is an Agent Action Communication Protocol on Sui. It turns conversation, intent, agent proposals, PTB actions, policy decisions, execution receipts, memory receipts, and audit events into user-owned, recoverable, and verifiable communication state.
           </p>
