@@ -45,6 +45,14 @@
       max-width: 100%;
     }
 
+    h1,
+    h2,
+    p,
+    a,
+    span {
+      overflow-wrap: anywhere;
+    }
+
     .page-header {
       position: fixed;
       top: 0;
@@ -388,12 +396,23 @@
       }
 
       h1 {
-        font-size: clamp(35px, 9vw, 48px);
+        font-size: clamp(32px, 9vw, 42px);
+        line-height: 1.1;
+        letter-spacing: -0.018em;
+      }
+
+      .lead {
+        font-size: 16px;
+        line-height: 1.62;
       }
 
       .protocol-text {
         margin-top: 28px;
         font-size: 16px;
+      }
+
+      .stat strong {
+        font-size: clamp(34px, 12vw, 48px);
       }
 
       .stats {
@@ -403,12 +422,12 @@
       }
 
       .diagram-scroll {
-        overflow-x: auto;
-        scrollbar-width: none;
+        overflow: visible;
       }
 
       .diagram {
-        min-width: 820px;
+        min-width: 0;
+        width: 100%;
       }
     }
   </style>

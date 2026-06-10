@@ -126,6 +126,15 @@
       max-width: 100%;
     }
 
+    h1,
+    h2,
+    h3,
+    p,
+    a,
+    span {
+      overflow-wrap: anywhere;
+    }
+
     @property --ring-angle {
       syntax: "<angle>";
       inherits: false;
@@ -712,6 +721,34 @@
         radial-gradient(circle, rgba(74, 132, 255, 0.12), transparent 58%),
         radial-gradient(circle at 45% 46%, rgba(255, 255, 255, 0.08), transparent 18%);
       filter: blur(8px);
+    }
+
+    .hero-art-shell::after {
+      content: "";
+      position: absolute;
+      inset: -1.5%;
+      z-index: 3;
+      pointer-events: none;
+      background:
+        conic-gradient(
+          from var(--ring-angle),
+          rgba(255, 255, 255, 0) 0deg,
+          rgba(202, 241, 255, 0.48) 30deg,
+          rgba(89, 149, 255, 0.34) 72deg,
+          rgba(255, 255, 255, 0) 128deg,
+          rgba(255, 255, 255, 0) 218deg,
+          rgba(126, 206, 255, 0.22) 252deg,
+          rgba(255, 255, 255, 0) 292deg,
+          rgba(255, 255, 255, 0) 360deg
+        );
+      -webkit-mask: url("./assets/hero-flower-hd.png") center / contain no-repeat;
+      mask: url("./assets/hero-flower-hd.png") center / contain no-repeat;
+      mix-blend-mode: screen;
+      opacity: 0.54;
+      filter:
+        drop-shadow(0 0 10px rgba(154, 220, 255, 0.22))
+        drop-shadow(0 0 26px rgba(65, 121, 255, 0.16));
+      animation: ctaBorderSpin 6.8s linear infinite;
     }
 
     .hero-flower {
@@ -1557,6 +1594,15 @@
         filter 180ms linear;
     }
 
+    #coordination .section-head {
+      --coordination-copy-inset: 38px;
+      box-sizing: border-box;
+      max-width: 100%;
+      margin: 0 auto 42px;
+      padding-left: var(--coordination-copy-inset);
+      text-align: left;
+    }
+
     .story-copy {
       display: grid;
       align-content: start;
@@ -1893,6 +1939,7 @@
     }
 
     .vision-caption strong {
+      display: block;
       color: rgba(239, 244, 252, 0.94);
       font-weight: 560;
     }
@@ -2244,7 +2291,26 @@
       }
 
       .hero-copy h1 {
-        font-size: clamp(48px, 10vw, 70px);
+        font-size: clamp(34px, 10vw, 46px);
+        line-height: 1.08;
+        letter-spacing: -0.01em;
+      }
+
+      .hero-copy .title-line,
+      .headline-line,
+      .headline-type,
+      .slogan-type {
+        max-width: 100%;
+        white-space: normal;
+      }
+
+      .headline-display,
+      #overview .section-head h2,
+      .story-title,
+      .vision-title {
+        font-size: clamp(34px, 10vw, 46px);
+        line-height: 1.1;
+        letter-spacing: -0.012em;
       }
 
       .hero-sheet {
@@ -2269,7 +2335,8 @@
       }
 
       #overview h2 {
-        font-size: clamp(42px, 10vw, 60px);
+        font-size: clamp(34px, 10vw, 46px);
+        line-height: 1.1;
       }
 
       #overview .feature-card {
@@ -2376,7 +2443,8 @@
       }
 
       .vision-title .headline-display {
-        font-size: clamp(38px, 8.6vw, 54px);
+        font-size: clamp(32px, 9vw, 44px);
+        line-height: 1.12;
       }
 
       .footer {
@@ -2462,6 +2530,11 @@
         opacity: 1 !important;
         filter: none !important;
         transform: none !important;
+      }
+
+      #coordination .section-head {
+        --coordination-copy-inset: 38px;
+        margin-bottom: 28px;
       }
 
       #overview .feature-grid::before {
