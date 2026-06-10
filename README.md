@@ -10,14 +10,11 @@ Next.js, Node.js, or a build step to preview or deploy.
 ## Included
 
 - Static HTML pages: `index.html`, `build.html`, `discover.html`,
-  `developers.html`, `ecosystem.html`, and `protocol.html`
+  `developers.html`, `ecosystem.html`, `protocol.html`, `docs.html`,
+  and `terms.html`
 - Image and logo assets under `assets/` and `public/`
 - GitHub Pages deployment workflow in `.github/workflows/deploy.yml`
 - Responsive layout for desktop, tablet, and mobile
-
-## Placeholder Behavior
-
-The original reference does not provide real destinations, so all links currently point to `#` as placeholders.
 
 ## Run Locally
 
@@ -32,9 +29,15 @@ Then visit `http://127.0.0.1:4173`.
 
 ## Deployment
 
-The site is ready for GitHub Pages as static files. The workflow uploads the
-repository root, so the HTML files and asset folders must remain at the top
-level unless the workflow is updated.
+The site is deployed to Vercel as a static production site.
+
+- Production alias: https://repo-inspect-world-online.vercel.app
+- Latest deployment inspect URL:
+  https://vercel.com/sui-mesh/repo-inspect-world-online/715bz9WPfkiKNYU2scvnc1neG976
+
+The project is linked to Vercel as `repo-inspect-world-online`. The HTML files
+and asset folders should remain at the repository root unless the Vercel
+configuration is updated.
 
 ## Future Backend Work
 
