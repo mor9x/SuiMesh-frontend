@@ -872,7 +872,9 @@
       border-radius: 24px;
     }
 
-    #overview h2 {
+    #overview h2,
+    #coordination .story-title,
+    .vision-title .headline-display {
       font-size: inherit;
       line-height: 1.01;
       font-weight: inherit;
@@ -886,12 +888,26 @@
     }
 
     #overview .section-head h2,
-    .story-title,
-    .vision-title {
+    #coordination .story-title,
+    .vision-title .headline-display {
       font-size: clamp(74px, 6.1vw, 100px);
       line-height: 1.08;
       font-weight: 680;
       letter-spacing: -0.018em;
+    }
+
+    #overview .headline-type,
+    #coordination .headline-type,
+    .vision-title .headline-type {
+      max-width: 100%;
+      color: transparent;
+      background: linear-gradient(180deg, #ffffff 0%, #eef4ff 48%, #a9b6c9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.08),
+        0 8px 28px rgba(72, 124, 255, 0.1),
+        0 28px 80px rgba(75, 129, 255, 0.12);
     }
 
     #overview .feature-grid {
@@ -1953,13 +1969,6 @@
       z-index: 2;
     }
 
-    .vision-title .headline-display {
-      font-size: clamp(48px, 4.25vw, 72px);
-      line-height: 1.12;
-      letter-spacing: -0.012em;
-      font-weight: 670;
-    }
-
     .vision-title .headline-line {
       min-height: 1.2em;
       padding: 0.05em 0.08em 0.14em;
@@ -1973,10 +1982,6 @@
       max-width: 100%;
       text-wrap: balance;
       overflow-wrap: normal;
-      color: #f6f9ff;
-      text-shadow:
-        0 0 18px rgba(74, 123, 255, 0.14),
-        0 14px 42px rgba(33, 70, 154, 0.12);
     }
 
     .vision-actions {
@@ -2306,8 +2311,8 @@
 
       .headline-display,
       #overview .section-head h2,
-      .story-title,
-      .vision-title {
+      #coordination .story-title,
+      .vision-title .headline-display {
         font-size: clamp(34px, 10vw, 46px);
         line-height: 1.1;
         letter-spacing: -0.012em;
@@ -2443,8 +2448,9 @@
       }
 
       .vision-title .headline-display {
-        font-size: clamp(32px, 9vw, 44px);
-        line-height: 1.12;
+        font-size: clamp(34px, 10vw, 46px);
+        line-height: 1.1;
+        letter-spacing: -0.012em;
       }
 
       .footer {
