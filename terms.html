@@ -105,9 +105,11 @@
       width: min(100%, var(--content-width));
       margin: 0 auto;
       min-height: 64px;
+      position: relative;
     }
 
     .brand-lockup {
+      grid-column: 1;
       width: 132px;
       height: 44px;
       display: inline-flex;
@@ -133,7 +135,10 @@
       width: min(100%, 720px);
       padding: 0 18px;
       border-radius: 999px;
-      position: relative;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       isolation: isolate;
     }
 
@@ -177,9 +182,14 @@
     }
 
     .header-actions {
+      grid-column: 3;
+      justify-self: end;
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 2;
     }
 
     .ghost-button {
@@ -228,6 +238,22 @@
         inset 0 0 0 1px rgba(255, 255, 255, 0.12),
         inset 0 0 30px rgba(79, 142, 255, 0.14),
         0 0 64px rgba(42, 94, 255, 0.22);
+    }
+
+    .nav-cta.nav-cta-github {
+      min-width: 150px;
+      background:
+        radial-gradient(circle at 78% 50%, rgba(255, 255, 255, 0.08), transparent 42%) padding-box,
+        linear-gradient(rgba(8, 8, 10, 0.86), rgba(8, 8, 10, 0.86)) padding-box;
+      animation: none;
+    }
+
+    .cta-icon {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      color: currentColor;
+      fill: currentColor;
     }
 
     main {
@@ -433,6 +459,19 @@
         gap: 12px;
       }
 
+      .main-nav {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        grid-column: auto;
+      }
+
+      .brand-lockup,
+      .header-actions {
+        grid-column: auto;
+      }
+
       .header-actions {
         justify-content: center;
       }
@@ -463,6 +502,7 @@
       .main-nav {
         gap: 18px;
         padding: 0;
+        justify-content: center;
       }
 
       .main-nav a {
@@ -525,8 +565,13 @@
 
         <div class="header-actions">
           <a class="ghost-button nav-cta" href="./docs.html">
-            <span>Read the docs</span>
-            <span aria-hidden="true">→</span>
+            <span>Docs</span>
+          </a>
+          <a class="ghost-button nav-cta nav-cta-github" href="https://github.com/mor9x/suimesh" target="_blank" rel="noreferrer">
+            <svg class="cta-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.74.08-.74 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.8 1.31 3.49 1 .11-.78.42-1.31.77-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.38 1.24-3.22-.13-.31-.54-1.56.12-3.24 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.67 1.68.25 2.93.12 3.24.77.84 1.24 1.91 1.24 3.22 0 4.62-2.81 5.64-5.49 5.94.43.38.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.22.7.83.58A12 12 0 0 0 12 .5z"></path>
+            </svg>
+            <span>GitHub</span>
           </a>
         </div>
       </div>

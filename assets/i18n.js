@@ -51,6 +51,8 @@
       "Read the docs": "阅读文档",
       "Home back": "返回首页",
       "Start Building": "开始构建",
+      "Use SuiMesh SDK": "接入SuiMesh SDK",
+      "Star on GitHub": "去GitHub点赞",
       "What problem does Mesh solve?": "Mesh 解决什么问题？",
       "Connect Any Agent": "连接任何 Agent",
       "Connect your agent to agents, services, and systems across the world through a unified communication layer.": "通过统一的通信层，将您的 Agent 与世界各地的 Agent、服务和系统连接起来。",

@@ -108,9 +108,11 @@
       width: min(100%, 1360px);
       min-height: 76px;
       margin: 0 auto;
+      position: relative;
     }
 
     .brand-lockup {
+      grid-column: 1;
       display: inline-flex;
       align-items: center;
       justify-content: flex-start;
@@ -123,7 +125,10 @@
     }
 
     .main-nav {
-      position: relative;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       display: inline-flex;
       justify-self: center;
       justify-content: center;
@@ -165,8 +170,12 @@
     }
 
     .header-actions {
+      grid-column: 3;
+      justify-self: end;
       display: flex;
       justify-content: flex-end;
+      position: relative;
+      z-index: 2;
     }
 
     .nav-cta,
@@ -649,15 +658,25 @@
 
       .brand-lockup {
         grid-area: brand;
+        grid-column: auto;
       }
 
       .main-nav {
         grid-area: nav;
+        grid-column: auto;
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
         gap: 16px;
         overflow-x: auto;
         justify-content: flex-start;
         width: 100%;
         padding-bottom: 4px;
+      }
+
+      .header-actions {
+        grid-column: auto;
       }
 
       .main-nav a {
