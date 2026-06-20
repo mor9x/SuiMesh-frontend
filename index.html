@@ -555,9 +555,10 @@
       min-height: calc(100vh - 190px);
       position: relative;
       isolation: isolate;
+      contain: layout style;
       transform: scale(calc(1 - var(--hero-stage-fade) * 0.035));
       transform-origin: 50% 20%;
-      transition: transform 180ms linear;
+      will-change: transform;
     }
 
     .hero::before {
@@ -578,7 +579,6 @@
       transform: rotate(-8deg);
       animation: heroFlowGlow 9s ease-in-out infinite alternate;
       opacity: calc(0.72 - var(--hero-stage-fade) * 0.42);
-      filter: blur(calc(34px + var(--hero-stage-fade) * 18px));
     }
 
     @keyframes heroFlowGlow {
@@ -600,11 +600,7 @@
       z-index: 4;
       transform: translate3d(0, calc(var(--hero-copy-fade, 0) * -40px), 0) scale(calc(1 - var(--hero-copy-fade, 0) * 0.03));
       opacity: calc(1 - var(--hero-copy-fade, 0) * 1.08);
-      filter: blur(calc(var(--hero-copy-fade, 0) * 22px));
-      transition:
-        transform 180ms linear,
-        opacity 180ms linear,
-        filter 180ms linear;
+      will-change: transform, opacity;
     }
 
     .hero-copy h1 {
@@ -729,11 +725,7 @@
       z-index: 1;
       transform: translate3d(0, calc(var(--hero-stage-fade) * -48px), 0) scale(calc(1 - var(--hero-stage-fade) * 0.08));
       opacity: calc(1 - var(--hero-stage-fade) * 0.96);
-      filter: blur(calc(var(--hero-stage-fade) * 18px));
-      transition:
-        transform 180ms linear,
-        opacity 180ms linear,
-        filter 180ms linear;
+      will-change: transform, opacity;
     }
 
     .hero-stage::before,
@@ -829,6 +821,7 @@
       width: min(100%, var(--content-width));
       margin: 0 auto;
       padding-top: 112px;
+      contain: layout style;
     }
 
     .section-head {
@@ -902,11 +895,7 @@
       z-index: 1;
       transform: translate3d(0, calc(var(--section-fade, 0) * -34px), 0) scale(calc(1 - var(--section-fade, 0) * 0.04));
       opacity: calc(1 - var(--section-fade, 0) * 1.06);
-      filter: blur(calc(var(--section-fade, 0) * 14px));
-      transition:
-        transform 180ms linear,
-        opacity 180ms linear,
-        filter 180ms linear;
+      will-change: transform, opacity;
     }
 
     #overview .section-kicker {
@@ -978,11 +967,7 @@
       padding-top: 8px;
       transform: translate3d(0, calc(var(--section-fade, 0) * -34px), 0) scale(calc(1 - var(--section-fade, 0) * 0.04));
       opacity: calc(1 - var(--section-fade, 0) * 1.06);
-      filter: blur(calc(var(--section-fade, 0) * 14px));
-      transition:
-        transform 180ms linear,
-        opacity 180ms linear,
-        filter 180ms linear;
+      will-change: transform, opacity;
     }
 
     #overview .feature-grid::before {
@@ -1032,6 +1017,7 @@
         0 18px 44px rgba(0, 0, 0, 0.34);
       backdrop-filter: blur(24px) saturate(1.06);
       -webkit-backdrop-filter: blur(24px) saturate(1.06);
+      contain: layout style;
       cursor: pointer;
       opacity: 0.94;
       transform: translate3d(0, var(--slot-ty, 0px), 0) scale(var(--slot-scale, 0.985));
@@ -1168,8 +1154,8 @@
 
     #overview .feature-card[data-slot="center"] {
       order: 2;
-      --slot-ty: -10px;
-      --slot-scale: 1.02;
+      --slot-ty: 0px;
+      --slot-scale: 0.985;
       opacity: 1;
       border-color: rgba(255, 255, 255, 0.16);
       box-shadow:
@@ -1206,8 +1192,11 @@
       transition-delay: 260ms;
     }
 
-    #overview .feature-card:hover {
-      transform: translate3d(0, calc(var(--slot-ty, 0px) - 4px), 0) scale(calc(var(--slot-scale, 0.985) + 0.02));
+    #overview .feature-card:hover,
+    #overview .feature-card:focus-visible,
+    #overview .feature-card.is-visible:hover,
+    #overview .feature-card.is-visible:focus-visible {
+      transform: translate3d(0, -4px, 0) scale(1.005);
       opacity: 1;
       border-color: rgba(255, 255, 255, 0.18);
       box-shadow:
@@ -1393,6 +1382,7 @@
       margin: 0 auto;
       min-height: 960px;
       padding: 24px 0 32px;
+      contain: layout style;
     }
 
     .protocol-topology-wrap::before {
@@ -1626,6 +1616,7 @@
         0 28px 72px rgba(0, 0, 0, 0.34);
       backdrop-filter: blur(24px) saturate(1.06);
       -webkit-backdrop-filter: blur(24px) saturate(1.06);
+      contain: layout style;
       overflow: hidden;
     }
 
@@ -1659,11 +1650,7 @@
     #coordination .story-panel {
       transform: translate3d(0, calc(var(--section-fade, 0) * -34px), 0) scale(calc(1 - var(--section-fade, 0) * 0.04));
       opacity: calc(1 - var(--section-fade, 0) * 1.05);
-      filter: blur(calc(var(--section-fade, 0) * 14px));
-      transition:
-        transform 180ms linear,
-        opacity 180ms linear,
-        filter 180ms linear;
+      will-change: transform, opacity;
     }
 
     #coordination .section-head {
@@ -1734,6 +1721,9 @@
     }
 
     .vision-section {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
       padding-top: 70px;
       padding-bottom: 0;
       overflow: hidden;
@@ -1751,8 +1741,8 @@
     }
 
     .vision-shell {
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
+      width: 100%;
+      margin-left: 0;
       padding: 12px 0 0;
       min-height: 760px;
       border: 0;
@@ -1798,7 +1788,7 @@
 
     .vision-copy {
       position: relative;
-      width: min(100%, 1540px);
+      width: 100%;
       min-height: 760px;
       padding: 12px 0 72px;
       display: flex;
@@ -1990,6 +1980,19 @@
       }
     }
 
+    html.is-scrolling .nav-cta.nav-cta-github,
+    html.is-scrolling .hero-button,
+    html.is-scrolling .hero::before,
+    html.is-scrolling .hero-art-shell::after,
+    html.is-scrolling .protocol-flow,
+    html.is-scrolling .protocol-node-pulse,
+    html.is-scrolling .vision-shell::after,
+    html.is-scrolling .vision-deco-svg,
+    html.is-scrolling .vision-deco-flow,
+    html.is-scrolling .vision-deco-node {
+      animation-play-state: paused;
+    }
+
     .vision-captions {
       width: min(100%, 1080px);
       display: grid;
@@ -2058,6 +2061,7 @@
       background: #030406;
       border-top: 0;
       position: relative;
+      contain: layout style;
     }
 
     .footer::before {
@@ -2478,7 +2482,7 @@
       }
 
       .vision-shell {
-        padding: 34px 24px 0;
+        padding: 34px 0 0;
         min-height: 0;
       }
 
@@ -2635,7 +2639,7 @@
     <header class="page-header">
       <div class="header-grid">
         <a class="brand-lockup" href="./index.html" aria-label="SuiMesh home">
-          <img src="./assets/suimesh-lockup-hd.png" alt="SuiMesh">
+          <img src="./assets/suimesh-lockup-hd.png" alt="SuiMesh" decoding="async">
         </a>
 
         <nav class="main-nav" aria-label="Primary navigation">
@@ -2698,7 +2702,7 @@
 
         <div class="hero-stage" id="hero-stage" data-reveal>
           <div class="hero-art-shell">
-            <img class="hero-flower" src="./assets/hero-flower-hd.png" alt="">
+            <img class="hero-flower" src="./assets/hero-flower-hd.png" alt="" decoding="async">
           </div>
         </div>
       </section>
@@ -2716,7 +2720,7 @@
         <div class="feature-grid">
           <article class="feature-card glass" data-reveal>
             <div class="feature-icon" aria-hidden="true">
-              <img class="feature-icon-image" src="./assets/overview-icon-1.png" alt="">
+              <img class="feature-icon-image" src="./assets/overview-icon-1.png" alt="" decoding="async">
             </div>
             <h3>Connect Any Agent</h3>
             <p>
@@ -2726,7 +2730,7 @@
 
           <article class="feature-card glass" data-reveal>
             <div class="feature-icon" aria-hidden="true">
-              <img class="feature-icon-image" src="./assets/overview-icon-2.png" alt="">
+              <img class="feature-icon-image" src="./assets/overview-icon-2.png" alt="" decoding="async">
             </div>
             <h3>Control Action</h3>
             <p>
@@ -2736,7 +2740,7 @@
 
           <article class="feature-card glass" data-reveal>
             <div class="feature-icon" aria-hidden="true">
-              <img class="feature-icon-image" src="./assets/overview-icon-3.png" alt="">
+              <img class="feature-icon-image" src="./assets/overview-icon-3.png" alt="" decoding="async">
             </div>
             <h3>Audit risk.</h3>
             <p>
@@ -2938,7 +2942,7 @@
             <a class="footer-link" href="./docs.html">Docs</a>
             <a class="footer-link" href="./terms.html">Terms of Service</a>
           </div>
-          <img class="founder-signature" src="./assets/founder-signature.png" alt="Aris and Ari signature">
+          <img class="founder-signature" src="./assets/founder-signature.png" alt="Aris and Ari signature" decoding="async">
         </div>
       </div>
     </footer>
@@ -2953,10 +2957,22 @@
     const heroButton = document.querySelector(".hero-button");
     const overviewSection = document.querySelector("#overview");
     const coordinationSection = document.querySelector("#coordination");
-    const visionSection = document.querySelector("#vision");
     const overviewCards = [...document.querySelectorAll("#overview .feature-card")];
     const revealNodes = [...document.querySelectorAll("[data-reveal]")];
     let activeOverviewIndex = 0;
+    let scrollEffectsScheduled = false;
+    let scrollIdleTimer = 0;
+    let geometryRefreshScheduled = false;
+    let cursorGlowScheduled = false;
+    let cursorGlowX = window.innerWidth / 2;
+    let cursorGlowY = window.innerHeight / 2;
+    const scrollMetrics = {
+      viewportHeight: window.innerHeight,
+      hero: { top: 0, height: 0 },
+      heroButton: { top: 0, height: 0 },
+      overview: { top: 0, height: 0 },
+      coordination: { top: 0, height: 0 }
+    };
 
     function syncOverviewCards(centerIndex) {
       if (!overviewCards.length) {
@@ -2991,16 +3007,56 @@
       return Math.min(max, Math.max(min, value));
     }
 
-    function computeSectionFade(section, startRatio = 0.5, endRatio = 0.92) {
-      if (!section) {
+    function readElementMetrics(element) {
+      if (!element) {
+        return { top: 0, height: 0 };
+      }
+
+      const rect = element.getBoundingClientRect();
+      return {
+        top: rect.top + window.scrollY,
+        height: rect.height
+      };
+    }
+
+    function refreshScrollMetrics() {
+      scrollMetrics.viewportHeight = window.innerHeight;
+      scrollMetrics.hero = readElementMetrics(heroSection);
+      scrollMetrics.heroButton = readElementMetrics(heroButton);
+      scrollMetrics.overview = readElementMetrics(overviewSection);
+      scrollMetrics.coordination = readElementMetrics(coordinationSection);
+    }
+
+    function requestGeometryRefresh() {
+      if (geometryRefreshScheduled) {
+        return;
+      }
+
+      geometryRefreshScheduled = true;
+      requestAnimationFrame(() => {
+        geometryRefreshScheduled = false;
+        refreshScrollMetrics();
+        syncScrollEffects();
+      });
+    }
+
+    function computeSectionFade(metrics, scrollY, startRatio = 0.5, endRatio = 0.92) {
+      if (!metrics.height) {
         return 0;
       }
 
-      const rect = section.getBoundingClientRect();
-      const traveled = Math.max(0, -rect.top);
-      const fadeStart = rect.height * startRatio;
-      const fadeEnd = Math.max(fadeStart + 1, rect.height * endRatio);
+      const traveled = Math.max(0, scrollY - metrics.top);
+      const fadeStart = metrics.height * startRatio;
+      const fadeEnd = Math.max(fadeStart + 1, metrics.height * endRatio);
       return clamp((traveled - fadeStart) / (fadeEnd - fadeStart));
+    }
+
+    function setStyleVar(element, name, value) {
+      if (!element || element.style.getPropertyValue(name) === value) {
+        return;
+      }
+
+      element.style.setProperty(name, value);
     }
 
     function setupRevealObserver() {
@@ -3043,54 +3099,83 @@
 
     function syncScrollEffects() {
       const currentY = window.scrollY;
-      const heroRect = heroSection ? heroSection.getBoundingClientRect() : null;
-      const heroTravel = heroRect ? Math.max(0, -heroRect.top) : 0;
-      const heroFadeStart = heroRect ? heroRect.height * 0.16 : 0;
-      const heroFadeEnd = heroRect ? heroRect.height * 0.64 : 1;
+      const heroTravel = Math.max(0, currentY - scrollMetrics.hero.top);
+      const heroFadeStart = scrollMetrics.hero.height * 0.16;
+      const heroFadeEnd = scrollMetrics.hero.height * 0.64;
       const fadeProgress = clamp((heroTravel - heroFadeStart) / Math.max(1, heroFadeEnd - heroFadeStart));
 
-      if (heroCopy) {
-        heroCopy.style.setProperty("--hero-copy-fade", fadeProgress.toFixed(3));
-      }
-
-      if (heroSection) {
-        heroSection.style.setProperty("--hero-stage-fade", fadeProgress.toFixed(3));
-      }
-
-      if (heroStage) {
-        heroStage.style.setProperty("--hero-stage-fade", fadeProgress.toFixed(3));
-      }
-
-      if (overviewSection) {
-        overviewSection.style.setProperty("--section-fade", computeSectionFade(overviewSection, 0.48, 0.9).toFixed(3));
-      }
-
-      if (coordinationSection) {
-        coordinationSection.style.setProperty("--section-fade", computeSectionFade(coordinationSection, 0.5, 0.9).toFixed(3));
-      }
-
-      if (visionSection) {
-        visionSection.style.setProperty("--section-fade", computeSectionFade(visionSection, 0.82, 1.08).toFixed(3));
-      }
+      setStyleVar(heroCopy, "--hero-copy-fade", fadeProgress.toFixed(3));
+      setStyleVar(heroSection, "--hero-stage-fade", fadeProgress.toFixed(3));
+      setStyleVar(heroStage, "--hero-stage-fade", fadeProgress.toFixed(3));
+      setStyleVar(overviewSection, "--section-fade", computeSectionFade(scrollMetrics.overview, currentY, 0.48, 0.9).toFixed(3));
+      setStyleVar(coordinationSection, "--section-fade", computeSectionFade(scrollMetrics.coordination, currentY, 0.5, 0.9).toFixed(3));
 
       if (pageHeader) {
-        const heroButtonRect = heroButton ? heroButton.getBoundingClientRect() : null;
-        const heroButtonVisible = heroButtonRect
-          ? heroButtonRect.bottom > 0 && heroButtonRect.top < window.innerHeight
+        const heroButtonTop = scrollMetrics.heroButton.top - currentY;
+        const heroButtonBottom = heroButtonTop + scrollMetrics.heroButton.height;
+        const heroButtonVisible = heroButton
+          ? heroButtonBottom > 0 && heroButtonTop < scrollMetrics.viewportHeight
           : currentY < 120;
         pageHeader.classList.toggle("is-hidden", !heroButtonVisible && currentY > 120);
       }
     }
 
+    function requestScrollEffects() {
+      document.documentElement.classList.add("is-scrolling");
+      window.clearTimeout(scrollIdleTimer);
+      scrollIdleTimer = window.setTimeout(() => {
+        document.documentElement.classList.remove("is-scrolling");
+      }, 140);
+
+      if (scrollEffectsScheduled) {
+        return;
+      }
+
+      scrollEffectsScheduled = true;
+      requestAnimationFrame(() => {
+        scrollEffectsScheduled = false;
+        syncScrollEffects();
+      });
+    }
+
+    function requestCursorGlowUpdate() {
+      if (cursorGlowScheduled) {
+        return;
+      }
+
+      cursorGlowScheduled = true;
+      requestAnimationFrame(() => {
+        cursorGlowScheduled = false;
+        cursorGlow.style.setProperty("--cursor-x", `${cursorGlowX}px`);
+        cursorGlow.style.setProperty("--cursor-y", `${cursorGlowY}px`);
+      });
+    }
+
     setupRevealObserver();
+    refreshScrollMetrics();
     syncScrollEffects();
-    window.addEventListener("scroll", syncScrollEffects, { passive: true });
-    window.addEventListener("resize", syncScrollEffects);
+    window.addEventListener("scroll", requestScrollEffects, { passive: true });
+    window.addEventListener("resize", requestGeometryRefresh);
+    window.addEventListener("load", requestGeometryRefresh, { once: true });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(requestGeometryRefresh).catch(() => {});
+    }
+
+    if ("ResizeObserver" in window) {
+      const resizeObserver = new ResizeObserver(requestGeometryRefresh);
+      [document.body, heroSection, overviewSection, coordinationSection].forEach((node) => {
+        if (node) {
+          resizeObserver.observe(node);
+        }
+      });
+    }
 
     window.addEventListener("pointermove", (event) => {
       document.body.classList.add("has-cursor-glow");
-      cursorGlow.style.setProperty("--cursor-x", `${event.clientX}px`);
-      cursorGlow.style.setProperty("--cursor-y", `${event.clientY}px`);
+      cursorGlowX = event.clientX;
+      cursorGlowY = event.clientY;
+      requestCursorGlowUpdate();
     }, { passive: true });
 
     window.addEventListener("pointerleave", () => {
