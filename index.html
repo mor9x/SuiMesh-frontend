@@ -6,9 +6,41 @@
   <title>SuiMesh</title>
   <meta
     name="description"
-    content="SuiMesh is the communication protocol layer for AI Agents on Sui, built for auditable coordination, traceable execution, and onchain memory."
+    content="SuiMesh is the communication protocol for multi-agent coordination on Sui, built so agents can talk, hand off work, share context, and verify what happened."
   >
   <style>
+    @font-face {
+      font-family: "OpenAI Sans";
+      src: url("https://cdn.openai.com/common/fonts/openai-sans/v2/OpenAISans-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "OpenAI Sans";
+      src: url("https://cdn.openai.com/common/fonts/openai-sans/v2/OpenAISans-Medium.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "OpenAI Sans";
+      src: url("https://cdn.openai.com/common/fonts/openai-sans/v2/OpenAISans-Semibold.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "OpenAI Sans";
+      src: url("https://cdn.openai.com/common/fonts/openai-sans/v2/OpenAISans-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       color-scheme: dark;
       --bg: #000000;
@@ -56,9 +88,11 @@
       background: #000;
       color: var(--text);
       font-family:
+        "OpenAI Sans",
         "PingFang SC",
-        "Inter",
-        "SF Pro Display",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
         "Helvetica Neue",
         Arial,
         sans-serif;
@@ -265,7 +299,7 @@
       justify-content: center;
       min-height: 38px;
       font-size: 17px;
-      font-weight: 620;
+      font-weight: 600;
       color: rgba(248, 250, 255, 0.88);
       text-shadow: 0 0 18px rgba(87, 118, 255, 0.18);
       transition:
@@ -304,7 +338,7 @@
         inset 0 0 0 1px rgba(255, 255, 255, 0.045),
         0 0 18px rgba(255, 255, 255, 0.045);
       font-size: 18px;
-      font-weight: 620;
+      font-weight: 600;
       letter-spacing: 0;
     }
 
@@ -446,8 +480,8 @@
         inset -16px 0 22px rgba(30, 98, 255, 0.24),
         0 0 24px rgba(60, 126, 255, 0.24);
       font-size: 16px;
-      font-weight: 620;
-      letter-spacing: -0.015em;
+      font-weight: 600;
+      letter-spacing: 0;
       overflow: hidden;
       text-align: center;
       animation: ctaBorderSpin 3.4s linear infinite;
@@ -516,7 +550,7 @@
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
       font-size: 16px;
       font-weight: 600;
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
     }
 
     .nav-cta:where(.ghost-button) {
@@ -532,7 +566,7 @@
         inset 0 0 0 1px rgba(255, 255, 255, 0.045),
         0 0 18px rgba(255, 255, 255, 0.045);
       font-size: 18px;
-      font-weight: 620;
+      font-weight: 600;
       letter-spacing: 0;
     }
 
@@ -540,7 +574,7 @@
       color: #9fdcff;
       font-size: 15px;
       font-weight: 600;
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
       padding: 8px 0;
     }
 
@@ -606,8 +640,8 @@
     .hero-copy h1 {
       font-size: clamp(74px, 6.1vw, 100px);
       line-height: 1.02;
-      font-weight: 680;
-      letter-spacing: -0.022em;
+      font-weight: 600;
+      letter-spacing: 0;
       color: #eef5ff;
       max-width: 920px;
       text-shadow:
@@ -627,8 +661,8 @@
     .headline-display {
       font-size: clamp(74px, 6.1vw, 100px);
       line-height: 1.08;
-      letter-spacing: -0.018em;
-      font-weight: 680;
+      letter-spacing: 0;
+      font-weight: 600;
     }
 
     .headline-line {
@@ -704,8 +738,8 @@
       color: rgba(221, 233, 251, 0.78);
       font-size: clamp(20px, 1.58vw, 24px);
       line-height: 1.6;
-      font-weight: 480;
-      letter-spacing: -0.012em;
+      font-weight: 500;
+      letter-spacing: 0;
       max-width: 720px;
     }
 
@@ -830,24 +864,26 @@
     }
 
     .section-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 22px;
-      margin-bottom: 18px;
-      font-size: 11px;
-      font-weight: 640;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(210, 228, 251, 0.84);
+      display: block;
+      margin-bottom: 24px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+      font-size: clamp(32px, 2.45vw, 40px);
+      line-height: 1.12;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      color: rgba(232, 241, 255, 0.86);
     }
 
     .section h2 {
       font-size: clamp(38px, 3.5vw, 50px);
       line-height: 1.14;
       font-weight: 600;
-      letter-spacing: -0.03em;
+      letter-spacing: 0;
       color: rgba(241, 246, 255, 0.98);
     }
 
@@ -857,7 +893,7 @@
       line-height: 1.78;
       color: var(--muted);
       max-width: 720px;
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
     }
 
     .feature-grid {
@@ -899,22 +935,16 @@
     }
 
     #overview .section-kicker {
-      margin-bottom: 24px;
-      padding: 12px 22px;
-      color: rgba(231, 240, 255, 0.9);
-      background:
-        radial-gradient(circle at 80% 16%, rgba(58, 111, 255, 0.14), transparent 24%),
-        radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.12), transparent 20%),
-        linear-gradient(180deg, rgba(13, 16, 24, 0.86), rgba(4, 6, 11, 0.74));
-      border-color: rgba(162, 190, 236, 0.18);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        inset 0 -16px 22px rgba(7, 16, 38, 0.14),
-        0 10px 26px rgba(0, 0, 0, 0.18),
-        0 0 22px rgba(82, 153, 255, 0.04);
-      backdrop-filter: blur(20px) saturate(1.08);
-      -webkit-backdrop-filter: blur(20px) saturate(1.08);
-      border-radius: 24px;
+      margin-bottom: 30px;
+      color: rgba(247, 250, 255, 0.92);
+      font-size: clamp(34px, 2.6vw, 42px);
+      font-weight: 500;
+      letter-spacing: 0;
+      background: none;
+      border: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
 
     #overview h2,
@@ -937,8 +967,8 @@
     .vision-title .headline-display {
       font-size: clamp(74px, 6.1vw, 100px);
       line-height: 1.08;
-      font-weight: 680;
-      letter-spacing: -0.018em;
+      font-weight: 600;
+      letter-spacing: 0;
     }
 
     #overview .headline-type,
@@ -1110,9 +1140,9 @@
     .surface-card h3 {
       font-size: 28px;
       line-height: 1.12;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
       color: rgba(247, 250, 255, 0.98);
-      font-weight: 650;
+      font-weight: 600;
       margin-bottom: 14px;
     }
 
@@ -1132,14 +1162,14 @@
       font-size: 16px;
       line-height: 1.72;
       color: var(--muted);
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
     }
 
     #overview .feature-card p {
       max-width: 95%;
       font-size: 17px;
       line-height: 1.62;
-      font-weight: 470;
+      font-weight: 500;
       background: linear-gradient(180deg, rgba(240, 246, 255, 0.86), rgba(154, 166, 185, 0.72));
       -webkit-background-clip: text;
       background-clip: text;
@@ -1294,16 +1324,16 @@
       font-size: 12px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      font-weight: 630;
+      font-weight: 600;
     }
 
     .trace-body strong {
       display: block;
       color: rgba(245, 249, 255, 0.95);
       font-size: 16px;
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
       margin-bottom: 5px;
-      font-weight: 650;
+      font-weight: 600;
     }
 
     .trace-body span {
@@ -1338,10 +1368,10 @@
 
     .step h4 {
       font-size: 20px;
-      letter-spacing: -0.015em;
+      letter-spacing: 0;
       color: rgba(246, 249, 255, 0.96);
       margin-bottom: 8px;
-      font-weight: 650;
+      font-weight: 600;
     }
 
     .step p {
@@ -1516,7 +1546,7 @@
       font-size: 13px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      font-weight: 650;
+      font-weight: 600;
     }
 
     .protocol-sub-label {
@@ -1524,21 +1554,21 @@
       font-size: 12px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      font-weight: 520;
+      font-weight: 500;
     }
 
     .protocol-center-title {
       fill: rgba(247, 251, 255, 0.96);
       font-size: 36px;
-      letter-spacing: -0.03em;
-      font-weight: 680;
+      letter-spacing: 0;
+      font-weight: 600;
     }
 
     .protocol-center-copy {
       fill: rgba(186, 204, 228, 0.82);
       font-size: 14px;
       letter-spacing: 0.04em;
-      font-weight: 520;
+      font-weight: 500;
     }
 
     .protocol-badge {
@@ -1552,7 +1582,7 @@
       font-size: 14px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      font-weight: 650;
+      font-weight: 600;
     }
 
     .protocol-badge-copy {
@@ -1643,7 +1673,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
       gap: 34px;
-      align-items: start;
+      align-items: center;
     }
 
     #coordination .section-head,
@@ -1654,40 +1684,63 @@
     }
 
     #coordination .section-head {
-      --coordination-copy-inset: 38px;
       box-sizing: border-box;
       max-width: 100%;
       margin: 0 auto 42px;
-      padding-left: var(--coordination-copy-inset);
-      text-align: left;
+      padding-left: 0;
+      text-align: center;
     }
 
     .story-copy {
       display: grid;
       align-content: start;
-      gap: 26px;
+      gap: 22px;
     }
 
     .story-lead {
-      font-size: clamp(24px, 2.3vw, 34px);
+      font-size: clamp(26px, 2.45vw, 36px);
       line-height: 1.22;
-      letter-spacing: -0.03em;
+      letter-spacing: 0;
       color: rgba(244, 248, 255, 0.96);
-      font-weight: 620;
+      font-weight: 600;
       text-wrap: balance;
+    }
+
+    .story-breakdown {
+      display: grid;
+      gap: 12px;
+      max-width: 680px;
+    }
+
+    .story-breakdown p {
+      margin: 0;
+      color: rgba(206, 219, 238, 0.84);
+      font-size: clamp(17px, 1.28vw, 20px);
+      line-height: 1.52;
+      letter-spacing: 0;
+      text-wrap: pretty;
+    }
+
+    .story-breakdown strong {
+      color: rgba(244, 248, 255, 0.95);
+      font-weight: 600;
     }
 
     .story-points {
       display: grid;
-      gap: 14px;
+      align-self: center;
+      justify-self: center;
+      width: min(100%, 520px);
+      gap: 16px;
     }
 
     .story-point {
-      display: flex;
+      display: grid;
+      grid-template-columns: auto 1fr;
       align-items: center;
-      gap: 12px;
-      min-height: 62px;
-      padding: 16px 18px;
+      gap: 10px 14px;
+      min-height: 76px;
+      padding: 18px 20px;
       border-radius: 22px;
       background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.006)),
@@ -1696,8 +1749,8 @@
       color: rgba(231, 238, 249, 0.9);
       font-size: 17px;
       line-height: 1.4;
-      font-weight: 540;
-      letter-spacing: -0.01em;
+      font-weight: 500;
+      letter-spacing: 0;
     }
 
     .story-point::before {
@@ -1710,13 +1763,31 @@
       box-shadow: 0 0 18px rgba(105, 185, 255, 0.36);
     }
 
+    .story-point-title {
+      display: block;
+      color: rgba(244, 248, 255, 0.96);
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .story-point-copy {
+      display: block;
+      margin-top: 4px;
+      color: rgba(190, 205, 228, 0.76);
+      font-size: 14px;
+      line-height: 1.42;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
     .story-conclusion {
       margin-top: 0;
       max-width: 100%;
       color: rgba(206, 219, 238, 0.84);
       font-size: 20px;
       line-height: 1.62;
-      letter-spacing: -0.02em;
+      letter-spacing: 0;
       text-wrap: balance;
     }
 
@@ -2008,7 +2079,7 @@
       color: rgba(193, 206, 227, 0.74);
       font-size: clamp(15px, 1.12vw, 18px);
       line-height: 1.45;
-      letter-spacing: -0.014em;
+      letter-spacing: 0;
       text-align: center;
       text-wrap: balance;
     }
@@ -2016,7 +2087,7 @@
     .vision-caption strong {
       display: block;
       color: rgba(239, 244, 252, 0.94);
-      font-weight: 560;
+      font-weight: 500;
     }
 
     .vision-title {
@@ -2093,7 +2164,7 @@
       color: rgba(238, 243, 250, 0.9);
       font-size: 16px;
       font-weight: 500;
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
       line-height: 18px;
       padding-top: 34px;
     }
@@ -2121,9 +2192,9 @@
       gap: 10px;
       color: rgba(236, 241, 249, 0.84);
       font-size: 15px;
-      font-weight: 520;
+      font-weight: 500;
       line-height: 18px;
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
       transition:
         color 180ms ease,
         transform 180ms ease,
@@ -2317,6 +2388,17 @@
         height: 170px;
         width: min(100%, 760px);
       }
+
+      .story-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .story-points {
+        justify-self: stretch;
+        width: min(100%, 680px);
+        margin-inline: auto;
+      }
     }
 
     @media (max-width: 760px) {
@@ -2375,7 +2457,7 @@
       .hero-copy h1 {
         font-size: clamp(34px, 10vw, 46px);
         line-height: 1.08;
-        letter-spacing: -0.01em;
+        letter-spacing: 0;
       }
 
       .hero-copy .title-line,
@@ -2392,7 +2474,7 @@
       .vision-title .headline-display {
         font-size: clamp(34px, 10vw, 46px);
         line-height: 1.1;
-        letter-spacing: -0.012em;
+        letter-spacing: 0;
       }
 
       .hero-sheet {
@@ -2459,6 +2541,42 @@
       .protocol-card,
       .surface-card {
         padding: 22px;
+      }
+
+      .story-panel {
+        padding: 24px 20px 26px;
+        border-radius: 26px;
+      }
+
+      .story-copy {
+        gap: 18px;
+      }
+
+      .story-lead {
+        font-size: clamp(25px, 7vw, 32px);
+      }
+
+      .story-breakdown {
+        gap: 10px;
+      }
+
+      .story-breakdown p {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .story-point {
+        min-height: 68px;
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .story-point-title {
+        font-size: 17px;
+      }
+
+      .story-point-copy {
+        font-size: 13px;
       }
 
       .protocol-topology-wrap::before {
@@ -2533,7 +2651,7 @@
       .vision-title .headline-display {
         font-size: clamp(34px, 10vw, 46px);
         line-height: 1.1;
-        letter-spacing: -0.012em;
+        letter-spacing: 0;
       }
 
       .footer {
@@ -2622,7 +2740,6 @@
       }
 
       #coordination .section-head {
-        --coordination-copy-inset: 38px;
         margin-bottom: 28px;
       }
 
@@ -2687,13 +2804,13 @@
           </h1>
 
           <p class="subhead">
-            SuiMesh is the communication protocol layer for AI Agents on Sui, built for auditable coordination, traceable execution, and onchain memory.
+            Agents should not just act alone. They should be able to talk, coordinate, hand off work, share context, and prove what happened. SuiMesh is the communication protocol for multi-agent coordination on Sui.
           </p>
 
           <div class="hero-actions">
             <a class="hero-button" href="https://github.com/mor9x/suimesh" target="_blank" rel="noreferrer">
               <span class="hero-button-label">
-                <span>Start Building</span>
+                <span>Build with SuiMesh</span>
                 <span aria-hidden="true">↗</span>
               </span>
             </a>
@@ -2709,10 +2826,10 @@
 
       <section class="section" id="overview">
         <div class="section-head" data-reveal>
-          <div class="section-kicker glass">What problem does Mesh solve?</div>
+          <div class="section-kicker">Why SuiMesh</div>
           <h2 class="headline-display">
             <span class="headline-line">
-              <span class="headline-type" style="--duration: 1520ms; --delay: 60ms;">Let Your Agent Communicate With Any Agent.</span>
+              <span class="headline-type" style="--duration: 1520ms; --delay: 60ms;">Let Agents Talk, Coordinate, and Hand Off Work.</span>
             </span>
           </h2>
         </div>
@@ -2722,9 +2839,9 @@
             <div class="feature-icon" aria-hidden="true">
               <img class="feature-icon-image" src="./assets/overview-icon-1.png" alt="" decoding="async">
             </div>
-            <h3>Connect Any Agent</h3>
+            <h3>Talk Across Agents</h3>
             <p>
-              Connect your agent to agents, services, and systems across the world through a unified communication layer.
+              Give agents a shared way to exchange messages, intents, proposals, approvals, and context across apps, wallets, dApps, bots, and frameworks.
             </p>
           </article>
 
@@ -2732,9 +2849,9 @@
             <div class="feature-icon" aria-hidden="true">
               <img class="feature-icon-image" src="./assets/overview-icon-2.png" alt="" decoding="async">
             </div>
-            <h3>Control Action</h3>
+            <h3>Hand Off Work</h3>
             <p>
-              Review, approve, and enforce rules before an agent executes actions in the real world.
+              Let one agent plan, another verify, another execute, and another remember without losing the workflow inside a private backend.
             </p>
           </article>
 
@@ -2742,9 +2859,9 @@
             <div class="feature-icon" aria-hidden="true">
               <img class="feature-icon-image" src="./assets/overview-icon-3.png" alt="" decoding="async">
             </div>
-            <h3>Audit risk.</h3>
+            <h3>Verify the Action</h3>
             <p>
-              Proof over promises — When transfers and permissions are involved, trace the actual PTB—not the agent's word.
+              When work touches wallets, permissions, transactions, or Move calls, SuiMesh keeps an audit trail of what was proposed, approved, executed, and remembered.
             </p>
           </article>
         </div>
@@ -2752,7 +2869,7 @@
 
       <section class="section story-section" id="coordination">
         <div class="section-head" data-reveal>
-          <div class="section-kicker glass">Coordination</div>
+          <div class="section-kicker">Coordination</div>
           <h2 class="story-title headline-display">
             <span class="headline-line">
               <span class="headline-type" style="--duration: 1320ms; --delay: 40ms;">Coordination Starts Here.</span>
@@ -2764,18 +2881,35 @@
           <div class="story-grid">
             <div class="story-copy">
               <p class="story-lead">
-                SuiMesh provides a verifiable communication layer for autonomous agents.
+                SuiMesh is where multi-agent coordination becomes auditable.
               </p>
 
-              <p class="story-conclusion">
-                So agents can communicate with confidence across applications, organizations, and networks.
-              </p>
+              <div class="story-breakdown">
+                <p><strong>Talk.</strong> Agents exchange messages, intents, proposals, approvals, and context across clients.</p>
+                <p><strong>Hand off.</strong> One agent can plan, another can verify, and another can execute without losing the workflow.</p>
+                <p><strong>Audit.</strong> Wallet actions, permissions, transactions, and Move calls leave receipts from intent to memory.</p>
+              </div>
             </div>
 
             <div class="story-points">
-              <div class="story-point">Interaction can be identified.</div>
-              <div class="story-point">Message can be traced.</div>
-              <div class="story-point">Action can be verified.</div>
+              <div class="story-point">
+                <span>
+                  <span class="story-point-title">Message</span>
+                  <span class="story-point-copy">Context moves across agents.</span>
+                </span>
+              </div>
+              <div class="story-point">
+                <span>
+                  <span class="story-point-title">Handoff</span>
+                  <span class="story-point-copy">Work changes owner without losing history.</span>
+                </span>
+              </div>
+              <div class="story-point">
+                <span>
+                  <span class="story-point-title">Audit</span>
+                  <span class="story-point-copy">Receipts prove what happened.</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -2876,7 +3010,7 @@
               <div class="vision-captions">
                 <div class="vision-caption"><strong>The internet</strong> connected people.</div>
                 <div class="vision-caption"><strong>Cloud platforms</strong> connected software.</div>
-                <div class="vision-caption"><strong>SuiMesh</strong> connects autonomous agents.</div>
+                <div class="vision-caption"><strong>SuiMesh</strong> coordinates autonomous agents.</div>
               </div>
 
               <h2 class="vision-title">

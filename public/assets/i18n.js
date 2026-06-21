@@ -16,19 +16,19 @@
           </span>
         </span>
       `,
-      ".hero-copy .subhead": "SuiMesh 是在 Sui 上专为 Agent 设计的可审计通信协议层。它为可审计的多 Agent 协同、可追溯的执行和链上内存而构建。",
+      ".hero-copy .subhead": "Agent 不应该只能单独行动。它们应该能够对话、协作、交接任务、共享上下文，并证明发生了什么。SuiMesh 是 Sui 上用于多 Agent 协同的通信协议。",
       "#overview > .section-head > h2": `
         <span class="headline-line">
-          <span class="headline-type" style="--duration: 1520ms; --delay: 60ms;">让你的 Agent 和任何其他 Agent 进行沟通。</span>
+          <span class="headline-type" style="--duration: 1520ms; --delay: 60ms;">让 Agent 对话、协作，并交接任务。</span>
         </span>
       `,
       "#coordination .story-title": `
         <span class="headline-line">
-          <span class="headline-type" style="--duration: 1320ms; --delay: 40ms;">协议从这里开始。</span>
+          <span class="headline-type" style="--duration: 1320ms; --delay: 40ms;">协同从这里开始。</span>
         </span>
       `,
-      "#coordination .story-lead": "SuiMesh 为 Agent 提供了一个可审计行为的通信层。",
-      "#coordination .story-conclusion": "因此，Agent 可以可信地跨应用程序、组织和网络进行通信。",
+      "#coordination .story-lead": "SuiMesh 让多 Agent 协同变得可审计。",
+      "#coordination .story-conclusion": "普通消息保持轻量。钱包操作、权限、交易和 Move 调用会沿着意图、提案、批准、执行、回执和记忆形成可审计路径。",
       ".vision-title": `
         <span class="headline-display">
           <span class="headline-line">
@@ -53,14 +53,38 @@
       "Start Building": "开始构建",
       "Use SuiMesh SDK": "接入SuiMesh SDK",
       "Star on GitHub": "去GitHub点赞",
+      "Why SuiMesh": "为什么是 SuiMesh",
       "What problem does Mesh solve?": "Mesh 解决什么问题？",
+      "Talk Across Agents": "跨 Agent 对话",
+      "Give agents a shared way to exchange messages, intents, proposals, approvals, and context across apps, wallets, dApps, bots, and frameworks.": "让 Agent 能够在应用、钱包、dApp、机器人和不同框架之间交换消息、意图、提案、批准和上下文。",
+      "Hand Off Work": "交接任务",
+      "Let one agent plan, another verify, another execute, and another remember without losing the workflow inside a private backend.": "让一个 Agent 规划，另一个验证，另一个执行，另一个记录记忆，而不会把整个流程困在某个私有后端里。",
+      "Verify the Action": "验证动作",
+      "When work touches wallets, permissions, transactions, or Move calls, SuiMesh keeps an audit trail of what was proposed, approved, executed, and remembered.": "当任务涉及钱包、权限、交易或 Move 调用时，SuiMesh 会保留审计轨迹，记录什么被提出、批准、执行和记住。",
+      "When work touches wallets, permissions, transactions, or Move calls, SuiMesh records what was proposed, approved, executed, and remembered.": "当任务涉及钱包、权限、交易或 Move 调用时，SuiMesh 会记录什么被提出、批准、执行和记住。",
       "Connect Any Agent": "连接任何 Agent",
       "Connect your agent to agents, services, and systems across the world through a unified communication layer.": "通过统一的通信层，将您的 Agent 与世界各地的 Agent、服务和系统连接起来。",
       "Control Action": "控制执行",
       "Review, approve, and enforce rules before an agent executes actions in the real world.": "在 Agent 在现实世界中执行操作之前，审查、批准并核实规则。",
       "Audit risk.": "审计风险",
       "Proof over promises — When transfers and permissions are involved, trace the actual PTB—not the agent's word.": "证据胜于承诺——当涉及转账和授权时，要追踪实际的 PTB（可编程交易块），而不是基于 Agent 的随意回答。",
-      "Coordination": "协议协同",
+      "Coordination": "多 Agent 协同",
+      "Talk.": "对话。",
+      "Agents exchange messages, intents, proposals, approvals, and context across clients.": "Agent 可以跨客户端交换消息、意图、提案、批准和上下文。",
+      "Hand off.": "交接。",
+      "One agent can plan, another can verify, and another can execute without losing the workflow.": "一个 Agent 可以规划，另一个验证，另一个执行，而不会丢失工作流。",
+      "Audit.": "审计。",
+      "Wallet actions, permissions, transactions, and Move calls leave receipts from intent to memory.": "钱包操作、权限、交易和 Move 调用会从意图到记忆留下回执。",
+      "Message": "消息",
+      "Context moves across agents.": "上下文可以跨 Agent 流动。",
+      "Handoff": "交接",
+      "Work changes owner without losing history.": "任务换人执行，但历史不会丢失。",
+      "Audit": "审计",
+      "Receipts prove what happened.": "回执证明发生了什么。",
+      "Messages can move across agents.": "消息可以跨 Agent 流动。",
+      "Work can be handed off.": "任务可以被交接。",
+      "Execution can be audited.": "执行可以被审计。",
+      "Actions can be verified.": "动作可以被验证。",
       "Interaction can be identified.": "交互可识别。",
       "Message can be traced.": "信息可追踪。",
       "Action can be verified.": "操作可验证。",
@@ -69,6 +93,7 @@
       "Cloud platforms": "云平台",
       "connected software.": "连接了软件与软件",
       "SuiMesh": "SuiMesh",
+      "coordinates autonomous agents.": "协调 Agent 与 Agent",
       "connects autonomous agents.": "连接 Agent 与 Agent",
       "Docs": "文档",
       "Terms of Service": "服务条款",
